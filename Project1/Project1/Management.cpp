@@ -59,12 +59,12 @@ void Management::loadUserfile()
 
 void Management::runGAME()
 {
-	int n;
-	loadUserfile();
-	loadEnemyfile();
-	seletUser();
+	int n = 1;
+	//loadUserfile();
+	//loadEnemyfile();
+	//seletUser();
 	loadMapfile(n);
-	printMap();
+	//printMap();
 }
 
 int Management::getAbilityType(std::string Type)
