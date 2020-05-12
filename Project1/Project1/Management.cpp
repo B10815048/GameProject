@@ -54,7 +54,6 @@ void Management::loadUserfile()
 				user[i].Card[j].BelowAbilityValue.push_back(string_buffer);
 			}
 		}
-
 	}
 }
 

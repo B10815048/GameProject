@@ -27,14 +27,4 @@
       <Filter>標頭檔</Filter>
     </ClInclude>
   </ItemGroup>
-  <ItemGroup>
-    <Text Include="..\..\..\..\..\..\Downloads\期末專案 (1)\期末專案\character1.txt">
-      <Filter>資源檔</Filter>
-    </Text>
-  </ItemGroup>
-  <ItemGroup>
-    <ClInclude Include="Header.h">
-      <Filter>標頭檔</Filter>
-    </ClInclude>
-  </ItemGroup>
 </Project>

@@ -20,6 +20,7 @@ struct EnemyCard : public CardTable
 {
 	std::vector <int> Type;
 	std::vector <std::string> AbilityValue;
+	bool Shuffle;
 };
 
 struct User
@@ -37,8 +38,7 @@ struct Enemy
 	int HP[2];
 	int STR[2];
 	int Range[2];
-	int CardOnHand = 7;
-	bool Shuffle;
+	int CardOnHand = 6;
 	std::vector <EnemyCard> Card;
 };
 
@@ -47,7 +47,13 @@ class Management
 private:
 	std::vector <User> user;
 	std::vector <Enemy> enemy;
+	std::vector <std::vector<char> > map;
 public:
 	void loadUserfile();
+	void loadEnemyfile();
+	void seletUser();
+	void loadMapfile();
+	void printMap();
 	int getAbilityType(std::string Type);
+
 };
