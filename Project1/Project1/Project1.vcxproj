@@ -138,8 +138,10 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="C7.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="Management.cpp" />
+    <ClCompile Include="Yo.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Management.h" />

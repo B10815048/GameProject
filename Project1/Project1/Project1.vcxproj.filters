@@ -21,6 +21,12 @@
     <ClCompile Include="Management.cpp">
       <Filter>資源檔</Filter>
     </ClCompile>
+    <ClCompile Include="Yo.cpp">
+      <Filter>資源檔</Filter>
+    </ClCompile>
+    <ClCompile Include="C7.cpp">
+      <Filter>資源檔</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Management.h">

@@ -5,10 +5,6 @@ int main()
 {
     Management management;
     //////////////////////////////////////////////////////
-    management.loadUserfile();
-    management.loadEnemyfile();
-    management.seletUser();
-    management.loadMapfile();
-    management.printMap();
+    management.runGAME();
     /////////////////////////////////////////////////////
 }

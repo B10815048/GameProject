@@ -57,6 +57,16 @@ void Management::loadUserfile()
 	}
 }
 
+void Management::runGAME()
+{
+	int n;
+	loadUserfile();
+	loadEnemyfile();
+	seletUser();
+	loadMapfile(n);
+	printMap();
+}
+
 int Management::getAbilityType(std::string Type)
 {
 	if (Type == "move")
