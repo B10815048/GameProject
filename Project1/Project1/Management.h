@@ -55,8 +55,8 @@ private:
 	std::vector <std::vector<char> > map;
 public:
 	void loadUserfile();//c7
-	//void loadEnemyfile();//c7
-	//void seletUser();//c7
+	void loadEnemyfile();//c7
+	void seletUser();//c7
 	void loadMapfile(int n);//Yo
 	void runGAME();
 	void printMap();//Yo
