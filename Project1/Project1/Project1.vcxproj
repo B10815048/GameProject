@@ -138,7 +138,14 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="Source.cpp" />
+    <ClCompile Include="main.cpp" />
+    <ClCompile Include="Management.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="Management.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <Text Include="..\..\..\..\..\..\Downloads\期末專案 (1)\期末專案\character1.txt" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Header.h" />
