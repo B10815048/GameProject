@@ -60,10 +60,10 @@ void Management::loadUserfile()
 void Management::runGAME()
 {
 	int n = 1;
-	//loadUserfile();
-	//loadEnemyfile();
-	//seletUser();
-	loadMapfile(n);
+	loadUserfile();
+	loadEnemyfile();
+	seletUser();
+	//loadMapfile(n);
 	//printMap();
 }
 
