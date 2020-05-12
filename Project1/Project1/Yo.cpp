@@ -4,12 +4,6 @@
 #include "Management.h"
 using namespace std;
 
-struct Position
-{
-	int x;
-	int y;
-};
-
 char Search(vector<vector<char> >& map, int x, int y)
 {
 	if (map[y][x] != 'x' || map[y][x] == '3')
@@ -25,7 +19,7 @@ char Search(vector<vector<char> >& map, int x, int y)
 void Management::loadMapfile(int n)
 {
 	vector<Position> CharaterPos;
-	int x, y;	
+	int x, y;
 	int width, height;
 	fstream file;
 	file.open("map1.txt", ios::in);
@@ -36,7 +30,7 @@ void Management::loadMapfile(int n)
 
 	char block;
 	for (int i = 0; i < height; i++)
-	{	
+	{
 		file.get(block); // 吃掉換行
 		for (int j = 0; j < width; j++)
 		{
@@ -49,32 +43,68 @@ void Management::loadMapfile(int n)
 				this->map[i][j] = '2';
 			else if (block == '3')
 				this->map[i][j] = '3';
-		}		
+		}
 	}
-	for (int i = 0; i < n; i++)
+
+	for (int i = 0; i < 4; i++)
 	{
 		file >> x >> y;
 		CharaterPos.push_back({ x,y });
 	}
 
 	string name;
+	int count = 0;
 	int enemyCount;
 	int level[3];
 	file >> enemyCount;
-	for (int i = 0; i < enemyCount; i++)
+	enemyDeck.resize(enemyCount);
+	for (int i = 0; i < enemyDeck.size(); i)
 	{
-		file >> name >> x >> y >> level[0] >> level[1] >> level[2];
-		if (level[n - 2] == 0)
-			continue;
-		// 建構怪物 type = n - 2
+		
+		int int_buffer;
+		std::string string_buffer;
+		int j;
+		int position;
+		file >> string_buffer;
+		for (j = 0; j < enemy.size(); j++)
+		{
+			if (enemy[j].name == string_buffer)
+			{
+				enemyDeck[i] = enemy[j];
+				position = j;
+			}
+		}
+		enemyDeck[i].Icon = 97 + i + count;
+		file >> x >> y; //x and y
+		enemyDeck[i].P = { x,y };
+		for (j = 1; j < userDeck.size(); j++)
+			file >> int_buffer;
+		if (int_buffer == 0)
+		{
+			enemyDeck.erase(enemyDeck.begin() + i);//i不變
+			count++;
+
+		}
+		else if (int_buffer == 1)
+		{
+			enemyDeck[i].Type = 0;			
+			i++;
+		}
+		else if (int_buffer == 2)
+		{
+			enemyDeck[i].Type = 1;			
+			i++;
+		}
+		for (j = userDeck.size(); j < 4; j++)
+			file >> int_buffer;
+		
 	}
 
-	char C = Search(this->map, CharaterPos[1].x, CharaterPos[1].y);
-	char c[4] = { 'A','B','C','D' };
-	for (int i = 0; i < CharaterPos.size(); i++)
+	char C = Search(this->map, CharaterPos[0].x, CharaterPos[0].y);
+	/*for (int i = 0; i <userDeck.size(); i++)
 	{
-		this->map[CharaterPos[i].y][CharaterPos[i].x] = c[i];
-	}
+		this->map[userDeck[i].P.y][userDeck[i].P.x] = userDeck[i].Icon;
+	}*/
 	this->width = width;
 	this->height = height;	
 }
@@ -82,6 +112,8 @@ void Management::loadMapfile(int n)
 
 void Management::printMap()
 {
+	Position p;
+	getxy(p);
 	for (int i = 0; i < this->height; i++)
 	{
 		for (int j = 0; j < this->width; j++)
@@ -93,4 +125,15 @@ void Management::printMap()
 		}
 		cout << endl;
 	}
+	for (int i = 0; i < enemyDeck.size(); i++)
+	{
+		if (map[enemyDeck[i].P.y][enemyDeck[i].P.x] == '1')
+		{
+			
+			gotoxy({ p.x + enemyDeck[i].P.x,p.y + enemyDeck[i].P.y });
+			cout << enemyDeck[i].Icon;
+		}
+	}
+	gotoxy({ p.x + width,p.y + height });
+	cout << endl;
 }

@@ -37,10 +37,8 @@ void Management::loadEnemyfile()
 			std::stringstream lineString(string_buffer);
 			while (lineString >> string_buffer)
 			{
-				std::cout << string_buffer << std::endl;
 				enemy[i].Card[j].Type.push_back(getAbilityType(string_buffer));
 				lineString >> string_buffer;
-				std::cout << string_buffer << std::endl << std::endl;
 				enemy[i].Card[j].AbilityValue.push_back(string_buffer);
 			}
 		}
@@ -75,40 +73,4 @@ void Management::seletUser()
 			userDeck[i].Card.push_back(user[position].Card[int_buffer]);
 		}
 	}
-	std::cout << userDeck[1].Icon << std::endl;
-
-	int n;
-	std::cin >> n;
-	enemyDeck.resize(n);
-	for (i = 0; i < enemyDeck.size(); i)
-	{
-		std::cin >> string_buffer;
-		for (j = 0; j < enemy.size(); j++)
-		{
-			if (enemy[j].name == string_buffer)
-			{
-				enemyDeck[i] = enemy[j];
-				position = j;
-			}
-		}
-		std::cin >> int_buffer >> int_buffer; //x and y
-		for (j = 1; j < userDeck.size(); j++)
-			std::cin >> int_buffer;
-		std::cout << int_buffer << std::endl;
-		if (int_buffer == 0)
-			enemyDeck.erase(enemyDeck.begin()+i);//i¤£ÅÜ
-		else if (int_buffer == 1)
-		{
-			enemyDeck[i].Type = 0;
-			i++;
-		}
-		else if(int_buffer == 2)
-		{
-			enemyDeck[i].Type = 1;
-			i++;
-		}
-		for (j = userDeck.size();j<4; j++)
-			std::cin >> int_buffer;
-	}
-	std::cout << enemyDeck.size() << std::endl;
 }

@@ -39,18 +39,14 @@ void Management::loadUserfile()
 			std::stringstream belowString(belowbuffer);
 			while (topString >> string_buffer)
 			{
-				std::cout << string_buffer << std::endl;
 				user[i].Card[j].TopType.push_back(getAbilityType(string_buffer));
 				topString >> string_buffer;
-				std::cout << string_buffer << std::endl << std::endl;
 				user[i].Card[j].TopAbilityValue.push_back(string_buffer);
 			}
 			while (belowString >> string_buffer)
 			{
-				std::cout << string_buffer << std::endl;
 				user[i].Card[j].BelowType.push_back(getAbilityType(string_buffer));
 				belowString >> string_buffer;
-				std::cout << string_buffer << std::endl << std::endl;
 				user[i].Card[j].BelowAbilityValue.push_back(string_buffer);
 			}
 		}
@@ -59,11 +55,11 @@ void Management::loadUserfile()
 
 void Management::runGAME()
 {
-	int n = 4;
-	//loadUserfile();
-	//loadEnemyfile();
-	//seletUser();
-	loadMapfile(n);
+	int n = 2;
+	loadUserfile();
+	loadEnemyfile();
+	seletUser();
+	loadMapfile(2);
 	printMap();
 }
 
