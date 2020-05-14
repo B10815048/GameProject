@@ -8,7 +8,6 @@ struct Point
 	int x;
 	int y;
 	Point operator+(Point b);
-	bool operator==(Point b);
 };
 
 struct CardTable
@@ -78,7 +77,6 @@ public:
 	void printEnemy(Point p); //c7
 	void printUser(Point p);
 	void seletPoint();
-	void Move(Creature &creature, std::string command);
-	int creatureOnPoint(Point p);
+	void Move(Creature creature,std::string command);
 	int getAbilityType(std::string Type);
 };
