@@ -60,7 +60,7 @@ void Management::runGAME()
 	loadUserfile();
 	loadEnemyfile();
 	seletUser();
-	loadMapfile(2);
+	loadMapfile();
 	getxy(p);
 	printMap(p);
 	printEnemy(p);
