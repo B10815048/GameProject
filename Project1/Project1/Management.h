@@ -7,7 +7,7 @@ struct Point
 {
 	int x;
 	int y;
-	Point operator+(Point b);
+	friend Point operator+(Point b);
 	bool operator==(Point b);
 };
 

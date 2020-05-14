@@ -107,9 +107,10 @@ void Management::gotoxy(Point p)
 	SetConsoleCursorPosition(GetStdHandle(STD_OUTPUT_HANDLE), point);
 };
 
-Point Point::operator+(Point b)
+Point operator+(Point a,Point b)
 {
-	this->x = this->x + b.x;
-	this->y = this->y + b.y;
-	return *this;
+	Point tmp;
+	tmp.x = a.x + b.x;
+	tmp.y = a.y + b.y;
+	return tmp;
 }
