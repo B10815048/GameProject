@@ -22,7 +22,6 @@ struct CardTable
 {
 	int Order;
 	int DEX;
-	bool operator>(CardTable c);
 };
 
 struct UserCard : public CardTable
@@ -84,15 +83,24 @@ public:
 	void printEnemy(Point p); //c7
 	void printUser(Point p);
 	//////////////////////////////////////////////////////////////////////
+	//loadFile : 
 	void loadUserfile();//c7
 	void loadEnemyfile();//c7
-	void seletUser();//c7
 	void loadMapfile();//Yo
+	//////////////////////////////////////////////////////////////////////
+	//command : 
+	void Move(Creature &creature,std::string command);
+	void Attack(Creature& creature, std::string command);
+	void Heal(Creature& creature, std::string command);
+	void Shield(Creature& creature, std::string command);
+	//////////////////////////////////////////////////////////////////////
+	//Game action : 
 	void runGAME();
-	bool checkSpace(Point p);
+	void seletUser();//c7
 	void seletPoint();
 	void playCard();
-	void Move(Creature &creature,std::string command);
+	//////////////////////////////////////////////////////////////////////
+	bool checkSpace(Point p);
 	int creatureOnPoint(Point p);
 	int enemyOnPoint(Point p,int Camp);
 	int getAbilityType(std::string Type);
