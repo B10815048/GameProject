@@ -70,6 +70,7 @@ void Management::runGAME()
 
 int Management::getAbilityType(std::string Type)
 {
+	cout << "dsadas" << endl;
 	if (Type == "move")
 		return 0;
 	else if (Type == "heal")
