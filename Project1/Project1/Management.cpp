@@ -2,12 +2,11 @@
 #include <fstream>
 #include <string>
 #include <sstream>
-#include <windows.h>
 
 void Management::loadUserfile()
 {
 	std::fstream file;
-	int Point;
+	int position;
 	int usernum, cardnum;
 	int int_buffer;
 	std::string string_buffer, topbuffer, belowbuffer;
@@ -57,11 +56,17 @@ void Management::loadUserfile()
 void Management::runGAME()
 {
 	int n = 2;
+	Point p;
 	loadUserfile();
 	loadEnemyfile();
 	seletUser();
-	loadMapfile(2);
-	printMap();
+	while (1)
+	{
+		loadMapfile(2);
+		getxy(p);
+		printMap(p);
+		printEnemy(p);
+	}
 }
 
 int Management::getAbilityType(std::string Type)
@@ -78,6 +83,14 @@ int Management::getAbilityType(std::string Type)
 		return 4;
 }
 
+void Management::getxy(Point& p)
+{
+	CONSOLE_SCREEN_BUFFER_INFO csbi;
+	GetConsoleScreenBufferInfo(GetStdHandle(STD_OUTPUT_HANDLE), &csbi);
+	p.x = csbi.dwCursorPosition.X;
+	p.y = csbi.dwCursorPosition.Y;
+};
+
 void Management::gotoxy(Point p)
 {
 	COORD point;
@@ -85,17 +98,9 @@ void Management::gotoxy(Point p)
 	SetConsoleCursorPosition(GetStdHandle(STD_OUTPUT_HANDLE), point);
 };
 
-void Management::getxy(Point& p)
+Point Point::operator+(Point b)
 {
-	CONSOLE_SCREEN_BUFFER_INFO csbi;
-	GetConsoleScreenBufferInfo(GetStdHandle(STD_OUTPUT_HANDLE), &csbi);
-	p.x = csbi.dwCursorPosition.X;
-	p.y = csbi.dwCursorPosition.Y;
-}
-
-Point Point::operator + (Point b)
-{
-	this->x += b.x;
-	this->y += b.y;
+	this->x = this->x + b.x;
+	this->y = this->y + b.y;
 	return *this;
 }

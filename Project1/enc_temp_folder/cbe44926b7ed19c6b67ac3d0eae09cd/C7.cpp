@@ -5,14 +5,14 @@
 
 std::vector <std::vector<char> > map;
 
-void Management::loadEnemyfile() //載入怪物資料
+void Management::loadEnemyfile()
 {
 	std::fstream file;
 	int enemynum;
 	std::string string_buffer;
 	int i, j;
-	file.open("monster1.txt", std::ios::in); //開啟指定的怪物檔案
-	file >> enemynum; //讀取怪物數量
+	file.open("monster1.txt", std::ios::in);
+	file >> enemynum;
 	enemy.resize(enemynum);
 	for (i = 0; i < enemynum; i++)
 	{
@@ -26,10 +26,11 @@ void Management::loadEnemyfile() //載入怪物資料
 		enemy[i].Card.resize(6);
 		for (j = 0; j < 6; j++)
 		{
-			file >> string_buffer;
+			file >> string_buffer; //確認是否會有位置交換的可能
 			file >> enemy[i].Card[j].Order;
 			file >> enemy[i].Card[j].DEX;
 			getline(file, string_buffer);
+			;
 			if (string_buffer.substr(string_buffer.size() - 1, 1) == "r")
 				enemy[i].Card[j].Shuffle = true;
 			else if (string_buffer.substr(string_buffer.size() - 1, 1) == "d")
@@ -52,7 +53,7 @@ void Management::seletUser()
 	int int_buffer;
 	std::string string_buffer;
 	int i, j;
-	int Point;
+	int position;
 	std::cout << "請輸入出場角色數量:" << std::endl;
 	std::cin >> int_buffer;
 	userDeck.resize(int_buffer);
@@ -64,7 +65,7 @@ void Management::seletUser()
 			if (user[j].name == string_buffer)
 			{
 				userDeck[i] = user[j];
-				Point = j;
+				position = j;
 			}
 		}
 		userDeck[i].Icon = 65 + i;
@@ -72,7 +73,7 @@ void Management::seletUser()
 		for (j = 0; j < userDeck[i].CardOnHand; j++)
 		{
 			std::cin >> int_buffer;
-			userDeck[i].Card.push_back(user[Point].Card[int_buffer]);
+			userDeck[i].Card.push_back(user[position].Card[int_buffer]);
 		}
 	}
 }
@@ -96,6 +97,7 @@ void Management::printEnemy(Point p)
 	{
 		if (map[enemyDeck[i].P.y][enemyDeck[i].P.x] == '1')
 		{
+
 			gotoxy({ p.x + enemyDeck[i].P.x,p.y + enemyDeck[i].P.y });
 			std::cout << enemyDeck[i].Icon;
 		}
