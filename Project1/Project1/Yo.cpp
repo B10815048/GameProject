@@ -18,7 +18,7 @@ char Search(vector<vector<char> >& map, int x, int y)
 
 void Management::loadMapfile(int n)
 {
-	vector<Position> CharaterPos;
+	vector<Point> CharaterPos;
 	int x, y;
 	int width, height;
 	fstream file;
@@ -64,14 +64,14 @@ void Management::loadMapfile(int n)
 		int int_buffer;
 		std::string string_buffer;
 		int j;
-		int position;
+		int Point;
 		file >> string_buffer;
 		for (j = 0; j < enemy.size(); j++)
 		{
 			if (enemy[j].name == string_buffer)
 			{
 				enemyDeck[i] = enemy[j];
-				position = j;
+				Point = j;
 			}
 		}
 		enemyDeck[i].Icon = 97 + i + count;
@@ -112,28 +112,28 @@ void Management::loadMapfile(int n)
 
 void Management::printMap()
 {
-	Position p;
+	Point p;
 	getxy(p);
 	for (int i = 0; i < this->height; i++)
 	{
 		for (int j = 0; j < this->width; j++)
 		{
 			if (this->map[i][j] == '0' || this->map[i][j] == 'x')
-				cout << " ";
+				std::cout << " ";
 			else
-				cout << this->map[i][j];
+				std::cout << this->map[i][j];
 		}
-		cout << endl;
+		std::cout << endl;
 	}
 	for (int i = 0; i < enemyDeck.size(); i++)
 	{
 		if (map[enemyDeck[i].P.y][enemyDeck[i].P.x] == '1')
 		{
 			
-			gotoxy({ p.x + enemyDeck[i].P.x,p.y + enemyDeck[i].P.y });
-			cout << enemyDeck[i].Icon;
+			gotoxy(p + enemyDeck[i].P);
+			std::cout << enemyDeck[i].Icon;
 		}
 	}
 	gotoxy({ p.x + width,p.y + height });
-	cout << endl;
+	std::cout << endl;
 }

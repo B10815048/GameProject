@@ -2,11 +2,12 @@
 #include <fstream>
 #include <string>
 #include <sstream>
+#include <windows.h>
 
 void Management::loadUserfile()
 {
 	std::fstream file;
-	int position;
+	int Point;
 	int usernum, cardnum;
 	int int_buffer;
 	std::string string_buffer, topbuffer, belowbuffer;
@@ -75,5 +76,26 @@ int Management::getAbilityType(std::string Type)
 		return 3;
 	else if (Type == "range")
 		return 4;
+}
 
+void Management::gotoxy(Point p)
+{
+	COORD point;
+	point.X = p.x, point.Y = p.y;
+	SetConsoleCursorPosition(GetStdHandle(STD_OUTPUT_HANDLE), point);
+};
+
+void Management::getxy(Point& p)
+{
+	CONSOLE_SCREEN_BUFFER_INFO csbi;
+	GetConsoleScreenBufferInfo(GetStdHandle(STD_OUTPUT_HANDLE), &csbi);
+	p.x = csbi.dwCursorPosition.X;
+	p.y = csbi.dwCursorPosition.Y;
+}
+
+Point Point::operator + (Point b)
+{
+	this->x += b.x;
+	this->y += b.y;
+	return *this;
 }
