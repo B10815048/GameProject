@@ -186,7 +186,7 @@ void Management::seletPoint()
 				if (count==0)
 				tmp.y--;
 			}
-				
+
 			else if (command[j] == 's' && (map[tmp.y + 1][tmp.x] == '_' || map[tmp.y + 1][tmp.x] == '*'))
 			{
 				count = 0;
