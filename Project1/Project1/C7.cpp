@@ -173,3 +173,4 @@ void Management::printEnemy(Point p)
 	}
 	gotoxy({ p.x,p.y + height });
 }
+

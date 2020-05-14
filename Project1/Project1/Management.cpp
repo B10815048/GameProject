@@ -64,18 +64,8 @@ void Management::runGAME()
 	getxy(p);
 	printMap(p);
 	printEnemy(p);
-	userDeck[0].P = { 5,9 };
-	userDeck[1].P = { 3,8 };
-	enemyDeck[1].P = { 4,8 };
-	getxy(p);
-	printMap(p);
-	printEnemy(p);
-	printUser(p);
-	Move(userDeck[0], "waw");
-	getxy(p);
-	printMap(p);
-	printEnemy(p);
-	printUser(p);
+	seletPoint();
+	playCard();
 }
 
 int Management::getAbilityType(std::string Type)
@@ -113,4 +103,9 @@ Point operator+(Point a,Point b)
 	tmp.x = a.x + b.x;
 	tmp.y = a.y + b.y;
 	return tmp;
+}
+
+bool CardTable::operator>(CardTable c)
+{
+	return this->DEX > c.DEX;
 }

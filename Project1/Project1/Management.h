@@ -3,6 +3,13 @@
 #include <iostream>
 #include <windows.h>
 
+struct CompairCardDex
+{
+	char Icon;
+	int Dex;
+	std::vector <int> Index;
+};
+
 struct Point
 {
 	int x;
@@ -15,6 +22,7 @@ struct CardTable
 {
 	int Order;
 	int DEX;
+	bool operator>(CardTable c);
 };
 
 struct UserCard : public CardTable
@@ -63,9 +71,9 @@ class Management
 private:
 	int width, height;
 	std::vector <std::vector<char> > map;
-	std::vector <User> user;
+	std::vector <User> user; // 讀檔人數
 	std::vector <Enemy> enemy;
-	std::vector <User> userDeck;
+	std::vector <User> userDeck; // 出場人數
 	std::vector <Enemy> enemyDeck;
 	void gotoxy(Point p);
 	void getxy(Point& p);
@@ -79,8 +87,10 @@ public:
 	void printEnemy(Point p); //c7
 	void printUser(Point p);
 	void seletPoint();
+	void playCard();
 	void Move(Creature &creature,std::string command);
 	int creatureOnPoint(Point p);
 	int enemyOnPoint(Point p,int Camp);
 	int getAbilityType(std::string Type);
 };
+
