@@ -15,7 +15,7 @@ char Search(vector<vector<char> >& map, int x, int y)
 		return 'x';
 }
 
-void Management::loadMapfile(int n)
+void Management::loadMapfile()
 {
 	vector<Point> CharaterPos;
 	int x, y;
@@ -100,12 +100,27 @@ void Management::loadMapfile(int n)
 	}
 
 	char C = Search(map, CharaterPos[0].x, CharaterPos[0].y);
-	/*for (int i = 0; i <userDeck.size(); i++)
+	for (int i = 0; i < CharaterPos.size(); i++)
 	{
-		this->map[userDeck[i].P.y][userDeck[i].P.x] = userDeck[i].Icon;
-	}*/
+		this->map[CharaterPos[i].y][CharaterPos[i].x] = '_';
+	}
+	bool haveFind = false;
 	this->width = width;
 	this->height = height;	
+	for (int i = 0; i < this->height; i++)
+	{
+		for (int j = 0; j < this->width; j++)
+		{
+			if (this->map[i][j] == '_')
+			{
+				this->map[i][j] = '*';
+				haveFind = true;
+				break;
+			}
+		}
+		if (haveFind)
+			break;
+	}
 	file.close();
 }
 
@@ -123,4 +138,154 @@ void Management::printMap(Point p)
 		}
 		cout << endl;
 	}
+}
+
+void Management::seletPoint()
+{
+	Point p;
+	Point tmp;
+	
+	int count;
+	std::vector <Point> point;
+	string command;
+	
+	for (int i = 0; i < this->userDeck.size(); i++)
+	{
+		cout << "¿ï¾Ü¨¤¦â¦ì¸m: " << endl;
+		cin >> command;
+		point.clear();
+		bool haveFind = false;
+		
+		for (int j = 0; j < this->height; j++)
+		{
+			for (int k = 0; k < this->width; k++)
+			{
+				if (this->map[j][k] == '*')
+				{
+					tmp.x = k;
+					tmp.y = j;
+					haveFind = true;
+					break;
+				}
+			}
+			if (haveFind)
+				break;
+		}
+		userDeck[i].P = tmp;
+		
+		for (int j = 0; j < command.size(); j++)
+		{
+			if (command[j] == 'w' && (map[tmp.y - 1][tmp.x] == '_' || map[tmp.y - 1][tmp.x] == '*'))
+			{
+				count = 0;
+				for (int k = 0; k <= i; k++)
+				{
+					if (userDeck[k].P == Point{ tmp.x, tmp.y - 1 })
+						count++;
+				}
+				if (count==0)
+				tmp.y--;
+			}
+				
+			else if (command[j] == 's' && (map[tmp.y + 1][tmp.x] == '_' || map[tmp.y + 1][tmp.x] == '*'))
+			{
+				count = 0;
+				for (int k = 0; k <= i; k++)
+				{
+					if (userDeck[k].P == Point{ tmp.x, tmp.y + 1 })
+						count++;
+				}
+				if (count == 0)
+				tmp.y++;
+			}
+			else if (command[j] == 'a' && (map[tmp.y][tmp.x - 1] == '_' || map[tmp.y][tmp.x-1] == '*'))
+			{
+				count = 0;
+				for (int k = 0; k <= i; k++)
+				{
+					if (userDeck[k].P == Point{ tmp.x-1, tmp.y })
+						count++;
+				}
+				if (count == 0)
+				tmp.x--;
+			}
+			else if (command[j] == 'd' && (map[tmp.y][tmp.x + 1] == '_' || map[tmp.y - 1][tmp.x+1] == '*'))
+			{
+				count = 0;
+				for (int k = 0; k <= i; k++)
+				{
+					if (userDeck[k].P == Point{ tmp.x + 1, tmp.y })
+						count++;
+				}
+				if (count == 0)
+					tmp.x++;
+			}
+			else
+				break;
+			point.push_back(tmp);
+		}
+		
+		for (int j = point.size(); j >0; j--)
+		{
+			count = 0;
+			for (int k = 0; k <= i; k++)
+			{
+				if (userDeck[k].P == point[j-1])
+					count++;
+			}
+			if (count == 0)
+			{
+				tmp = point[j-1];
+				break;
+			}	
+		}
+		cout << userDeck[0].P.y << endl;
+		if (userDeck[i].P == tmp)
+		{
+			haveFind = false;
+			map[tmp.y][tmp.x] = '1';
+			for (int j = 0; j < this->height; j++)
+			{
+				for (int k = 0; k < this->width; k++)
+				{
+					if (this->map[j][k] == '_')
+					{
+						this->map[j][k] = '*';
+						tmp.x = k;
+						tmp.y = j;
+						haveFind = true;
+						break;
+					}
+				}
+				if (haveFind)
+					break;
+			}
+		}
+		else
+		{
+			userDeck[i].P = tmp;
+			cout << userDeck[0].P.y << endl;
+		}
+		if (i == userDeck.size() - 1)
+		{
+			for (int j = 0; j < this->height; j++)
+			{
+				for (int k = 0; k < this->width; k++)
+				{
+					if (this->map[j][k] == '*' || this->map[j][k] == '_')
+						map[j][k] = '1';
+				}
+			}
+		}
+		getxy(p);
+		printMap(p);
+		for (int k = 0; k <= i; k++)
+		{
+			gotoxy(userDeck[k].P + p);
+			cout << userDeck[k].Icon;
+		}
+		gotoxy({ p.x,p.y + height });
+
+	}
+
 }
