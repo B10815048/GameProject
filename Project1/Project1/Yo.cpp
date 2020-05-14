@@ -4,155 +4,6 @@
 #include "Management.h"
 using namespace std;
 
-void Management::seletPoint()
-{
-	Point p;
-	Point tmp;
-	
-	int count;
-	std::vector <Point> point;
-	string command;
-	
-	for (int i = 0; i < this->userDeck.size(); i++)
-	{
-		cout << "選擇角色位置: " << endl;
-		cin >> command;
-		point.clear();
-		bool haveFind = false;
-		
-		for (int j = 0; j < this->height; j++)
-		{
-			for (int k = 0; k < this->width; k++)
-			{
-				if (this->map[j][k] == '*')
-				{
-					tmp.x = k;
-					tmp.y = j;
-					haveFind = true;
-					break;
-				}
-			}
-			if (haveFind)
-				break;
-		}
-		userDeck[i].P = tmp;
-		
-		for (int j = 0; j < command.size(); j++)
-		{
-			if (command[j] == 'w' && (map[tmp.y - 1][tmp.x] == '_' || map[tmp.y - 1][tmp.x] == '*'))
-			{
-				count = 0;
-				for (int k = 0; k <= i; k++)
-				{
-					if (userDeck[k].P == Point{ tmp.x, tmp.y - 1 })
-						count++;
-				}
-				if (count==0)
-				tmp.y--;
-			}
-
-			else if (command[j] == 's' && (map[tmp.y + 1][tmp.x] == '_' || map[tmp.y + 1][tmp.x] == '*'))
-			{
-				count = 0;
-				for (int k = 0; k <= i; k++)
-				{
-					if (userDeck[k].P == Point{ tmp.x, tmp.y + 1 })
-						count++;
-				}
-				if (count == 0)
-				tmp.y++;
-			}
-			else if (command[j] == 'a' && (map[tmp.y][tmp.x - 1] == '_' || map[tmp.y][tmp.x-1] == '*'))
-			{
-				count = 0;
-				for (int k = 0; k <= i; k++)
-				{
-					if (userDeck[k].P == Point{ tmp.x-1, tmp.y })
-						count++;
-				}
-				if (count == 0)
-				tmp.x--;
-			}
-			else if (command[j] == 'd' && (map[tmp.y][tmp.x + 1] == '_' || map[tmp.y - 1][tmp.x+1] == '*'))
-			{
-				count = 0;
-				for (int k = 0; k <= i; k++)
-				{
-					if (userDeck[k].P == Point{ tmp.x + 1, tmp.y })
-						count++;
-				}
-				if (count == 0)
-					tmp.x++;
-			}
-			point.push_back(tmp);
-		}
-		
-		for (int j = point.size(); j >0; j--)
-		{
-			count = 0;
-			for (int k = 0; k <= i; k++)
-			{
-				if (userDeck[k].P == point[j-1])
-					count++;
-			}
-			if (count == 0)
-			{
-				tmp = point[j-1];
-				break;
-			}	
-		}
-		cout << userDeck[0].P.y << endl;
-		if (userDeck[i].P == tmp)
-		{
-			haveFind = false;
-			map[tmp.y][tmp.x] = '1';
-			for (int j = 0; j < this->height; j++)
-			{
-				for (int k = 0; k < this->width; k++)
-				{
-					if (this->map[j][k] == '_')
-					{
-						this->map[j][k] = '*';
-						tmp.x = k;
-						tmp.y = j;
-						haveFind = true;
-						break;
-					}
-				}
-				if (haveFind)
-					break;
-			}
-		}
-		else
-		{
-			userDeck[i].P = tmp;
-			cout << userDeck[0].P.y << endl;
-		}
-		if (i == userDeck.size() - 1)
-		{
-			for (int j = 0; j < this->height; j++)
-			{
-				for (int k = 0; k < this->width; k++)
-				{
-					if (this->map[j][k] == '*' || this->map[j][k] == '_')
-						map[j][k] = '1';
-				}
-			}
-		}
-		getxy(p);
-		printMap(p);
-		printEnemy(p);
-		for (int k = 0; k <= i; k++)
-		{
-			gotoxy(userDeck[k].P + p);
-			cout << userDeck[k].Icon;
-		}
-		gotoxy({ p.x,p.y + height });
-
-	}
-
-}
-
 void Management::playCard()
 {
 	vector<CompairCardDex> compairList;
@@ -194,10 +45,15 @@ void Management::playCard()
 		}
 		
 		if (userDeck[position].Card[index1].DEX > userDeck[position].Card[index2].DEX)
-			tmp.Dex = userDeck[position].Card[index2].DEX;
+		{
+			tmp.Dex[0] = userDeck[position].Card[index2].DEX;
+			tmp.Dex[1] = userDeck[position].Card[index1].DEX;
+		}	
 		else
-			tmp.Dex = userDeck[position].Card[index1].DEX;
-
+		{
+			tmp.Dex[0] = userDeck[position].Card[index1].DEX;
+			tmp.Dex[1] = userDeck[position].Card[index2].DEX;
+		}
 		tmp.Icon = icon;
 		compairList.push_back(tmp);
 	}
@@ -220,23 +76,42 @@ void Management::playCard()
 				}
 			}
 			tmp.Index.push_back(minIndex);
-			tmp.Dex = enemyDeck[i].Card[position].DEX;
+			tmp.Dex[0] = enemyDeck[i].Card[position].DEX;
+			tmp.Dex[1] = 99;
 			tmp.Icon = enemyDeck[i].Icon;
 			compairList.push_back(tmp);
 		}
 	}
-
 	//所有牌排序
 	for(i = compairList.size()-1; i > 0; i--)
 	{
 		for(j = 0; j <= i-1; j++)
 		{
-			if( compairList[j].Dex > compairList[j+1].Dex)
+			if( compairList[j].Dex[0] > compairList[j+1].Dex[0])
 			{
 				tmp = compairList [j];
 				compairList[j] = compairList[j+1];
 				compairList[j+1] = tmp;
 			}
+			else if (compairList[j].Dex[0] == compairList[j + 1].Dex[0])
+			{
+				if (compairList[j].Dex[1] > compairList[j + 1].Dex[1])
+				{
+					tmp = compairList[j];
+					compairList[j] = compairList[j + 1];
+					compairList[j + 1] = tmp;
+				}
+				else if (compairList[j].Dex[1] == compairList[j + 1].Dex[1])
+				{
+					if (compairList[j].Icon > compairList[j + 1].Icon)
+					{
+						tmp = compairList[j];
+						compairList[j] = compairList[j + 1];
+						compairList[j + 1] = tmp;
+					}
+				}
+			}
+
 		}
 	}
 	string command;

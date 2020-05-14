@@ -6,7 +6,7 @@
 struct CompairCardDex
 {
 	char Icon;
-	int Dex;
+	int Dex[2];
 	std::vector <int> Index;
 };
 
@@ -94,7 +94,7 @@ public:
 	void Heal(Creature& creature, std::string command);
 	void Shield(Creature& creature, std::string command);
 	//////////////////////////////////////////////////////////////////////
-	//Game action : 
+	//gameAction : 
 	void runGAME();
 	void seletUser();//c7
 	void seletPoint();

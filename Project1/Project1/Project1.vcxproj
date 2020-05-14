@@ -143,6 +143,7 @@
     <ClCompile Include="Management.cpp" />
     <ClCompile Include="Management%28Print%29.cpp" />
     <ClCompile Include="Management%28File%29.cpp" />
+    <ClCompile Include="Management%28gameAction_seletPoint%29.cpp" />
     <ClCompile Include="Yo.cpp" />
   </ItemGroup>
   <ItemGroup>
