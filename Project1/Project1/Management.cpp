@@ -60,13 +60,22 @@ void Management::runGAME()
 	loadUserfile();
 	loadEnemyfile();
 	seletUser();
-	while (1)
-	{
-		loadMapfile(2);
-		getxy(p);
-		printMap(p);
-		printEnemy(p);
-	}
+	loadMapfile(2);
+	getxy(p);
+	printMap(p);
+	printEnemy(p);
+	userDeck[0].P = { 5,9 };
+	userDeck[1].P = { 3,8 };
+	enemyDeck[1].P = { 4,8 };
+	getxy(p);
+	printMap(p);
+	printEnemy(p);
+	printUser(p);
+	Move(userDeck[0], "waw");
+	getxy(p);
+	printMap(p);
+	printEnemy(p);
+	printUser(p);
 }
 
 int Management::getAbilityType(std::string Type)

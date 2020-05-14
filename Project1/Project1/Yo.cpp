@@ -60,7 +60,6 @@ void Management::loadMapfile(int n)
 	enemyDeck.resize(enemyCount);
 	for (int i = 0; i < enemyDeck.size(); i)
 	{
-		
 		int int_buffer;
 		std::string string_buffer;
 		int j;
@@ -74,6 +73,7 @@ void Management::loadMapfile(int n)
 				position = j;
 			}
 		}
+		enemyDeck[i].Camp = 1;
 		enemyDeck[i].Icon = 97 + i + count;
 		file >> x >> y; //x and y
 		enemyDeck[i].P = { x,y };

@@ -35,6 +35,7 @@ struct EnemyCard : public CardTable
 struct Creature
 {
 	std::string name;
+	int Camp;
 	Point P;
 	char Icon;
 	int CardOnHand = 6;
@@ -80,5 +81,6 @@ public:
 	void seletPoint();
 	void Move(Creature &creature,std::string command);
 	int creatureOnPoint(Point p);
+	int enemyOnPoint(Point p,int Camp);
 	int getAbilityType(std::string Type);
 };
