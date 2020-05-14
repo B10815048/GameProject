@@ -106,6 +106,7 @@ void Management::loadMapfile(int n)
 	}*/
 	this->width = width;
 	this->height = height;	
+	file.close();
 }
 
 
