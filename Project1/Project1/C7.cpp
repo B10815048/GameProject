@@ -50,7 +50,7 @@ void Management::seletUser()
 	int int_buffer;
 	std::string string_buffer;
 	int i, j;
-	int position;
+	int Point;
 	std::cout << "請輸入出場角色數量:" << std::endl;
 	std::cin >> int_buffer;
 	userDeck.resize(int_buffer);
@@ -62,7 +62,7 @@ void Management::seletUser()
 			if (user[j].name == string_buffer)
 			{
 				userDeck[i] = user[j];
-				position = j;
+				Point = j;
 			}
 		}
 		userDeck[i].Icon = 65 + i;
@@ -70,7 +70,7 @@ void Management::seletUser()
 		for (j = 0; j < userDeck[i].CardOnHand; j++)
 		{
 			std::cin >> int_buffer;
-			userDeck[i].Card.push_back(user[position].Card[int_buffer]);
+			userDeck[i].Card.push_back(user[Point].Card[int_buffer]);
 		}
 	}
 }
