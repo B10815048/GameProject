@@ -65,6 +65,7 @@ void Management::seletUser()
 				Point = j;
 			}
 		}
+		userDeck[i].Camp = 0;
 		userDeck[i].Icon = 65 + i;
 		userDeck[i].Card.clear();
 		for (j = 0; j < userDeck[i].CardOnHand; j++)
@@ -97,7 +98,29 @@ int  Management::creatureOnPoint(Point p)
 	return count;
 }
 
-void Management::Move(Creature &creature, std::string command)
+int  Management::enemyOnPoint(Point p,int Camp)
+{
+	int count = 0;
+	if (Camp == 0)
+	{
+		for (int i = 0; i < enemyDeck.size(); i++)
+		{
+			if (enemyDeck[i].P == p)
+				count++;
+		}
+	}
+	else if (Camp == 1)
+	{
+		for (int i = 0; i < userDeck.size(); i++)
+		{
+			if (userDeck[i].P == p)
+				count++;
+		}
+	}
+	return count;
+}
+
+void Management::Move(Creature& creature, std::string command)
 {
 	int i, j;
 	Point tmp;
@@ -105,16 +128,14 @@ void Management::Move(Creature &creature, std::string command)
 	tmp = creature.P;
 	for (i = 0; i < command.size(); i++)
 	{
-		if (command[i] == 'w' && map[tmp.y - 1][tmp.x] == '1')
+		if (command[i] == 'w' && map[tmp.y - 1][tmp.x] == '1' && enemyOnPoint({ tmp.x, tmp.y }, creature.Camp)==0)
 			tmp.y--;
-		else if (command[i] == 's' && map[tmp.y + 1][tmp.x] == '1')
+		else if (command[i] == 's' && map[tmp.y + 1][tmp.x] == '1' && enemyOnPoint({ tmp.x, tmp.y }, creature.Camp) == 0)
 			tmp.y++;
-		else if (command[i] == 'a' && map[tmp.y][tmp.x - 1] == '1')
+		else if (command[i] == 'a' && map[tmp.y][tmp.x - 1] == '1' && enemyOnPoint({ tmp.x, tmp.y }, creature.Camp) == 0)
 			tmp.x--;
-		else if (command[i] == 'd' && map[creature.P.y][creature.P.x + 1] == '1')
+		else if (command[i] == 'd' && map[tmp.y][tmp.x + 1] == '1' && enemyOnPoint({ tmp.x, tmp.y }, creature.Camp) == 0)
 			tmp.x++;
-		else
-			break;
 		point.push_back(tmp);
 	}
 	for (i = point.size(); i > 0; i--)
@@ -125,6 +146,19 @@ void Management::Move(Creature &creature, std::string command)
 			break;
 		}
 	}
+}
+
+void Management::printUser(Point p)
+{
+	for (int i = 0; i < userDeck.size(); i++)
+	{
+		if (map[userDeck[i].P.y][userDeck[i].P.x] == '1')
+		{
+			gotoxy({ p.x + userDeck[i].P.x,p.y + userDeck[i].P.y });
+			std::cout << userDeck[i].Icon;
+		}
+	}
+	gotoxy({ p.x,p.y + height });
 }
 
 void Management::printEnemy(Point p)
