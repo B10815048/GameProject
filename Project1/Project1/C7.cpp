@@ -128,13 +128,13 @@ void Management::Move(Creature& creature, std::string command)
 	tmp = creature.P;
 	for (i = 0; i < command.size(); i++)
 	{
-		if (command[i] == 'w' && map[tmp.y - 1][tmp.x] == '1' && enemyOnPoint({ tmp.x, tmp.y }, creature.Camp)==0)
+		if (command[i] == 'w' && checkSpace({ tmp.x , tmp.y - 1 }) && enemyOnPoint({ tmp.x, tmp.y }, creature.Camp) == 0)
 			tmp.y--;
-		else if (command[i] == 's' && map[tmp.y + 1][tmp.x] == '1' && enemyOnPoint({ tmp.x, tmp.y }, creature.Camp) == 0)
+		else if (command[i] == 's' && checkSpace({ tmp.x , tmp.y - 1 }) && enemyOnPoint({ tmp.x, tmp.y }, creature.Camp) == 0)
 			tmp.y++;
-		else if (command[i] == 'a' && map[tmp.y][tmp.x - 1] == '1' && enemyOnPoint({ tmp.x, tmp.y }, creature.Camp) == 0)
+		else if (command[i] == 'a' && checkSpace({ tmp.x , tmp.y - 1 }) && enemyOnPoint({ tmp.x, tmp.y }, creature.Camp) == 0)
 			tmp.x--;
-		else if (command[i] == 'd' && map[tmp.y][tmp.x + 1] == '1' && enemyOnPoint({ tmp.x, tmp.y }, creature.Camp) == 0)
+		else if (command[i] == 'd' && checkSpace({ tmp.x , tmp.y - 1 }) && enemyOnPoint({ tmp.x, tmp.y }, creature.Camp) == 0)
 			tmp.x++;
 		point.push_back(tmp);
 	}
@@ -148,29 +148,14 @@ void Management::Move(Creature& creature, std::string command)
 	}
 }
 
-void Management::printUser(Point p)
+bool Management::checkSpace(Point p)
 {
-	for (int i = 0; i < userDeck.size(); i++)
-	{
-		if (map[userDeck[i].P.y][userDeck[i].P.x] == '1')
-		{
-			gotoxy({ p.x + userDeck[i].P.x,p.y + userDeck[i].P.y });
-			std::cout << userDeck[i].Icon;
-		}
-	}
-	gotoxy({ p.x,p.y + height });
+	if (p.x < 0 || p.x >= width || p.x < 0 || p.x >= height)
+		return false;
+	else if (map[p.y][p.x] == '1')
+		return true;
+	else
+		return false;
 }
 
-void Management::printEnemy(Point p)
-{
-	for (int i = 0; i < enemyDeck.size(); i++)
-	{
-		if (map[enemyDeck[i].P.y][enemyDeck[i].P.x] == '1')
-		{
-			gotoxy({ p.x + enemyDeck[i].P.x,p.y + enemyDeck[i].P.y });
-			std::cout << enemyDeck[i].Icon;
-		}
-	}
-	gotoxy({ p.x,p.y + height });
-}
 

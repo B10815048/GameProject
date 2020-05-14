@@ -124,22 +124,6 @@ void Management::loadMapfile()
 	file.close();
 }
 
-
-void Management::printMap(Point p)
-{
-	for (int i = 0; i < this->height; i++)
-	{
-		for (int j = 0; j < this->width; j++)
-		{
-			if (map[i][j] == '0' || map[i][j] == 'x')
-				cout << " ";
-			else
-				cout << map[i][j];
-		}
-		cout << endl;
-	}
-}
-
 void Management::seletPoint()
 {
 	Point p;

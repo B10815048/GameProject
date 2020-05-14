@@ -78,14 +78,18 @@ private:
 	void gotoxy(Point p);
 	void getxy(Point& p);
 public:
+	//////////////////////////////////////////////////////////////////////
+	//print : 
+	void printMap(Point p);//Yo
+	void printEnemy(Point p); //c7
+	void printUser(Point p);
+	//////////////////////////////////////////////////////////////////////
 	void loadUserfile();//c7
 	void loadEnemyfile();//c7
 	void seletUser();//c7
 	void loadMapfile();//Yo
 	void runGAME();
-	void printMap(Point p);//Yo
-	void printEnemy(Point p); //c7
-	void printUser(Point p);
+	bool checkSpace(Point p);
 	void seletPoint();
 	void playCard();
 	void Move(Creature &creature,std::string command);
