@@ -82,7 +82,8 @@ bool Point::operator==(Point b)
 
 int  Management::creatureOnPoint(Point p)
 {
-	int count = 0;
+	int count;
+	count = 0;
 	for (int i = 0; i < enemyDeck.size(); i++)
 	{
 		if (enemyDeck[i].P == p )
