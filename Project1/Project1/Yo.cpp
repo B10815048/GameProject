@@ -220,8 +220,7 @@ void Management::seletPoint()
 				if (count == 0)
 					tmp.x++;
 			}
-			else
-				break;
+
 			point.push_back(tmp);
 		}
 		
