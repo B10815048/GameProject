@@ -7,7 +7,7 @@ struct Point
 {
 	int x;
 	int y;
-	Point operator+(Point b);
+	friend Point operator+(Point a,Point b);
 	bool operator==(Point b);
 };
 
@@ -72,7 +72,7 @@ public:
 	void loadUserfile();//c7
 	void loadEnemyfile();//c7
 	void seletUser();//c7
-	void loadMapfile(int n);//Yo
+	void loadMapfile();//Yo
 	void runGAME();
 	void printMap(Point p);//Yo
 	void printEnemy(Point p); //c7

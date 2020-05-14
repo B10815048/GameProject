@@ -60,13 +60,13 @@ void Management::runGAME()
 	loadUserfile();
 	loadEnemyfile();
 	seletUser();
-	while (1)
-	{
-		loadMapfile(2);
-		getxy(p);
-		printMap(p);
-		printEnemy(p);
-	}
+	loadMapfile();
+
+	getxy(p);
+	printMap(p);
+	printEnemy(p);
+
+	seletPoint();
 }
 
 int Management::getAbilityType(std::string Type)
@@ -98,9 +98,10 @@ void Management::gotoxy(Point p)
 	SetConsoleCursorPosition(GetStdHandle(STD_OUTPUT_HANDLE), point);
 };
 
-Point Point::operator+(Point b)
+Point operator+(Point a,Point b)
 {
-	this->x = this->x + b.x;
-	this->y = this->y + b.y;
-	return *this;
+	Point tmp = {0,0};
+	tmp.x = a.x + b.x;
+	tmp.y = a.y + b.y;
+	return tmp;
 }
