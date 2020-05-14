@@ -3,8 +3,6 @@
 #include <string>
 #include <sstream>
 
-std::vector <std::vector<char> > map;
-
 void Management::loadEnemyfile() //載入怪物資料
 {
 	std::fstream file;
@@ -77,16 +75,54 @@ void Management::seletUser()
 	}
 }
 
-void Creature::Move(std::string command)
+bool Point::operator==(Point b)
+{
+	return (this->x == b.x && this->y == b.y);
+}
+
+int  Management::creatureOnPoint(Point p)
+{
+	int count = 0;
+	for (int i = 0; i < enemyDeck.size(); i++)
+	{
+		if (enemyDeck[i].P == p )
+			count++;
+	}
+	for (int i = 0; i < userDeck.size(); i++)
+	{
+		if (userDeck[i].P == p)
+			count++;
+	}
+	return count;
+}
+
+void Management::Move(Creature &creature, std::string command)
 {
 	int i, j;
+	Point tmp;
+	std::vector <Point> point;
+	tmp = creature.P;
 	for (i = 0; i < command.size(); i++)
 	{
-		if (command[i] == 'w'&& map[this->P.y-1][this->P.x]==1 )
+		if (command[i] == 'w' && map[tmp.y - 1][tmp.x] == '1')
+			tmp.y--;
+		else if (command[i] == 's' && map[tmp.y + 1][tmp.x] == '1')
+			tmp.y++;
+		else if (command[i] == 'a' && map[tmp.y][tmp.x - 1] == '1')
+			tmp.x--;
+		else if (command[i] == 'd' && map[creature.P.y][creature.P.x + 1] == '1')
+			tmp.x++;
+		else
+			break;
+		point.push_back(tmp);
+	}
+	for (i = point.size(); i > 0; i--)
+	{
+		if (creatureOnPoint(point[i-1])== 0 )
 		{
-
+			creature.P = point[i - 1];
+			break;
 		}
-
 	}
 }
 

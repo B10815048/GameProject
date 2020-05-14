@@ -3,13 +3,12 @@
 #include <iostream>
 #include <windows.h>
 
-extern std::vector <std::vector<char> > map;
-
 struct Point
 {
 	int x;
 	int y;
 	Point operator+(Point b);
+	bool operator==(Point b);
 };
 
 struct CardTable
@@ -39,13 +38,13 @@ struct Creature
 	Point P;
 	char Icon;
 	int CardOnHand = 6;
-	void Move(std::string command);
 };
 
 struct User : public Creature
 {
 	int HP;
 	std::vector < UserCard> Card;
+	std::vector < UserCard> disCardDeck;
 };
 
 struct Enemy : public Creature
@@ -55,12 +54,14 @@ struct Enemy : public Creature
 	int STR[2];
 	int Range[2];
 	std::vector <EnemyCard> Card;
+	std::vector <EnemyCard> disCardDeck;
 };
 
 class Management
 {
 private:
 	int width, height;
+	std::vector <std::vector<char> > map;
 	std::vector <User> user;
 	std::vector <Enemy> enemy;
 	std::vector <User> userDeck;
@@ -77,5 +78,7 @@ public:
 	void printEnemy(Point p); //c7
 	void printUser(Point p);
 	void seletPoint();
+	void Move(Creature &creature, std::string command);
+	int creatureOnPoint(Point p);
 	int getAbilityType(std::string Type);
 };
