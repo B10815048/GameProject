@@ -98,7 +98,6 @@ void Management::seletPoint()
 				break;
 			}
 		}
-		std::cout << userDeck[0].P.y << std::endl;
 		if (userDeck[i].P == tmp)
 		{
 			haveFind = false;
@@ -123,7 +122,6 @@ void Management::seletPoint()
 		else
 		{
 			userDeck[i].P = tmp;
-			std::cout << userDeck[0].P.y << std::endl;
 		}
 		if (i == userDeck.size() - 1)
 		{

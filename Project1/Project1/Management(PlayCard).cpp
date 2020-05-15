@@ -27,8 +27,8 @@ void Management::userPlayCards()
 		{
 			tmp.Dex[0] = 99;
 			tmp.Dex[1] = 99;
-			tmp.Index[0] = -1;
-			tmp.Index[1] = -1;
+			tmp.Index.push_back(-1);
+			tmp.Index.push_back(-1);
 		}
 		else
 		{
@@ -162,85 +162,93 @@ void Management::playCard()
 				if (userDeck[j].Icon == compairList[i].Icon)
 					position = j;
 			}
-			cout << "璣动" << userDeck[position].Icon << "礟" << endl;
-			cin >> command;
-			if (command[1] == 'd')
+			if (compairList[i].Index[0] != -1)
 			{
-				for (k = 0; k < compairList[i].Index.size(); k++)
+				cout << "璣动" << userDeck[position].Icon << "礟" << endl;
+				cin >> command;
+				if (command[1] == 'd')
 				{
-					if (compairList[i].Index[k] == command[0] - '0')
+					for (k = 0; k < compairList[i].Index.size(); k++)
 					{
-						for (l = 0; l < userDeck[position].Card.size(); l++)
+						if (compairList[i].Index[k] == command[0] - '0')
 						{
-							if (userDeck[position].Card[l].Order == command[0] - '0')
+							for (l = 0; l < userDeck[position].Card.size(); l++)
 							{
-								for (m = 0; m < userDeck[position].Card[l].BelowType.size(); m++)
+								if (userDeck[position].Card[l].Order == command[0] - '0')
 								{
-									//㊣㏑
-									cout << "ㄏノ璣动мよ" << skill[userDeck[position].Card[l].BelowType[m]] << endl;
+									for (m = 0; m < userDeck[position].Card[l].BelowType.size(); m++)
+									{
+										//㊣㏑
+										cout << "ㄏノ璣动мよ" << skill[userDeck[position].Card[l].BelowType[m]] << endl;
+									}
+									//斌礟
+									userDeck[position].disCardDeck.push_back(userDeck[position].Card[l]);
+									userDeck[position].Card.erase(userDeck[position].Card.begin() + l);
 								}
-								//斌礟
-								userDeck[position].disCardDeck.push_back(userDeck[position].Card[l]);
-								userDeck[position].Card.erase(userDeck[position].Card.begin() + l);
 							}
+							compairList[i].Index.erase(compairList[i].Index.begin() + k);
 						}
-						compairList[i].Index.erase(compairList[i].Index.begin() + k);
 					}
-				}
 
-				for (l = 0; l < userDeck[position].Card.size(); l++)
-				{
-					if (userDeck[position].Card[l].Order == compairList[i].Index[0])
+					for (l = 0; l < userDeck[position].Card.size(); l++)
 					{
-						for (m = 0; m < userDeck[position].Card[l].TopType.size(); m++)
+						if (userDeck[position].Card[l].Order == compairList[i].Index[0])
 						{
-							cout << "ㄏノ璣动мよ" << skill[userDeck[position].Card[l].TopType[m]] << endl;
-						}
-						//斌礟
-						userDeck[position].disCardDeck.push_back(userDeck[position].Card[l]);
-						userDeck[position].Card.erase(userDeck[position].Card.begin() + l);
-					}
-				}
-				compairList[i].Index.clear();
-			}
-			else if (command[1] == 'u')
-			{
-				for (k = 0; k < compairList[i].Index.size(); k++)
-				{
-					if (compairList[i].Index[k] == command[0] - '0')
-					{
-						for (l = 0; l < userDeck[position].Card.size(); l++)
-						{
-							if (userDeck[position].Card[l].Order == command[0] - '0')
+							for (m = 0; m < userDeck[position].Card[l].TopType.size(); m++)
 							{
-								for (m = 0; m < userDeck[position].Card[l].TopType.size(); m++)
-								{
-									cout << "ㄏノ璣动мよ" << skill[userDeck[position].Card[l].TopType[m]] << endl;
-								}
-								//斌礟
-								userDeck[position].disCardDeck.push_back(userDeck[position].Card[l]);
-								userDeck[position].Card.erase(userDeck[position].Card.begin() + l);
+								cout << "ㄏノ璣动мよ" << skill[userDeck[position].Card[l].TopType[m]] << endl;
 							}
+							//斌礟
+							userDeck[position].disCardDeck.push_back(userDeck[position].Card[l]);
+							userDeck[position].Card.erase(userDeck[position].Card.begin() + l);
 						}
-						compairList[i].Index.erase(compairList[i].Index.begin() + k);
 					}
+					compairList[i].Index.clear();
 				}
-				for (l = 0; l < userDeck[position].Card.size(); l++)
+				else if (command[1] == 'u')
 				{
-					if (userDeck[position].Card[l].Order == compairList[i].Index[0])
+					for (k = 0; k < compairList[i].Index.size(); k++)
 					{
-						for (m = 0; m < userDeck[position].Card[l].BelowType.size(); m++)
+						if (compairList[i].Index[k] == command[0] - '0')
 						{
-							//㊣㏑
-							cout << "ㄏノ璣动мよ" << skill[userDeck[position].Card[l].BelowType[m]] << endl;
+							for (l = 0; l < userDeck[position].Card.size(); l++)
+							{
+								if (userDeck[position].Card[l].Order == command[0] - '0')
+								{
+									for (m = 0; m < userDeck[position].Card[l].TopType.size(); m++)
+									{
+										cout << "ㄏノ璣动мよ" << skill[userDeck[position].Card[l].TopType[m]] << endl;
+									}
+									//斌礟
+									userDeck[position].disCardDeck.push_back(userDeck[position].Card[l]);
+									userDeck[position].Card.erase(userDeck[position].Card.begin() + l);
+								}
+							}
+							compairList[i].Index.erase(compairList[i].Index.begin() + k);
 						}
-						//斌礟
-						userDeck[position].disCardDeck.push_back(userDeck[position].Card[l]);
-						userDeck[position].Card.erase(userDeck[position].Card.begin() + l);
 					}
+					for (l = 0; l < userDeck[position].Card.size(); l++)
+					{
+						if (userDeck[position].Card[l].Order == compairList[i].Index[0])
+						{
+							for (m = 0; m < userDeck[position].Card[l].BelowType.size(); m++)
+							{
+								//㊣㏑
+								cout << "ㄏノ璣动мよ" << skill[userDeck[position].Card[l].BelowType[m]] << endl;
+							}
+							//斌礟
+							userDeck[position].disCardDeck.push_back(userDeck[position].Card[l]);
+							userDeck[position].Card.erase(userDeck[position].Card.begin() + l);
+						}
+					}
+					compairList[i].Index.clear();
 				}
-				compairList[i].Index.clear();
 			}
+			else
+			{
+				cout << "璣动" << userDeck[position].Icon << "ヰ" << endl;
+			}
+			
 		}
 		else if (compairList[i].Icon >='a' &&compairList[i].Icon <='z') //寄よ
 		{
