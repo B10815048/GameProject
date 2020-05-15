@@ -21,12 +21,6 @@
     <ClCompile Include="Management.cpp">
       <Filter>資源檔</Filter>
     </ClCompile>
-    <ClCompile Include="Yo.cpp">
-      <Filter>資源檔</Filter>
-    </ClCompile>
-    <ClCompile Include="C7.cpp">
-      <Filter>資源檔</Filter>
-    </ClCompile>
     <ClCompile Include="Management%28Print%29.cpp">
       <Filter>資源檔</Filter>
     </ClCompile>
@@ -34,6 +28,12 @@
       <Filter>資源檔</Filter>
     </ClCompile>
     <ClCompile Include="Management%28gameAction_seletPoint%29.cpp">
+      <Filter>資源檔</Filter>
+    </ClCompile>
+    <ClCompile Include="Management%28Move%29.cpp">
+      <Filter>資源檔</Filter>
+    </ClCompile>
+    <ClCompile Include="Management%28PlayCard%29.cpp">
       <Filter>資源檔</Filter>
     </ClCompile>
   </ItemGroup>

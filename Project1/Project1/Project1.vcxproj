@@ -138,13 +138,13 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="C7.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="Management.cpp" />
     <ClCompile Include="Management%28Print%29.cpp" />
     <ClCompile Include="Management%28File%29.cpp" />
     <ClCompile Include="Management%28gameAction_seletPoint%29.cpp" />
-    <ClCompile Include="Yo.cpp" />
+    <ClCompile Include="Management%28Move%29.cpp" />
+    <ClCompile Include="Management%28PlayCard%29.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Management.h" />

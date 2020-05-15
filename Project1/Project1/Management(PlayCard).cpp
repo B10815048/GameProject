@@ -21,36 +21,45 @@ void Management::userPlayCards()
 				position = j;
 			}
 		}
+		tmp.Icon = userDeck[position].Icon;
 		cin >> index;
-		for (j = 0; j < userDeck[position].Card.size(); j++)
+		if (index == -1)
 		{
-			if (userDeck[position].Card[j].Order == index)
-			{
-				index1 = j;
-				tmp.Index.push_back(userDeck[position].Card[j].Order);
-			}
-		}
-		cin >> index;
-		for (j = 0; j < userDeck[position].Card.size(); j++)
-		{
-			if (userDeck[position].Card[j].Order == index)
-			{
-				index2 = j;
-				tmp.Index.push_back(userDeck[position].Card[j].Order);
-			}
-		}
-
-		if (userDeck[position].Card[index1].DEX > userDeck[position].Card[index2].DEX)
-		{
-			tmp.Dex[0] = userDeck[position].Card[index2].DEX;
-			tmp.Dex[1] = userDeck[position].Card[index1].DEX;
+			tmp.Dex[0] = 99;
+			tmp.Dex[1] = 99;
+			tmp.Index[0] = -1;
+			tmp.Index[1] = -1;
 		}
 		else
 		{
-			tmp.Dex[0] = userDeck[position].Card[index1].DEX;
-			tmp.Dex[1] = userDeck[position].Card[index2].DEX;
+			for (j = 0; j < userDeck[position].Card.size(); j++)
+			{
+				if (userDeck[position].Card[j].Order == index)
+				{
+					index1 = j;
+					tmp.Index.push_back(userDeck[position].Card[j].Order);
+				}
+			}
+			cin >> index;
+			for (j = 0; j < userDeck[position].Card.size(); j++)
+			{
+				if (userDeck[position].Card[j].Order == index)
+				{
+					index2 = j;
+					tmp.Index.push_back(userDeck[position].Card[j].Order);
+				}
+			}
+			if (userDeck[position].Card[index1].DEX > userDeck[position].Card[index2].DEX)
+			{
+				tmp.Dex[0] = userDeck[position].Card[index2].DEX;
+				tmp.Dex[1] = userDeck[position].Card[index1].DEX;
+			}
+			else
+			{
+				tmp.Dex[0] = userDeck[position].Card[index1].DEX;
+				tmp.Dex[1] = userDeck[position].Card[index2].DEX;
+			}
 		}
-		tmp.Icon = icon;
 		compairList.push_back(tmp);
 	}
 }
