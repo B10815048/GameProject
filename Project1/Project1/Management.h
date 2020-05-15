@@ -68,12 +68,14 @@ struct Enemy : public Creature
 class Management
 {
 private:
+	//////////////////////////////////////////////////////////////////////
 	int width, height;
 	std::vector <std::vector<char> > map;
 	std::vector <User> user; // 讀檔人數
 	std::vector <Enemy> enemy;
 	std::vector <User> userDeck; // 出場人數
 	std::vector <Enemy> enemyDeck;
+	std::vector<CompairCardDex> compairList;
 	void gotoxy(Point p);
 	void getxy(Point& p);
 public:
@@ -99,10 +101,14 @@ public:
 	void seletUser();//c7
 	void seletPoint();
 	void playCard();
+	void userPlayCards();
+	void enemyPlayCards();
+	void sort_compairList();
 	//////////////////////////////////////////////////////////////////////
 	bool checkSpace(Point p);
 	int creatureOnPoint(Point p);
 	int enemyOnPoint(Point p,int Camp);
 	int getAbilityType(std::string Type);
+	int getCamp(char Icon);
 };
 

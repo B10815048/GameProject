@@ -10,7 +10,6 @@ char Search(std::vector<std::vector<char> >& map, int x, int y)
 		return 'x';
 	else
 		map[y][x] = '1';
-
 	if (Search(map, x + 1, y) != 'x' || Search(map, x - 1, y) != 'x' || Search(map, x, y + 1) != 'x' || Search(map, x, y - 1) != 'x')
 		return 'x';
 }
