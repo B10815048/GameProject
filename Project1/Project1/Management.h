@@ -109,6 +109,6 @@ public:
 	int creatureOnPoint(Point p);
 	int enemyOnPoint(Point p,int Camp);
 	int getAbilityType(std::string Type);
-	int getCamp(char Icon);
+	bool viewableRange(Point start, Point end);
 };
 

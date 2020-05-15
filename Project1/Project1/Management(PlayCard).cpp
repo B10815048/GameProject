@@ -23,14 +23,14 @@ void Management::userPlayCards()
 		}
 		tmp.Icon = userDeck[position].Icon;
 		cin >> index;
-		if (index == -1)
+		if (index == -1) //長休指令
 		{
 			tmp.Dex[0] = 99;
 			tmp.Dex[1] = 99;
 			tmp.Index.push_back(-1);
 			tmp.Index.push_back(-1);
 		}
-		else
+		else //出牌指令
 		{
 			for (j = 0; j < userDeck[position].Card.size(); j++)
 			{
@@ -128,14 +128,6 @@ void Management::sort_compairList()
 		}
 	}
 }	
-
-int Management::getCamp(char Icon)
-{
-	if (Icon >= 'A' && Icon <= 'Z') //玩家方
-		return 0;
-	else if (Icon >= 'a' && Icon <= 'z') //敵人方
-		return 1;
-}
 
 void Management::playCard()
 {
