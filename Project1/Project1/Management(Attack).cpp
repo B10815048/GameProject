@@ -1,42 +1,101 @@
 #include "Management.h"
 #include <cmath>
 #include <iomanip>
+#include <string>
+
+void  Management::Range(User& user, std::string command)
+{
+	user.Range = user.Range +stoi(command);
+}
+
+void Management::Range(Enemy& enemy, std::string command)
+{
+	enemy.Range[enemy.Type] = enemy.Range[enemy.Type] + stoi(command);
+}
+
+void Management::Attack(Creature& creature, std::string command)
+{
+	char Icon;
+	int i, j;
+	int position;
+	int enemyX, enemyY;
+	if (creature.Camp == 0) //主角方
+	{
+		std::cout << "媽的選角拉 : " << std::endl;
+		std::cin >> Icon;
+		if (Icon == 0)
+		{
+			std::cout << "媽的不公及 : " << std::endl;
+			return;
+		}
+		else
+		{
+			for (i = 0; i < enemyDeck.size(); i++)
+			{
+				if (Icon == enemyDeck[i].Icon)
+					position = i;
+			}
+			if (shootRange(creature.P, enemyDeck[position].P, creature.Range, 0)/*&& viewableRange(creature.P, enemyDeck[position].P)*/)
+			{
+				std::cout << "attack : " << std::endl;
+			}
+			else
+			{
+				std::cout << "0? " << std::endl;
+			}
+		}
+	}
+	else if (creature.Camp ==1) //敵人方
+	{
+
+	}
+}
+
 bool  Management::oneGapCheck(int x, float y1, float y2)
 {
 	int j;
-	for (j =ceil(y1); j != floor(y2); j = j + (floor(y2) - ceil(y1)) / abs(floor(y2) - ceil(y1)))
-		map[j-1][x] = '2';
-	return true;
+	for (j = ceil(y1); j != floor(y2); j = j + (floor(y2) - ceil(y1)) / abs(floor(y2) - ceil(y1)))
+	{
+		if (map[j - 1][x] == '2')
+			return true;
+	}
+	return false;
 }
 bool Management::viewableRange(Point start, Point end)
 {
-	start = {5,7};
-	end = { 4,10};
 	int i,j;
 	float a, gap;
 	if (start.x != end.x)
 	{
 		a = (float)(end.y-start.y)/ abs(end.x-start.x);
 		gap = 0.5 + start.y;
-		oneGapCheck(start.x, gap+ (a/2),gap );
+		if(oneGapCheck(start.x, gap+ (a/2),gap ))
+			return true;
 		gap = gap + (a/2) ;
 		i = start.x;
 		while (i != end.x - (end.x - start.x) / abs(end.x - start.x))
 		{
-			oneGapCheck(i + (end.x - start.x) / abs(end.x - start.x), gap+a, gap);
+			if (oneGapCheck(i + (end.x - start.x) / abs(end.x - start.x), gap + a, gap))
+				return true;
 			i = i + (end.x - start.x) / abs(end.x - start.x);
 			gap = a + gap;
 		}
-		oneGapCheck(end.x, gap + (a / 2), gap);
+		if(oneGapCheck(end.x, gap + (a / 2), gap))
+			return true;
 	}
 	else
 	{
 		for (i = start.y; i != end.y; i = i + (end.y - start.y) / abs(end.y - start.y))
-			oneGapCheck(start.x, i + (end.y - start.y) / abs(end.y - start.y), i);
-		oneGapCheck(start.x, i + (end.y - start.y) / abs(end.y - start.y), i);
+		{
+			if (oneGapCheck(start.x, i + (end.y - start.y) / abs(end.y - start.y), i))
+				return true;
+		}
+			
+		if (oneGapCheck(start.x, i + (end.y - start.y) / abs(end.y - start.y), i))
+			return true;
 	}
 	printMap(start);
-	return true;
+	return false;
 }
 
 bool Management::shootRange(Point start, Point end, int step, int camp)

@@ -40,6 +40,7 @@ struct Creature
 	char Icon;
 	int CardOnHand = 6;
 	int Shield = 0;
+	int Range = 0;
 };
 
 struct User : public Creature
@@ -93,7 +94,9 @@ public:
 	void loadMapfile();//Yo
 	//////////////////////////////////////////////////////////////////////
 	//Attack:
-	void Attack(Creature& creature, std::string command);
+	void Attack(Creature& creature, std::string command); // ¦³range return 1; µLrange return 0
+	void Range(User& user, std::string command);
+	void Range(Enemy& enemy, std::string command);
 	bool viewableRange(Point start, Point end);
 	bool oneGapCheck(int x, float y1, float y2);
 	bool shootRange(Point start, Point end, int n,int camp);

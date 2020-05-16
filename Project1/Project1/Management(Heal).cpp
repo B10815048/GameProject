@@ -10,7 +10,7 @@ void Management::Heal(User& user, std::string command)
 	user.HP += value;
 	for (int i = 0; i < this->user.size(); i++)
 	{
-		if (this->user[i].Icon == user.Icon)			
+		if (this->user[i].name == user.name)			
 		{
 			if (this->user[i].HP < user.HP)
 				user.HP = this->user[i].HP;
@@ -45,4 +45,5 @@ void Management::Shield(Creature& creature, std::string command)
 	ss << command;
 	ss >> value;
 	creature.Shield += value;
+	std::cout << creature.Icon << " shield " << value << ", this turn" << std::endl;
 }

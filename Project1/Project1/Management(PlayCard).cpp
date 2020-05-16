@@ -171,7 +171,24 @@ void Management::playCard()
 									for (m = 0; m < userDeck[position].Card[l].BelowType.size(); m++)
 									{
 										//呼叫命令
+										if (userDeck[position].Card[l].BelowType[m] == 3)
+										{
+											if (m != userDeck[position].Card[l].BelowType.size() - 1)
+											{
+												if (userDeck[position].Card[l].BelowType[m + 1] == 4)
+												{
+													Range(userDeck[position], userDeck[position].Card[l].BelowAbilityValue[m + 1]);
+												}
+											}
+											Attack(userDeck[position], userDeck[position].Card[l].BelowAbilityValue[m]);
+											if (m != userDeck[position].Card[l].BelowType.size() - 1)
+											{
+												if (userDeck[position].Card[l].BelowType[m + 1] == 4)
+													m++;
+											}
+										}
 										cout << "使用英雄技能卡下方：" << skill[userDeck[position].Card[l].BelowType[m]] << endl;
+									
 									}
 									//棄牌
 									userDeck[position].disCardDeck.push_back(userDeck[position].Card[l]);

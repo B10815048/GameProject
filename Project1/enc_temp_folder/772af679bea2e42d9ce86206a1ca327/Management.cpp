@@ -15,6 +15,7 @@ void Management::runGAME()
 	printEnemy(p);
 	seletPoint();
 	playCard();
+	shootRange({ 5,7 }, { 1,8 },10, 0);
 }
 
 int Management::getAbilityType(std::string Type)
