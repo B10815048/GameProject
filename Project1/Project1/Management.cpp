@@ -13,9 +13,9 @@ void Management::runGAME()
 	getxy(p);
 	printMap(p);
 	printEnemy(p);
-	seletPoint();
-	playCard();
-	viewableRange({ 1,8 }, { 5,7 });
+	/*seletPoint();
+	playCard();*/
+	shootRange({ 5,8 }, { 5,7 },10, 0);
 }
 
 int Management::getAbilityType(std::string Type)
