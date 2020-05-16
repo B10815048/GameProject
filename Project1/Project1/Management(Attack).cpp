@@ -103,6 +103,10 @@ bool Management::shootRange(Point start, Point end, int step, int camp)
 	}
 	checkMap[start.y][start.x] = 0;
 	std::cout << checkMap[end.y][end.x] << std::endl;
+	if (checkMap[end.y][end.x] <= step)
+		return true;
+	else
+		return false;
 }
 //////////////////////////////////////////////////////////////
 //«ô³X¥k°¼ : 
