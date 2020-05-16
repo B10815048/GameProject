@@ -35,7 +35,9 @@ void Management::Attack(Creature& creature, std::string command)
 				if (Icon == enemyDeck[i].Icon)
 					position = i;
 			}
-			if (shootRange(creature.P, enemyDeck[position].P, creature.Range, 0)/*&& viewableRange(creature.P, enemyDeck[position].P)*/)
+			std::cout << creature.P.x << " " << creature.P.y << std::endl;
+			std::cout << enemyDeck[position].P.x << " " << enemyDeck[position].P.y << std::endl;
+			if (shootRange(creature.P, enemyDeck[position].P, creature.Range, 0)&& viewableRange(enemyDeck[position].P, creature.P))
 			{
 				std::cout << "attack : " << std::endl;
 			}
@@ -57,9 +59,9 @@ bool  Management::oneGapCheck(int x, float y1, float y2)
 	for (j = ceil(y1); j != floor(y2); j = j + (floor(y2) - ceil(y1)) / abs(floor(y2) - ceil(y1)))
 	{
 		if (map[j - 1][x] == '2')
-			return true;
+			return false;
 	}
-	return false;
+	return true;
 }
 bool Management::viewableRange(Point start, Point end)
 {
@@ -70,32 +72,31 @@ bool Management::viewableRange(Point start, Point end)
 		a = (float)(end.y-start.y)/ abs(end.x-start.x);
 		gap = 0.5 + start.y;
 		if(oneGapCheck(start.x, gap+ (a/2),gap ))
-			return true;
+			return false;
 		gap = gap + (a/2) ;
 		i = start.x;
 		while (i != end.x - (end.x - start.x) / abs(end.x - start.x))
 		{
 			if (oneGapCheck(i + (end.x - start.x) / abs(end.x - start.x), gap + a, gap))
-				return true;
+				return false;
 			i = i + (end.x - start.x) / abs(end.x - start.x);
 			gap = a + gap;
 		}
 		if(oneGapCheck(end.x, gap + (a / 2), gap))
-			return true;
+			return false;
 	}
 	else
 	{
 		for (i = start.y; i != end.y; i = i + (end.y - start.y) / abs(end.y - start.y))
 		{
-			if (oneGapCheck(start.x, i + (end.y - start.y) / abs(end.y - start.y), i))
-				return true;
-		}
-			
-		if (oneGapCheck(start.x, i + (end.y - start.y) / abs(end.y - start.y), i))
-			return true;
+			if (map[i][start.x] == '2')
+				return false;
+		}	
+		if (map[i][start.x] == '2')
+			return false;
 	}
 	printMap(start);
-	return false;
+	return true;
 }
 
 bool Management::shootRange(Point start, Point end, int step, int camp)
@@ -120,14 +121,6 @@ bool Management::shootRange(Point start, Point end, int step, int camp)
 				checkMap[i][j] = -2;
 		}
 	}
-	for (i = 0; i < height; i++)
-	{
-		for (j = 0; j < width; j++)
-		{
-			std:: cout << std::setw(3) << checkMap[i][j];
-		}
-		std::cout << std::endl;
-	}
 	checkMap[start.y][start.x] = 0;
 	viewR(start, 0);
 	viewU(start, 0);
@@ -150,15 +143,6 @@ bool Management::shootRange(Point start, Point end, int step, int camp)
 				}
 			}
 		}
-	}
-	std::cout << std::endl;
-	for (i = 0; i < height; i++)
-	{
-		for (j = 0; j < width; j++)
-		{
-			std::cout << std::setw(3) << checkMap[i][j];
-		}
-		std::cout << std::endl;
 	}
 	checkMap[start.y][start.x] = 0;
 	std::cout << checkMap[end.y][end.x] << std::endl;
