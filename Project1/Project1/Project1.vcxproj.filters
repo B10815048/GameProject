@@ -39,6 +39,9 @@
     <ClCompile Include="Management%28Attack%29.cpp">
       <Filter>資源檔</Filter>
     </ClCompile>
+    <ClCompile Include="Management(Heal).cpp">
+      <Filter>資源檔</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Management.h">

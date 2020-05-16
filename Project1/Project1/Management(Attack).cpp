@@ -39,5 +39,5 @@ bool Management::viewableRange(Point start, Point end)
 }
 bool Management::shootRange(Point start, Point end, int n, int camp)
 {
-
+	
 }

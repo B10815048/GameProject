@@ -139,6 +139,7 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp" />
+    <ClCompile Include="Management(Heal).cpp" />
     <ClCompile Include="Management.cpp" />
     <ClCompile Include="Management%28Print%29.cpp" />
     <ClCompile Include="Management%28File%29.cpp" />

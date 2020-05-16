@@ -102,7 +102,8 @@ public:
 	void viewL(Point start);
 	//////////////////////////////////////////////////////////////////////
 	void Move(Creature &creature,std::string command);
-	void Heal(Creature& creature, std::string command);
+	void Heal(User& user, std::string command);
+	void Heal(Enemy& enemy, std::string command);
 	void Shield(Creature& creature, std::string command);
 	//////////////////////////////////////////////////////////////////////
 	//gameAction : 
