@@ -1,4 +1,4 @@
-#pragma once
+ #pragma once
 #include <vector>
 #include <iostream>
 #include <windows.h>
@@ -32,13 +32,6 @@ struct UserCard : public CardTable
 	std::vector <std::string> BelowAbilityValue;
 };
 
-struct EnemyCard : public CardTable
-{
-	std::vector <int> Type;
-	std::vector <std::string> AbilityValue;
-	bool Shuffle;
-};
-
 struct Creature
 {
 	std::string name;
@@ -46,6 +39,7 @@ struct Creature
 	Point P;
 	char Icon;
 	int CardOnHand = 6;
+	int Shield = 0;
 };
 
 struct User : public Creature
@@ -53,6 +47,13 @@ struct User : public Creature
 	int HP;
 	std::vector < UserCard> Card;
 	std::vector < UserCard> disCardDeck;
+};
+
+struct EnemyCard : public CardTable
+{
+	std::vector <int> Type;
+	std::vector <std::string> AbilityValue;
+	bool Shuffle;
 };
 
 struct Enemy : public Creature
@@ -90,9 +91,17 @@ public:
 	void loadEnemyfile();//c7
 	void loadMapfile();//Yo
 	//////////////////////////////////////////////////////////////////////
-	//command : 
-	void Move(Creature &creature,std::string command);
+	//Attack:
 	void Attack(Creature& creature, std::string command);
+	bool viewableRange(Point start, Point end);
+	bool oneGapCheck(int x, float y1, float y2);
+	bool shootRange(Point start, Point end, int n,int camp);
+	void viewR(Point start);
+	void viewU(Point start);
+	void viewD(Point start);
+	void viewL(Point start);
+	//////////////////////////////////////////////////////////////////////
+	void Move(Creature &creature,std::string command);
 	void Heal(Creature& creature, std::string command);
 	void Shield(Creature& creature, std::string command);
 	//////////////////////////////////////////////////////////////////////
@@ -109,7 +118,6 @@ public:
 	int creatureOnPoint(Point p);
 	int enemyOnPoint(Point p,int Camp);
 	int getAbilityType(std::string Type);
-	bool viewableRange(Point start, Point end);
-	bool oneGapCheck(int x, float y1, float y2);
+
 };
 

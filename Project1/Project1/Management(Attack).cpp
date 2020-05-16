@@ -10,8 +10,8 @@ bool  Management::oneGapCheck(int x, float y1, float y2)
 bool Management::viewableRange(Point start, Point end)
 {
 	start = {5,7};
-	end = { 5,9 };
-	int i, j;
+	end = { 4,10};
+	int i,j;
 	float a, gap;
 	if (start.x != end.x)
 	{
@@ -36,4 +36,8 @@ bool Management::viewableRange(Point start, Point end)
 	}
 	printMap(start);
 	return true;
+}
+bool Management::shootRange(Point start, Point end, int n, int camp)
+{
+
 }
