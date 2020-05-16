@@ -11,11 +11,7 @@ bool Management::viewableRange(Point start, Point end)
 {
 	start = {5,7};
 	end = { 5,9 };
-	//map[9][3] = '3';
-	//map[10][5] = '3';
-	int i;
-	int j;
-	int x;
+	int i, j;
 	float a, gap;
 	if (start.x != end.x)
 	{
