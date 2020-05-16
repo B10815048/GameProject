@@ -72,6 +72,7 @@ private:
 	//////////////////////////////////////////////////////////////////////
 	int width, height;
 	std::vector <std::vector<char> > map;
+	std::vector <std::vector<int> >checkMap;
 	std::vector <User> user; // 讀檔人數
 	std::vector <Enemy> enemy;
 	std::vector <User> userDeck; // 出場人數
@@ -96,10 +97,10 @@ public:
 	bool viewableRange(Point start, Point end);
 	bool oneGapCheck(int x, float y1, float y2);
 	bool shootRange(Point start, Point end, int n,int camp);
-	void viewR(Point start);
-	void viewU(Point start);
-	void viewD(Point start);
-	void viewL(Point start);
+	int viewR(Point start,int n);
+	int viewU(Point start, int n);
+	int viewD(Point start, int n);
+	int viewL(Point start, int n);
 	//////////////////////////////////////////////////////////////////////
 	void Move(Creature &creature,std::string command);
 	void Heal(Creature& creature, std::string command);
