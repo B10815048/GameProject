@@ -19,6 +19,7 @@ void Management::Attack(Creature& creature, std::string command)
 	int i, j;
 	int position;
 	int enemyX, enemyY;
+	std::cout << creature.P.y << std::endl;
 	if (creature.Camp == 0) //主角方
 	{
 		std::cout << "媽的選角拉 : " << std::endl;
@@ -35,7 +36,8 @@ void Management::Attack(Creature& creature, std::string command)
 				if (Icon == enemyDeck[i].Icon)
 					position = i;
 			}
-			if (shootRange(creature.P, enemyDeck[position].P, creature.Range, 0)/*&& viewableRange(creature.P, enemyDeck[position].P)*/)
+			std::cout << enemyDeck[position].P.y << std::endl;
+			if (shootRange(creature.P, enemyDeck[position].P, creature.Range, 0)&& viewableRange(creature.P, enemyDeck[position].P))
 			{
 				std::cout << "attack : " << std::endl;
 			}
@@ -56,8 +58,12 @@ bool  Management::oneGapCheck(int x, float y1, float y2)
 	int j;
 	for (j = ceil(y1); j != floor(y2); j = j + (floor(y2) - ceil(y1)) / abs(floor(y2) - ceil(y1)))
 	{
-		if (map[j - 1][x] == '2')
+		/*if (map[j - 1][x] == '2')
+		{
+			std::cout << "why";
 			return true;
+		}*/
+		map[j - 1][x] = '2';
 	}
 	return false;
 }
@@ -90,7 +96,6 @@ bool Management::viewableRange(Point start, Point end)
 			if (oneGapCheck(start.x, i + (end.y - start.y) / abs(end.y - start.y), i))
 				return true;
 		}
-			
 		if (oneGapCheck(start.x, i + (end.y - start.y) / abs(end.y - start.y), i))
 			return true;
 	}
@@ -120,14 +125,6 @@ bool Management::shootRange(Point start, Point end, int step, int camp)
 				checkMap[i][j] = -2;
 		}
 	}
-	for (i = 0; i < height; i++)
-	{
-		for (j = 0; j < width; j++)
-		{
-			std:: cout << std::setw(3) << checkMap[i][j];
-		}
-		std::cout << std::endl;
-	}
 	checkMap[start.y][start.x] = 0;
 	viewR(start, 0);
 	viewU(start, 0);
@@ -150,15 +147,6 @@ bool Management::shootRange(Point start, Point end, int step, int camp)
 				}
 			}
 		}
-	}
-	std::cout << std::endl;
-	for (i = 0; i < height; i++)
-	{
-		for (j = 0; j < width; j++)
-		{
-			std::cout << std::setw(3) << checkMap[i][j];
-		}
-		std::cout << std::endl;
 	}
 	checkMap[start.y][start.x] = 0;
 	std::cout << checkMap[end.y][end.x] << std::endl;
