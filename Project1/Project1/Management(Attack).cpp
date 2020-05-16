@@ -19,7 +19,6 @@ void Management::Attack(Creature& creature, std::string command)
 	int i, j;
 	int position;
 	int enemyX, enemyY;
-	std::cout << creature.P.y << std::endl;
 	if (creature.Camp == 0) //主角方
 	{
 		std::cout << "媽的選角拉 : " << std::endl;
@@ -36,8 +35,9 @@ void Management::Attack(Creature& creature, std::string command)
 				if (Icon == enemyDeck[i].Icon)
 					position = i;
 			}
-			std::cout << enemyDeck[position].P.y << std::endl;
-			if (shootRange(creature.P, enemyDeck[position].P, creature.Range, 0)&& viewableRange(creature.P, enemyDeck[position].P))
+			std::cout << creature.P.x << " " << creature.P.y << std::endl;
+			std::cout << enemyDeck[position].P.x << " " << enemyDeck[position].P.y << std::endl;
+			if (shootRange(creature.P, enemyDeck[position].P, creature.Range, 0)&& viewableRange(enemyDeck[position].P, creature.P))
 			{
 				std::cout << "attack : " << std::endl;
 			}
@@ -58,14 +58,10 @@ bool  Management::oneGapCheck(int x, float y1, float y2)
 	int j;
 	for (j = ceil(y1); j != floor(y2); j = j + (floor(y2) - ceil(y1)) / abs(floor(y2) - ceil(y1)))
 	{
-		/*if (map[j - 1][x] == '2')
-		{
-			std::cout << "why";
-			return true;
-		}*/
-		map[j - 1][x] = '2';
+		if (map[j - 1][x] == '2')
+			return false;
 	}
-	return false;
+	return true;
 }
 bool Management::viewableRange(Point start, Point end)
 {
@@ -76,31 +72,31 @@ bool Management::viewableRange(Point start, Point end)
 		a = (float)(end.y-start.y)/ abs(end.x-start.x);
 		gap = 0.5 + start.y;
 		if(oneGapCheck(start.x, gap+ (a/2),gap ))
-			return true;
+			return false;
 		gap = gap + (a/2) ;
 		i = start.x;
 		while (i != end.x - (end.x - start.x) / abs(end.x - start.x))
 		{
 			if (oneGapCheck(i + (end.x - start.x) / abs(end.x - start.x), gap + a, gap))
-				return true;
+				return false;
 			i = i + (end.x - start.x) / abs(end.x - start.x);
 			gap = a + gap;
 		}
 		if(oneGapCheck(end.x, gap + (a / 2), gap))
-			return true;
+			return false;
 	}
 	else
 	{
 		for (i = start.y; i != end.y; i = i + (end.y - start.y) / abs(end.y - start.y))
 		{
-			if (oneGapCheck(start.x, i + (end.y - start.y) / abs(end.y - start.y), i))
-				return true;
-		}
-		if (oneGapCheck(start.x, i + (end.y - start.y) / abs(end.y - start.y), i))
-			return true;
+			if (map[i][start.x] == '2')
+				return false;
+		}	
+		if (map[i][start.x] == '2')
+			return false;
 	}
 	printMap(start);
-	return false;
+	return true;
 }
 
 bool Management::shootRange(Point start, Point end, int step, int camp)
