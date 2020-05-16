@@ -13,8 +13,8 @@ bool Management::viewableRange(Point start, Point end)
 {
 	start = {5,7};
 	end = { 3,9 };
-	map[9][3] = '3';
-	map[7][5] = '3';
+	//map[9][3] = '3';
+	//map[7][5] = '3';
 	int i;
 	int j;
 	int x;
@@ -24,7 +24,7 @@ bool Management::viewableRange(Point start, Point end)
 		a = (float)(end.y-start.y)/ abs(end.x-start.x);
 		std::cout << a << std::endl;
 		gap = 0.5 + start.y;
-		oneGapCheck(start.x, gap, gap+ (a/2));
+		oneGapCheck(start.x, gap+ (a/2),gap );
 		gap = gap + (a/2) ;
 		i = start.x;
 		while (i != end.x - (end.x - start.x) / abs(end.x - start.x))
@@ -34,7 +34,7 @@ bool Management::viewableRange(Point start, Point end)
 			i = i + (end.x - start.x) / abs(end.x - start.x);
 			gap = a + gap;
 		}
-		oneGapCheck(end.x, gap, gap + (a / 2));
+		oneGapCheck(end.x, gap + (a / 2), gap);
 	}
 	printMap(start);
 	return true;
