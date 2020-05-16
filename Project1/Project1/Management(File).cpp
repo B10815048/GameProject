@@ -6,8 +6,12 @@
 
 char Search(std::vector<std::vector<char> >& map, int x, int y)
 {
-	if (map[y][x] != 'x' || map[y][x] == '3')
+	if (map[y][x] != 'x' || map[y][x] == '4')
+	{
+		if(map[y][x] == '4')
+			map[y][x] = '3';
 		return 'x';
+	}		
 	else
 		map[y][x] = '1';
 	if (Search(map, x + 1, y) != 'x' || Search(map, x - 1, y) != 'x' || Search(map, x, y + 1) != 'x' || Search(map, x, y - 1) != 'x')
@@ -94,7 +98,7 @@ void Management::loadMapfile()
 			else if (block == '2') //»ÙÃªª«
 				map[i][j] = '2';
 			else if (block == '3') //ªù
-				map[i][j] = '3';
+				map[i][j] = '4';
 		}
 	}
 	CharaterPos.resize(4);

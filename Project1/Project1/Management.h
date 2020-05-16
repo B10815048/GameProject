@@ -1,4 +1,4 @@
-#pragma once
+ #pragma once
 #include <vector>
 #include <iostream>
 #include <windows.h>
@@ -32,13 +32,6 @@ struct UserCard : public CardTable
 	std::vector <std::string> BelowAbilityValue;
 };
 
-struct EnemyCard : public CardTable
-{
-	std::vector <int> Type;
-	std::vector <std::string> AbilityValue;
-	bool Shuffle;
-};
-
 struct Creature
 {
 	std::string name;
@@ -53,6 +46,13 @@ struct User : public Creature
 	int HP;
 	std::vector < UserCard> Card;
 	std::vector < UserCard> disCardDeck;
+};
+
+struct EnemyCard : public CardTable
+{
+	std::vector <int> Type;
+	std::vector <std::string> AbilityValue;
+	bool Shuffle;
 };
 
 struct Enemy : public Creature
