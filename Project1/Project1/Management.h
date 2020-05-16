@@ -110,5 +110,6 @@ public:
 	int enemyOnPoint(Point p,int Camp);
 	int getAbilityType(std::string Type);
 	bool viewableRange(Point start, Point end);
+	bool oneGapCheck(int x, float y1, float y2);
 };
 

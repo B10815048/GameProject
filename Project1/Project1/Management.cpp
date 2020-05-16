@@ -2,87 +2,20 @@
 #include <fstream>
 #include <string>
 #include <sstream>
-#include <cmath>
 
-bool Management::viewableRange(Point start, Point end)
-{
-	int i;
-	if (start.x != end.x)
-	{
-		for (i = start.x; i != end.x; i = i + (end.x - start.x) / abs(end.x - start.x))
-		{
-
-		}
-	}
-}
 void Management::runGAME()
 {
 	Point p;
 	loadUserfile();
 	loadEnemyfile();
-	/*for (int i = 0; i < user.size(); i++)
-	{
-		std::cout << "名稱：" << user[i].name << " 最大血量：" << user[i].HP << std::endl;
-		for (int j = 0; j < user[i].Card.size(); j++)
-		{
-			std::cout << "代號：" << user[i].Card[j].Order  << " 敏捷：" << user[i].Card[j].DEX << " " << std::endl;
-			for (int k = 0; k < user[i].Card[i].TopType.size(); k++)
-			{
-				std::cout << "上方技能類型：" << user[i].Card[j].TopType[k] << " 上方技能值：" << user[i].Card[j].TopAbilityValue[k] << " " << std::endl;
-			}
-			for (int k = 0; k < user[i].Card[i].BelowType.size(); k++)
-			{
-				std::cout << "下方技能類型：" << user[i].Card[j].BelowType[k] << " 下方技能值：" << user[i].Card[j].BelowAbilityValue[k] << " " << std::endl;
-			}
-		}
-		std::cout << std::endl;
-	}
-	for (int i = 0; i < enemy.size(); i++)
-	{
-		std::cout << "名稱："<< enemy[i].name << std::endl;
-		std::cout << "一般血量："<< enemy[i].HP[0] << " 一般範圍："<< enemy[i].Range[0] << " 一般傷害："<< enemy[i].STR[0] << std::endl;
-		std::cout << "菁英血量："<< enemy[i].HP[1] << " 菁英範圍："<< enemy[i].Range[1] << " 菁英傷害："<< enemy[i].STR[1] << std::endl;
-		for (int j = 0; j < enemy[i].Card.size(); j++)
-		{
-			std::cout << "代號：" << enemy[i].Card[j].Order  << " 敏捷：" << enemy[i].Card[j].DEX << " ";
-			for (int k = 0; k < enemy[i].Card[j].Type.size(); k++)
-			{
-				std::cout << "技能類型：" << enemy[i].Card[j].Type[k] << " 技能數值：" << enemy[i].Card[j].AbilityValue[k]<< std::endl;
-			}
-		}
-		std::cout << std::endl;
-	}
 	seletUser();
-	std::cout << std::endl;
-	for (int i = 0; i < userDeck.size(); i++)
-	{
-		std::cout << "名稱：" << userDeck[i].name << " 最大血量：" << userDeck[i].HP << " Icon：" << userDeck[i].Icon << std::endl;
-		for (int j = 0; j < userDeck[i].Card.size(); j++)
-		{
-			std::cout << "代號：" << userDeck[i].Card[j].Order << " 敏捷：" << userDeck[i].Card[j].DEX << " " << std::endl;
-			for (int k = 0; k < userDeck[i].Card[j].TopType.size(); k++)
-			{
-				std::cout << "上方技能類型：" << userDeck[i].Card[j].TopType[k] << " 上方技能值：" << userDeck[i].Card[j].TopAbilityValue[k] << " " << std::endl;
-			}
-			for (int k = 0; k < userDeck[i].Card[i].BelowType.size(); k++)
-			{
-				std::cout << "下方技能類型：" << userDeck[i].Card[j].BelowType[k] << " 下方技能值：" << userDeck[i].Card[j].BelowAbilityValue[k] << " " << std::endl;
-			}
-		}
-		std::cout << std::endl;
-	}*/
-	while (1)
-	{
-		loadMapfile();
-		getxy(p);
-		printMap(p);
-		printEnemy(p);
-
-	}
-	
-
-	seletPoint();
-	playCard();
+	loadMapfile();
+	getxy(p);
+	printMap(p);
+	printEnemy(p);
+	/*seletPoint();
+	playCard();*/
+	viewableRange({ 1,8 }, { 5,7 });
 }
 
 int Management::getAbilityType(std::string Type)
