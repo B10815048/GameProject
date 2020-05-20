@@ -129,6 +129,66 @@ void Management::sort_compairList()
 	}
 }	
 
+void Management::usingEffect(User& userDeck, int index, int part)
+{
+	int i, j;
+	string skill[] = { "move", "heal", "shield", "attack","range" };
+	for (i = 0; i < userDeck.Card.size(); i++)
+	{
+		if (userDeck.Card[i].Order == index)
+		{
+			if (part == 1) //礟场狦
+			{
+				for (j = 0; j < userDeck.Card[i].BelowType.size(); j++)
+				{
+					//㊣㏑
+					if (userDeck.Card[i].BelowType[j] == 3)
+					{
+						if (j != userDeck.Card[i].BelowType.size() - 1)
+						{
+							if (userDeck.Card[i].BelowType[j + 1] == 4)
+								Range(userDeck, userDeck.Card[i].BelowAbilityValue[j + 1]);
+						}
+						Attack(userDeck, userDeck.Card[i].BelowAbilityValue[j]);
+						if (j != userDeck.Card[i].BelowType.size() - 1)
+						{
+							if (userDeck.Card[i].BelowType[j + 1] == 4)
+								j++;
+						}
+					}
+					cout << "ㄏノ璣动мよ" << skill[userDeck.Card[i].BelowType[j]] << endl;
+				}
+			}
+			else if (part == 0) //礟场м
+			{
+				for (j = 0; j < userDeck.Card[i].TopType.size(); j++)
+				{
+					//㊣㏑
+					if (userDeck.Card[i].TopType[j] == 3)
+					{
+						if (j != userDeck.Card[i].TopType.size() - 1)
+						{
+							if (userDeck.Card[i].TopType[j + 1] == 4)
+								Range(userDeck, userDeck.Card[i].TopAbilityValue[j + 1]);
+						}
+						Attack(userDeck, userDeck.Card[i].TopAbilityValue[j]);
+						if (j != userDeck.Card[i].TopType.size() - 1)
+						{
+							if (userDeck.Card[i].TopType[j + 1] == 4)
+								j++;
+						}
+					}
+					cout << "ㄏノ璣动мよ" << skill[userDeck.Card[i].TopType[j]] << endl;
+				}
+			}
+			//斌礟
+			userDeck.disCardDeck.push_back(userDeck.Card[i]);
+			userDeck.Card.erase(userDeck.Card.begin() + i);
+		}
+	}
+	
+}
+
 void Management::playCard()
 {
 	int position;
@@ -160,6 +220,8 @@ void Management::playCard()
 				cin >> command;
 				if (command[1] == 'd')
 				{
+					//////////////////////////////////////////
+					//祇笆场狦:
 					for (k = 0; k < compairList[i].Index.size(); k++)
 					{
 						if (compairList[i].Index[k] == command[0] - '0')
@@ -167,52 +229,16 @@ void Management::playCard()
 							for (l = 0; l < userDeck[position].Card.size(); l++)
 							{
 								if (userDeck[position].Card[l].Order == command[0] - '0')
-								{
-									for (m = 0; m < userDeck[position].Card[l].BelowType.size(); m++)
-									{
-										//㊣㏑
-										if (userDeck[position].Card[l].BelowType[m] == 3)
-										{
-											if (m != userDeck[position].Card[l].BelowType.size() - 1)
-											{
-												if (userDeck[position].Card[l].BelowType[m + 1] == 4)
-												{
-													Range(userDeck[position], userDeck[position].Card[l].BelowAbilityValue[m + 1]);
-												}
-											}
-											Attack(userDeck[position], userDeck[position].Card[l].BelowAbilityValue[m]);
-											if (m != userDeck[position].Card[l].BelowType.size() - 1)
-											{
-												if (userDeck[position].Card[l].BelowType[m + 1] == 4)
-													m++;
-											}
-										}
-										cout << "ㄏノ璣动мよ" << skill[userDeck[position].Card[l].BelowType[m]] << endl;
-									
-									}
-									//斌礟
-									userDeck[position].disCardDeck.push_back(userDeck[position].Card[l]);
-									userDeck[position].Card.erase(userDeck[position].Card.begin() + l);
-								}
+									usingEffect(userDeck[position], command[0] - '0', 0);
 							}
 							compairList[i].Index.erase(compairList[i].Index.begin() + k);
 						}
 					}
-
-					for (l = 0; l < userDeck[position].Card.size(); l++)
-					{
-						if (userDeck[position].Card[l].Order == compairList[i].Index[0])
-						{
-							for (m = 0; m < userDeck[position].Card[l].TopType.size(); m++)
-							{
-								cout << "ㄏノ璣动мよ" << skill[userDeck[position].Card[l].TopType[m]] << endl;
-							}
-							//斌礟
-							userDeck[position].disCardDeck.push_back(userDeck[position].Card[l]);
-							userDeck[position].Card.erase(userDeck[position].Card.begin() + l);
-						}
-					}
+					//////////////////////////////////////////
+					//祇笆场狦:
+					usingEffect(userDeck[position], compairList[i].Index[0], 1);
 					compairList[i].Index.clear();
+					//////////////////////////////////////////
 				}
 				else if (command[1] == 'u')
 				{
