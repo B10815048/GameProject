@@ -213,11 +213,7 @@ void Management::playCard()
 	{
 		if (compairList[i].Icon >= 'A' && compairList[i].Icon <= 'Z') //主角方
 		{
-			for (j = 0; j < userDeck.size(); j++)
-			{
-				if (userDeck[j].Icon == compairList[i].Icon)
-					position = j;
-			}
+			position = findCreatureDeckPosition(0, compairList[i].Icon);
 			if (compairList[i].Index[0] != -1)
 			{
 				cout << "英雄" << userDeck[position].Icon << "出牌" << endl;
@@ -275,11 +271,7 @@ void Management::playCard()
 		}
 		else if (compairList[i].Icon >='a' &&compairList[i].Icon <='z') //敵人方
 		{
-			for (j=0;j<enemyDeck.size();j++)
-			{
-				if (enemyDeck[j].Icon == compairList[i].Icon)
-					position = j;
-			}
+			position = findCreatureDeckPosition(1, compairList[i].Icon);
 			cout << "敵人出牌" << endl;
 			usingEffect(enemyDeck[position], compairList[i].Index[0]);
 		}
@@ -296,7 +288,6 @@ void Management::usingEffect(Enemy& enemyDeck, int index)
 		{
 			for (j = 0; j < enemyDeck.Card[i].Type.size(); j++)
 			{
-				//呼叫命令
 				if (enemyDeck.Card[i].Type[j] == 3)
 				{
 					if (j != enemyDeck.Card[i].Type.size() - 1)
@@ -318,5 +309,48 @@ void Management::usingEffect(Enemy& enemyDeck, int index)
 			enemyDeck.Card.erase(enemyDeck.Card.begin() + i);
 		}
 	}
+}
 
+int  Management::findCreatureDeckPosition(int camp, string name)
+{
+	int i;
+	if (camp == 0)
+	{
+		for (i = 0; i < userDeck.size(); i++)
+		{
+			if (userDeck[i].name == name)
+				return i;
+		}
+	}
+	else if (camp == 1)
+	{
+		for (i = 0; i < enemyDeck.size(); i++)
+		{
+			if (enemyDeck[i].name == name)
+				return i;
+		}
+	}
+	return -1;
+}
+
+int  Management::findCreatureDeckPosition(int camp, char icon)
+{
+	int i;
+	if (camp == 0)
+	{
+		for (i = 0; i < userDeck.size(); i++)
+		{
+			if (userDeck[i].Icon == icon)
+				return i;
+		}
+	}
+	else if (camp == 1)
+	{
+		for (i = 0; i < enemyDeck.size(); i++)
+		{
+			if (enemyDeck[i].Icon == icon)
+				return i;
+		}
+	}
+	return -1;
 }

@@ -35,7 +35,7 @@ struct UserCard : public CardTable
 struct Creature
 {
 	std::string name;
-	int Camp;
+	int Camp;  //0使用者 1敵人
 	Point P;
 	char Icon;
 	int CardOnHand = 6;
@@ -125,6 +125,7 @@ public:
 	int creatureOnPoint(Point p);
 	int enemyOnPoint(Point p,int Camp);
 	int getAbilityType(std::string Type);
-
+	int findCreatureDeckPosition(int camp, std::string name);
+	int findCreatureDeckPosition(int camp, char icon);
 };
 
