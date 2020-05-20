@@ -21,11 +21,11 @@ void Management::Attack(Creature& creature, std::string command)
 	int enemyX, enemyY;
 	if (creature.Camp == 0) //主角方
 	{
-		std::cout << "媽的選角拉 : " << std::endl;
+		std::cout << "選擇攻擊敵人 : " << std::endl;
 		std::cin >> Icon;
 		if (Icon == 0)
 		{
-			std::cout << "媽的不公及 : " << std::endl;
+			std::cout << "找不到 : " << std::endl;
 			return;
 		}
 		else

@@ -147,7 +147,11 @@ void Management::usingEffect(User& userDeck, int index, int part)
 						if (j != userDeck.Card[i].BelowType.size() - 1)
 						{
 							if (userDeck.Card[i].BelowType[j + 1] == 4)
+							{
 								Range(userDeck, userDeck.Card[i].BelowAbilityValue[j + 1]);
+								std::cout << "            " << userDeck.Card[i].BelowAbilityValue[j + 1] << std::endl;
+							}
+
 						}
 						Attack(userDeck, userDeck.Card[i].BelowAbilityValue[j]);
 						if (j != userDeck.Card[i].BelowType.size() - 1)
@@ -192,7 +196,7 @@ void Management::usingEffect(User& userDeck, int index, int part)
 void Management::playCard()
 {
 	int position;
-	int i, j, k, l, m, index, index1, index2;
+	int i, j, k, l, index, index1, index2;
 	string command;
 	CompairCardDex tmp;
 	char icon;
@@ -221,17 +225,39 @@ void Management::playCard()
 				if (command[1] == 'd')
 				{
 					//////////////////////////////////////////
-					//發動上半部效果:
-					for (k = 0; k < compairList[i].Index.size(); k++)
+					//發動下半部效果:
+					for (j = 0; j < compairList[i].Index.size(); j++)
 					{
-						if (compairList[i].Index[k] == command[0] - '0')
+						if (compairList[i].Index[j] == command[0] - '0')
+						{
+							for (l = 0; l < userDeck[position].Card.size(); l++)
+							{
+								if (userDeck[position].Card[l].Order == command[0] - '0')
+									usingEffect(userDeck[position], command[0] - '0', 1);
+							}
+							compairList[i].Index.erase(compairList[i].Index.begin() + j);
+						}
+					}
+					//////////////////////////////////////////
+					//發動上半部效果:
+					usingEffect(userDeck[position], compairList[i].Index[0], 0);
+					compairList[i].Index.clear();
+					//////////////////////////////////////////
+				}
+				else if (command[1] == 'u')
+				{
+					//////////////////////////////////////////
+					//發動上半部效果:
+					for (j = 0; j < compairList[i].Index.size(); j++)
+					{
+						if (compairList[i].Index[j] == command[0] - '0')
 						{
 							for (l = 0; l < userDeck[position].Card.size(); l++)
 							{
 								if (userDeck[position].Card[l].Order == command[0] - '0')
 									usingEffect(userDeck[position], command[0] - '0', 0);
 							}
-							compairList[i].Index.erase(compairList[i].Index.begin() + k);
+							compairList[i].Index.erase(compairList[i].Index.begin() + j);
 						}
 					}
 					//////////////////////////////////////////
@@ -239,44 +265,6 @@ void Management::playCard()
 					usingEffect(userDeck[position], compairList[i].Index[0], 1);
 					compairList[i].Index.clear();
 					//////////////////////////////////////////
-				}
-				else if (command[1] == 'u')
-				{
-					for (k = 0; k < compairList[i].Index.size(); k++)
-					{
-						if (compairList[i].Index[k] == command[0] - '0')
-						{
-							for (l = 0; l < userDeck[position].Card.size(); l++)
-							{
-								if (userDeck[position].Card[l].Order == command[0] - '0')
-								{
-									for (m = 0; m < userDeck[position].Card[l].TopType.size(); m++)
-									{
-										cout << "使用英雄技能卡上方：" << skill[userDeck[position].Card[l].TopType[m]] << endl;
-									}
-									//棄牌
-									userDeck[position].disCardDeck.push_back(userDeck[position].Card[l]);
-									userDeck[position].Card.erase(userDeck[position].Card.begin() + l);
-								}
-							}
-							compairList[i].Index.erase(compairList[i].Index.begin() + k);
-						}
-					}
-					for (l = 0; l < userDeck[position].Card.size(); l++)
-					{
-						if (userDeck[position].Card[l].Order == compairList[i].Index[0])
-						{
-							for (m = 0; m < userDeck[position].Card[l].BelowType.size(); m++)
-							{
-								//呼叫命令
-								cout << "使用英雄技能卡下方：" << skill[userDeck[position].Card[l].BelowType[m]] << endl;
-							}
-							//棄牌
-							userDeck[position].disCardDeck.push_back(userDeck[position].Card[l]);
-							userDeck[position].Card.erase(userDeck[position].Card.begin() + l);
-						}
-					}
-					compairList[i].Index.clear();
 				}
 			}
 			else
@@ -293,7 +281,7 @@ void Management::playCard()
 					position = j;
 			}
 			cout << "敵人出牌" << endl;
-			for (l = 0; l < enemyDeck[position].Card.size(); l++)
+			/*for (l = 0; l < enemyDeck[position].Card.size(); l++)
 			{
 				if (enemyDeck[position].Card[l].Order == compairList[i].Index[0])
 				{
@@ -306,7 +294,7 @@ void Management::playCard()
 					enemyDeck[position].disCardDeck.push_back(enemyDeck[position].Card[l]);
 					enemyDeck[position].Card.erase(enemyDeck[position].Card.begin() + l);
 				}
-			}		
+			}		*/
 		}
 	}
 }
