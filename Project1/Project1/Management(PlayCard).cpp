@@ -281,21 +281,42 @@ void Management::playCard()
 					position = j;
 			}
 			cout << "敵人出牌" << endl;
-			/*for (l = 0; l < enemyDeck[position].Card.size(); l++)
-			{
-				if (enemyDeck[position].Card[l].Order == compairList[i].Index[0])
-				{
-					for (m = 0; m < enemyDeck[position].Card[l].Type.size(); m++)
-					{
-						//呼叫命令
-						cout << "使用敵人下方：" << skill[enemyDeck[position].Card[l].Type[m]] << endl;
-					}
-					//棄牌
-					enemyDeck[position].disCardDeck.push_back(enemyDeck[position].Card[l]);
-					enemyDeck[position].Card.erase(enemyDeck[position].Card.begin() + l);
-				}
-			}		*/
+			usingEffect(enemyDeck[position], compairList[i].Index[0]);
 		}
 	}
 }
 
+void Management::usingEffect(Enemy& enemyDeck, int index)
+{
+	int i, j;
+	string skill[] = { "move", "heal", "shield", "attack","range" };
+	for (i = 0; i < enemyDeck.Card.size(); i++)
+	{
+		if (enemyDeck.Card[i].Order == index)
+		{
+			for (j = 0; j < enemyDeck.Card[i].Type.size(); j++)
+			{
+				//呼叫命令
+				if (enemyDeck.Card[i].Type[j] == 3)
+				{
+					if (j != enemyDeck.Card[i].Type.size() - 1)
+					{  
+						if (enemyDeck.Card[i].Type[j + 1] == 4)
+							Range(enemyDeck, enemyDeck.Card[i].AbilityValue[j + 1]);
+					}
+					Attack(enemyDeck, enemyDeck.Card[i].AbilityValue[j]);
+					if (j != enemyDeck.Card[i].Type.size() - 1)
+					{
+						if (enemyDeck.Card[i].Type[j + 1] == 4)
+							j++;
+					}
+				}
+				cout << "使用敵人技能卡：" << skill[enemyDeck.Card[i].Type[j]] << endl;
+			}
+			//棄牌
+			enemyDeck.disCardDeck.push_back(enemyDeck.Card[i]);
+			enemyDeck.Card.erase(enemyDeck.Card.begin() + i);
+		}
+	}
+
+}

@@ -118,7 +118,8 @@ public:
 	void userPlayCards();
 	void enemyPlayCards();
 	void sort_compairList();
-	void usingEffect(User& user,int index, int part); //part 0:礟场part 1:礟场
+	void usingEffect(User& user,int index, int part); //part 0:礟场part 1:礟场
+	void usingEffect(Enemy& enemy, int index);
 	//////////////////////////////////////////////////////////////////////
 	bool checkSpace(Point p);
 	int creatureOnPoint(Point p);

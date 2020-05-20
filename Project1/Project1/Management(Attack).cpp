@@ -95,7 +95,6 @@ bool Management::viewableRange(Point start, Point end)
 		if (map[i][start.x] == '2')
 			return false;
 	}
-	printMap(start);
 	return true;
 }
 
