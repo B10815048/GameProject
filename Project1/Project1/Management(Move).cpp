@@ -6,14 +6,13 @@ void  Management::setMove(User& user, int step)
 	std::string moveCommand;
 	while (std::cin >> moveCommand)
 	{
-		if (moveCommand.size() <= step)
+		if (moveCommand.size() <= step && Move(user, moveCommand))
 			break;
 		std::cout << "¤£¦X³W½d" << std::endl;
 	}
-	Move(user, moveCommand);
 }
 
-void Management::Move(Creature& creature, std::string command)
+bool Management::Move(Creature& creature, std::string command)
 {
 	int i, j;
 	Point tmp;
@@ -21,14 +20,34 @@ void Management::Move(Creature& creature, std::string command)
 	tmp = creature.P;
 	for (i = 0; i < command.size(); i++)
 	{
-		if (command[i] == 'w' && (checkSpace({ tmp.x , tmp.y - 1 }) || checkDoor({ tmp.x , tmp.y - 1 })) && enemyOnPoint({ tmp.x, tmp.y-1 }, creature.Camp) == 0)
-			tmp.y--;
-		else if (command[i] == 's' && (checkSpace({ tmp.x , tmp.y + 1 }) || checkDoor({ tmp.x , tmp.y + 1 })) && enemyOnPoint({ tmp.x, tmp.y+1 }, creature.Camp) == 0)
-			tmp.y++;
-		else if (command[i] == 'a' && (checkSpace({ tmp.x-1 , tmp.y  }) || checkDoor({ tmp.x-1 , tmp.y })) && enemyOnPoint({ tmp.x-1, tmp.y }, creature.Camp) == 0)
-			tmp.x--;
-		else if (command[i] == 'd' && (checkSpace({ tmp.x +1, tmp.y  }) || checkDoor({ tmp.x +1, tmp.y })) && enemyOnPoint({ tmp.x+1, tmp.y }, creature.Camp) == 0)
-			tmp.x++;
+		if (command[i] == 'w')
+		{
+			if ((checkSpace({ tmp.x , tmp.y - 1 }) || checkDoor({ tmp.x , tmp.y - 1 })) && enemyOnPoint({ tmp.x, tmp.y - 1 }, creature.Camp) == 0)
+				tmp.y--;
+			else if (creature.Camp == 0)
+				return false;
+		}
+		else if (command[i] == 's')
+		{
+			if ((checkSpace({ tmp.x , tmp.y + 1 }) || checkDoor({ tmp.x , tmp.y + 1 })) && enemyOnPoint({ tmp.x, tmp.y + 1 }, creature.Camp) == 0)
+				tmp.y++;
+			else if (creature.Camp == 0)
+				return false;
+		}	
+		else if (command[i] == 'a')
+		{
+			if((checkSpace({ tmp.x - 1 , tmp.y }) || checkDoor({ tmp.x - 1 , tmp.y })) && enemyOnPoint({ tmp.x - 1, tmp.y }, creature.Camp) == 0)
+				tmp.x--;
+			else if (creature.Camp == 0)
+				return false;
+		}
+		else if (command[i] == 'd')
+		{
+			if ((checkSpace({ tmp.x + 1, tmp.y }) || checkDoor({ tmp.x + 1, tmp.y })) && enemyOnPoint({ tmp.x + 1, tmp.y }, creature.Camp) == 0)
+				tmp.x++;
+			else if (creature.Camp == 0)
+				return false;
+		}
 		point.push_back(tmp);
 	}
 	for (i = point.size(); i > 0; i--)
@@ -43,6 +62,7 @@ void Management::Move(Creature& creature, std::string command)
 	printMap(tmp);
 	printEnemy(tmp);
 	printUser(tmp);
+	return true;
 }
 
 bool Management::checkDoor(Point p)
