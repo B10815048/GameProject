@@ -97,16 +97,8 @@ void Management::userPlayCards()
 			index2 = findCardPosition(userDeck[position], index);
 			tmp.Index.push_back(userDeck[position].Card[index2].Order);
 			////////////////////////////
-			if (userDeck[position].Card[index1].DEX > userDeck[position].Card[index2].DEX)
-			{
-				tmp.Dex[0] = userDeck[position].Card[index2].DEX;
-				tmp.Dex[1] = userDeck[position].Card[index1].DEX;
-			}
-			else
-			{
-				tmp.Dex[0] = userDeck[position].Card[index1].DEX;
-				tmp.Dex[1] = userDeck[position].Card[index2].DEX;
-			}
+			tmp.Dex[0] = userDeck[position].Card[index1].DEX;
+			tmp.Dex[1] = userDeck[position].Card[index2].DEX;
 		}
 		compairList.push_back(tmp);
 	}
