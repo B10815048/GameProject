@@ -126,6 +126,8 @@ public:
 	int enemyOnPoint(Point p,int Camp);
 	int getAbilityType(std::string Type);
 	int findCreatureDeckPosition(int camp, std::string name);
+	int findCardPosition(User& user, int index);
+	int findCardPosition(Enemy& enemy, int index);
 	int findCreatureDeckPosition(int camp, char icon);
 };
 

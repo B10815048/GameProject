@@ -4,6 +4,28 @@
 #include "Management.h"
 using namespace std;
 
+int Management::findCardPosition(User& user, int index)
+{
+	int i;
+	for (i = 0; i < user.Card.size(); i++)
+	{
+		if (user.Card[i].Order == index)
+			return i;
+	}
+	return -1;
+}
+
+int Management::findCardPosition(Enemy& enemy, int index)
+{
+	int i;
+	for (i = 0; i < enemy.Card.size(); i++)
+	{
+		if (enemy.Card[i].Order == index)
+			return i;
+	}
+	return -1;
+}
+
 void Management::userPlayCards()
 {
 	int position;
@@ -14,13 +36,7 @@ void Management::userPlayCards()
 	{
 		cin >> icon;
 		tmp.Index.clear();
-		for (j = 0; j < userDeck.size(); j++)
-		{
-			if (userDeck[j].Icon == icon)
-			{
-				position = j;
-			}
-		}
+		position = findCreatureDeckPosition(0, icon);
 		tmp.Icon = userDeck[position].Icon;
 		cin >> index;
 		if (index == -1) //長休指令
@@ -32,23 +48,13 @@ void Management::userPlayCards()
 		}
 		else //出牌指令
 		{
-			for (j = 0; j < userDeck[position].Card.size(); j++)
-			{
-				if (userDeck[position].Card[j].Order == index)
-				{
-					index1 = j;
-					tmp.Index.push_back(userDeck[position].Card[j].Order);
-				}
-			}
+			////////////////////////////
+			index1 = findCardPosition(userDeck[position], index);
+			tmp.Index.push_back(userDeck[position].Card[index1].Order);
 			cin >> index;
-			for (j = 0; j < userDeck[position].Card.size(); j++)
-			{
-				if (userDeck[position].Card[j].Order == index)
-				{
-					index2 = j;
-					tmp.Index.push_back(userDeck[position].Card[j].Order);
-				}
-			}
+			index2 == findCardPosition(userDeck[position], index);
+			tmp.Index.push_back(userDeck[position].Card[index2].Order);
+			////////////////////////////
 			if (userDeck[position].Card[index1].DEX > userDeck[position].Card[index2].DEX)
 			{
 				tmp.Dex[0] = userDeck[position].Card[index2].DEX;
@@ -147,10 +153,7 @@ void Management::usingEffect(User& userDeck, int index, int part)
 						if (j != userDeck.Card[i].BelowType.size() - 1)
 						{
 							if (userDeck.Card[i].BelowType[j + 1] == 4)
-							{
 								Range(userDeck, userDeck.Card[i].BelowAbilityValue[j + 1]);
-								std::cout << "            " << userDeck.Card[i].BelowAbilityValue[j + 1] << std::endl;
-							}
 
 						}
 						Attack(userDeck, userDeck.Card[i].BelowAbilityValue[j]);
