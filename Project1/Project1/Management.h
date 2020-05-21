@@ -5,6 +5,7 @@
 
 struct CompairCardDex
 {
+	bool skip = false;
 	char Icon;
 	int Dex[2];
 	std::vector <int> Index;
@@ -109,6 +110,8 @@ public:
 	int viewD(Point start, int n);
 	int viewL(Point start, int n);
 	//////////////////////////////////////////////////////////////////////
+	void rest(User& user);
+	//////////////////////////////////////////////////////////////////////
 	void setMove(User& user, int step);
 	void Move(Creature &creature,std::string command);
 	void Heal(User& user, std::string command);
@@ -125,6 +128,12 @@ public:
 	void sort_compairList();
 	void usingEffect(User& user,int index, int part); //part 0:卡牌上半部，part 1:卡牌下半部
 	void usingEffect(Enemy& enemy, int index);
+	//////////////////////////////////////////////////////////////////////
+	//playCard : 
+	bool cardExist(User& user, int index);
+	bool cardExist(Enemy& enemy, int index);
+	bool cardExist(CompairCardDex& compairCardDex, int index);
+	void survivalCheck();
 	//////////////////////////////////////////////////////////////////////
 	bool checkSpace(Point p);
 	bool checkDoor(Point p);

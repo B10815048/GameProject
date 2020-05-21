@@ -8,6 +8,7 @@ void  Management::setMove(User& user, int step)
 	{
 		if (moveCommand.size() <= step)
 			break;
+		std::cout << "¤£¦X³W½d" << std::endl;
 	}
 	Move(user, moveCommand);
 }
