@@ -49,9 +49,63 @@ void Management::Attack(Creature& creature, std::string command)
 			std::cout << "error target!!!" << std::endl;
 		}
 	}
-	else if (creature.Camp ==1) //敵人方
+	else if (creature.Camp == 1) //敵人方
 	{
+		int step = 0, minStep = 99, count = 0;
+		int userIndex[4] = { 0,0,0,0 };
+		creature.Range = 100;
+		for (int i = 0; i < userDeck.size(); i++)
+		{
+			if (shootRange(creature.P, userDeck[i].P, creature.Range, 1) && viewableRange(userDeck[i].P, creature.P))
+			{
+				step = getStep(creature.P, userDeck[i].P, 1);
+				if (step < minStep)
+				{
+					for (int j = 0; j < 4; j++)
+						userIndex[j] = 0;
 
+					minStep = step;
+					userIndex[i] = 1;
+					count = 1;
+				}
+				else if (step == minStep)
+				{
+					userIndex[i] = 1;
+					count += 1;
+				}
+			}
+		}
+
+		if (count == 1)
+		{
+			for (int i = 0; i < userDeck.size(); i++)
+			{
+				if (userIndex[i] == 1)
+				{
+					if (stoi(command) > userDeck[i].Shield)
+						userDeck[i].HP -= stoi(command) - userDeck[i].Shield;
+					std::cout << creature.Icon << " attack " << userDeck[i].Icon << " " << stoi(command) << " damage, " << userDeck[i].Icon << " shield " << userDeck[i].Shield
+						<< " , " << userDeck[i].Icon << " remain " << userDeck[i].HP << " hp" << std::endl;
+				}
+			}
+		}
+		else
+		{
+			for (int i = 0; i < compairList.size(); i++)
+			{
+				for (int j = 0; j < userDeck.size(); j++)
+				{
+					if (compairList[i].Icon == userDeck[j].Icon && userIndex[j] == 1)
+					{
+						if (stoi(command) > userDeck[j].Shield)
+							userDeck[j].HP -= stoi(command) - userDeck[j].Shield;
+						std::cout << creature.Icon << " attack " << userDeck[j].Icon << " " << stoi(command) << " damage, " << userDeck[j].Icon << " shield " << userDeck[j].Shield
+							<< " , " << userDeck[j].Icon << " remain " << userDeck[j].HP << " hp" << std::endl;
+						return;
+					}
+				}
+			}
+		}
 	}
 }
 
@@ -99,7 +153,54 @@ bool Management::viewableRange(Point start, Point end)
 	}
 	return true;
 }
+int Management::getStep(Point start, Point end, int camp)
+{
+	int i, j;
+	if (map[end.y][end.x] != '1' && map[end.y][end.x] != '3')
+		return false;
 
+	checkMap.resize(height);
+	for (i = 0; i < checkMap.size(); i++)
+		checkMap[i].resize(width);
+
+	for (i = 0; i < height; i++)
+	{
+		for (j = 0; j < width; j++)
+		{
+			if (map[i][j] == '3' || map[i][j] == '0' || (enemyOnPoint({ j,i }, camp) != 0 && !(end == Point{ j, i })))
+			{
+				checkMap[i][j] = -1;
+			}
+			else
+				checkMap[i][j] = -2;
+		}
+	}
+	checkMap[start.y][start.x] = 0;
+	viewR(start, 0);
+	viewU(start, 0);
+	viewD(start, 0);
+	viewL(start, 0);
+	int n = 0;
+	while (checkMap[end.y][end.x] <= 0)
+	{
+		n++;
+		for (i = 0; i < height; i++)
+		{
+			for (j = 0; j < width; j++)
+			{
+				if (checkMap[i][j] == n)
+				{
+					viewR({ j, i }, n);
+					viewU({ j, i }, n);
+					viewD({ j, i }, n);
+					viewL({ j, i }, n);
+				}
+			}
+		}
+	}
+	checkMap[start.y][start.x] = 0;
+	return checkMap[end.y][end.x];
+}
 bool Management::shootRange(Point start, Point end, int step, int camp)
 {
 	int i, j;
