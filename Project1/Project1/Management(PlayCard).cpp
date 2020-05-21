@@ -52,7 +52,7 @@ void Management::userPlayCards()
 			index1 = findCardPosition(userDeck[position], index);
 			tmp.Index.push_back(userDeck[position].Card[index1].Order);
 			cin >> index;
-			index2 == findCardPosition(userDeck[position], index);
+			index2 = findCardPosition(userDeck[position], index);
 			tmp.Index.push_back(userDeck[position].Card[index2].Order);
 			////////////////////////////
 			if (userDeck[position].Card[index1].DEX > userDeck[position].Card[index2].DEX)
@@ -314,6 +314,15 @@ void Management::usingEffect(Enemy& enemyDeck, int index)
 	}
 }
 
+bool Management::checkSpace(Point p)
+{
+	if (p.x < 0 || p.x >= width || p.x < 0 || p.x >= height)
+		return false;
+	else if (map[p.y][p.x] == '1')
+		return true;
+	else
+		return false;
+}
 int  Management::findCreatureDeckPosition(int camp, string name)
 {
 	int i;

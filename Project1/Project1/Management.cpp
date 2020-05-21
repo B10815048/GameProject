@@ -117,12 +117,3 @@ int  Management::enemyOnPoint(Point p, int Camp)
 	return count;
 }
 
-bool Management::checkSpace(Point p)
-{
-	if (p.x < 0 || p.x >= width || p.x < 0 || p.x >= height)
-		return false;
-	else if (map[p.y][p.x] == '1')
-		return true;
-	else
-		return false;
-}
