@@ -2,6 +2,7 @@
 #include <iostream>
 void  Management::setMove(User& user, int step)
 {
+	std::cout << "¿é¤J²¾°Ê¡G" << std::endl;
 	std::string moveCommand;
 	while (std::cin >> moveCommand)
 	{

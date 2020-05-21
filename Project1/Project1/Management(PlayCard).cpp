@@ -148,8 +148,13 @@ void Management::usingEffect(User& userDeck, int index, int part)
 			{
 				for (j = 0; j < userDeck.Card[i].BelowType.size(); j++)
 				{
-					//呼叫命令
-					if (userDeck.Card[i].BelowType[j] == 3)
+					if (userDeck.Card[i].BelowType[j] == 0)
+						setMove(userDeck, stoi(userDeck.Card[i].BelowAbilityValue[j]));
+					else if (userDeck.Card[i].BelowType[j] == 1)
+						Heal(userDeck, userDeck.Card[i].BelowAbilityValue[j]);
+					else if (userDeck.Card[i].BelowType[j] == 2)
+						Shield(userDeck, userDeck.Card[i].BelowAbilityValue[j]);
+					else if (userDeck.Card[i].BelowType[j] == 3)
 					{
 						if (j != userDeck.Card[i].BelowType.size() - 1)
 						{
@@ -164,9 +169,6 @@ void Management::usingEffect(User& userDeck, int index, int part)
 								j++;
 						}
 					}
-					else if (userDeck.Card[i].BelowType[j] == 0)
-						setMove(userDeck, stoi(userDeck.Card[i].BelowAbilityValue[j]));
-
 					cout << "使用英雄技能卡下方：" << skill[userDeck.Card[i].BelowType[j]] << endl;
 				}
 			}
@@ -174,8 +176,13 @@ void Management::usingEffect(User& userDeck, int index, int part)
 			{
 				for (j = 0; j < userDeck.Card[i].TopType.size(); j++)
 				{
-					//呼叫命令
-					if (userDeck.Card[i].TopType[j] == 3)
+					if (userDeck.Card[i].TopType[j] == 0)
+						setMove(userDeck, stoi(userDeck.Card[i].TopAbilityValue[j]));
+					else if (userDeck.Card[i].TopType[j] == 1)
+						Heal(userDeck, userDeck.Card[i].TopAbilityValue[j]);
+					else if (userDeck.Card[i].TopType[j] == 2)
+						Shield(userDeck, userDeck.Card[i].TopAbilityValue[j]);
+					else if (userDeck.Card[i].TopType[j] == 3)
 					{
 						if (j != userDeck.Card[i].TopType.size() - 1)
 						{
@@ -189,8 +196,8 @@ void Management::usingEffect(User& userDeck, int index, int part)
 								j++;
 						}
 					}
-					else if (userDeck.Card[i].BelowType[j] == 0)
-						setMove(userDeck, stoi(userDeck.Card[i].BelowAbilityValue[j]));
+					else if (userDeck.Card[i].TopType[j] == 0)
+						setMove(userDeck, stoi(userDeck.Card[i].TopAbilityValue[j]));
 					cout << "使用英雄技能卡上方：" << skill[userDeck.Card[i].TopType[j]] << endl;
 				}
 			}
@@ -200,6 +207,45 @@ void Management::usingEffect(User& userDeck, int index, int part)
 		}
 	}
 	
+}
+
+void Management::usingEffect(Enemy& enemyDeck, int index)
+{
+	int i, j;
+	string skill[] = { "move", "heal", "shield", "attack","range" };
+	for (i = 0; i < enemyDeck.Card.size(); i++)
+	{
+		if (enemyDeck.Card[i].Order == index)
+		{
+			for (j = 0; j < enemyDeck.Card[i].Type.size(); j++)
+			{
+				if (enemyDeck.Card[i].Type[j] == 0)
+					Move(enemyDeck, enemyDeck.Card[i].AbilityValue[j]);
+				else if (enemyDeck.Card[i].Type[j] == 1)
+					Heal(enemyDeck, enemyDeck.Card[i].AbilityValue[j]);
+				else if (enemyDeck.Card[i].Type[j] == 2)
+					Shield(enemyDeck, enemyDeck.Card[i].AbilityValue[j]);
+				else if (enemyDeck.Card[i].Type[j] == 3)
+				{
+					if (j != enemyDeck.Card[i].Type.size() - 1)
+					{
+						if (enemyDeck.Card[i].Type[j + 1] == 4)
+							Range(enemyDeck, enemyDeck.Card[i].AbilityValue[j + 1]);
+					}
+					Attack(enemyDeck, enemyDeck.Card[i].AbilityValue[j]);
+					if (j != enemyDeck.Card[i].Type.size() - 1)
+					{
+						if (enemyDeck.Card[i].Type[j + 1] == 4)
+							j++;
+					}
+				}
+				cout << "使用敵人技能卡：" << skill[enemyDeck.Card[i].Type[j]] << endl;
+			}
+			//棄牌
+			enemyDeck.disCardDeck.push_back(enemyDeck.Card[i]);
+			enemyDeck.Card.erase(enemyDeck.Card.begin() + i);
+		}
+	}
 }
 
 void Management::playCard()
@@ -283,39 +329,6 @@ void Management::playCard()
 			position = findCreatureDeckPosition(1, compairList[i].Icon);
 			cout << "敵人出牌" << endl;
 			usingEffect(enemyDeck[position], compairList[i].Index[0]);
-		}
-	}
-}
-
-void Management::usingEffect(Enemy& enemyDeck, int index)
-{
-	int i, j;
-	string skill[] = { "move", "heal", "shield", "attack","range" };
-	for (i = 0; i < enemyDeck.Card.size(); i++)
-	{
-		if (enemyDeck.Card[i].Order == index)
-		{
-			for (j = 0; j < enemyDeck.Card[i].Type.size(); j++)
-			{
-				if (enemyDeck.Card[i].Type[j] == 3)
-				{
-					if (j != enemyDeck.Card[i].Type.size() - 1)
-					{  
-						if (enemyDeck.Card[i].Type[j + 1] == 4)
-							Range(enemyDeck, enemyDeck.Card[i].AbilityValue[j + 1]);
-					}
-					Attack(enemyDeck, enemyDeck.Card[i].AbilityValue[j]);
-					if (j != enemyDeck.Card[i].Type.size() - 1)
-					{
-						if (enemyDeck.Card[i].Type[j + 1] == 4)
-							j++;
-					}
-				}
-				cout << "使用敵人技能卡：" << skill[enemyDeck.Card[i].Type[j]] << endl;
-			}
-			//棄牌
-			enemyDeck.disCardDeck.push_back(enemyDeck.Card[i]);
-			enemyDeck.Card.erase(enemyDeck.Card.begin() + i);
 		}
 	}
 }

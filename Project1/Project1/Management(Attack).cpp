@@ -19,7 +19,12 @@ void Management::Attack(Creature& creature, std::string command)
 	int i, j;
 	int position;
 	int enemyX, enemyY;
-
+	int range = 0;
+	if (creature.Range == 0)
+		range++;
+	else
+		range = creature.Range;
+	std::cout << range << std::endl;
 	if (creature.Camp == 0) //主角方
 	{
 		std::cout << "選擇攻擊敵人 : " << std::endl;
@@ -27,13 +32,13 @@ void Management::Attack(Creature& creature, std::string command)
 		{
 			if (Icon == '0')
 			{
-				std::cout << "媽的不公及 : " << std::endl;
+				std::cout << "放棄攻擊..." << std::endl;
 				return;
 			}
-			else
+			else if (position = findCreatureDeckPosition(1, Icon)!=-1)
 			{
 				position = findCreatureDeckPosition(1, Icon);
-				if (shootRange(creature.P, enemyDeck[position].P, creature.Range, 0) && viewableRange(enemyDeck[position].P, creature.P))
+				if (shootRange(creature.P, enemyDeck[position].P, range, 0) /*&& viewableRange(enemyDeck[position].P, creature.P)*/)
 				{
 					if (stoi(command) > enemyDeck[position].Shield)
 						enemyDeck[position].HP[enemyDeck[position].Type] -= stoi(command) - enemyDeck[position].Shield;
@@ -41,11 +46,8 @@ void Management::Attack(Creature& creature, std::string command)
 						<< " , " << enemyDeck[position].Icon << " remain " << enemyDeck[position].HP[enemyDeck[position].Type] << " hp" << std::endl;
 					return;
 				}
-				else
-				{
-					std::cout << "error target!!!" << std::endl;
-				}
 			}
+			std::cout << "error target!!!" << std::endl;
 		}
 	}
 	else if (creature.Camp ==1) //敵人方
@@ -102,7 +104,7 @@ bool Management::viewableRange(Point start, Point end)
 bool Management::shootRange(Point start, Point end, int step, int camp)
 {
 	int i, j;
-	if (map[end.y][end.x] != '1')
+	if (map[end.y][end.x] != '1' && map[end.y][end.x] !='3')
 		return false;
 
 	checkMap.resize(height);
