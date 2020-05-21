@@ -10,7 +10,7 @@ void  Management::Range(User& user, std::string command)
 
 void Management::Range(Enemy& enemy, std::string command)
 {
-	enemy.Range[enemy.Type] = enemy.Range[enemy.Type] + stoi(command);
+	enemy.Range = enemy.Range + stoi(command);
 }
 
 void Management::Attack(Creature& creature, std::string command)
@@ -303,3 +303,34 @@ int Management::viewL(Point start, int n)
 	}
 }
 //////////////////////////////////////////////////////////////
+void  Management::resetShield()
+{
+	int i, j;
+	int position;
+	for (i = 0; i < userDeck.size(); i++)
+	{
+		position = findCreaturePosition(0, userDeck[i].name);
+		userDeck[i].Shield = user[position].Shield;
+	}
+	for (i = 0; i < enemyDeck.size(); i++)
+	{
+		position = findCreaturePosition(1, enemyDeck[i].name);
+		enemyDeck[i].Shield = enemy[position].Shield;
+	}
+}
+
+void  Management::resetRange()
+{
+	int i, j;
+	int position;
+	for (i = 0; i < userDeck.size(); i++)
+	{
+		position = findCreaturePosition(0, userDeck[i].name);
+		userDeck[i].Range = user[position].Range;
+	}
+	for (i = 0; i < enemyDeck.size(); i++)
+	{
+		position = findCreaturePosition(1, enemyDeck[i].name);
+		enemyDeck[i].Range = enemy[position].Range;
+	}
+}
