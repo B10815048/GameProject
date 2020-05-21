@@ -52,7 +52,7 @@ void Management::userPlayCards()
 			index1 = findCardPosition(userDeck[position], index);
 			tmp.Index.push_back(userDeck[position].Card[index1].Order);
 			cin >> index;
-			index2 == findCardPosition(userDeck[position], index);
+			index2 = findCardPosition(userDeck[position], index);
 			tmp.Index.push_back(userDeck[position].Card[index2].Order);
 			////////////////////////////
 			if (userDeck[position].Card[index1].DEX > userDeck[position].Card[index2].DEX)
