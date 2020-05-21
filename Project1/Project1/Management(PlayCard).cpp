@@ -29,40 +29,18 @@ int Management::findCardPosition(Enemy& enemy, int index)
 
 void Management::userPlayCards()
 {
-	int position, index, index1, index2;
-	string input;
+	int position;
+	int i, j, k, l, m, index, index1, index2;
 	CompairCardDex tmp;
 	char icon;
-	for (int i = 0; i < userDeck.size(); i++)
+	std::cout << "出牌:" << endl;
+	for (i = 0; i < userDeck.size(); i++)
 	{
 		cin >> icon;
 		tmp.Index.clear();
 		position = findCreatureDeckPosition(0, icon);
 		tmp.Icon = userDeck[position].Icon;
-		cin >> input;
-		if (input == "check") // check指令
-		{
-			cout << "hand: ";
-			for (int j = 0; j < userDeck[i].Card.size(); j++)
-			{
-				if(j == userDeck[position].Card.size() - 1)
-					cout << userDeck[position].Card[j].Order << "; ";
-				else
-					cout << userDeck[position].Card[j].Order << ", ";
-			}
-			cout << "discard: ";
-			for (int j = 0; j < userDeck[position].disCardDeck.size(); j++)
-			{
-				cout << userDeck[position].disCardDeck[j].Order;
-				if (j != userDeck[position].disCardDeck.size() - 1)
-					cout << ", ";				
-			}
-			cout << endl;
-			i--;
-			continue;
-		}
-		else
-			index = stoi(input);
+		cin >> index;
 		if (index == -1) //長休指令
 		{
 			tmp.Dex[0] = 99;
@@ -291,69 +269,73 @@ void Management::playCard()
 	string skill[] = { "move", "heal", "shield", "attack","range" };
 	for(i = 0; i < compairList.size(); i++)
 	{
-		if (compairList[i].Icon >= 'A' && compairList[i].Icon <= 'Z') //主角方
+		if (!compairList[i].skip)
 		{
-			position = findCreatureDeckPosition(0, compairList[i].Icon);
-			if (compairList[i].Index[0] != -1)
+			if (compairList[i].Icon >= 'A' && compairList[i].Icon <= 'Z') //主角方
 			{
-				cout << "角色" << userDeck[position].Icon << "出牌" << endl;
-				cin >> command;
-				if (command[1] == 'd')
+				position = findCreatureDeckPosition(0, compairList[i].Icon);
+				if (compairList[i].Index[0] != -1)
 				{
-					//////////////////////////////////////////
-					//發動下半部效果:
-					for (j = 0; j < compairList[i].Index.size(); j++)
+					cout << "角色" << userDeck[position].Icon << "出牌" << endl;
+					cin >> command;
+					if (command[1] == 'd')
 					{
-						if (compairList[i].Index[j] == command[0] - '0')
+						//////////////////////////////////////////
+						//發動下半部效果:
+						for (j = 0; j < compairList[i].Index.size(); j++)
 						{
-							for (l = 0; l < userDeck[position].Card.size(); l++)
+							if (compairList[i].Index[j] == command[0] - '0')
 							{
-								if (userDeck[position].Card[l].Order == command[0] - '0')
-									usingEffect(userDeck[position], command[0] - '0', 1);
+								for (l = 0; l < userDeck[position].Card.size(); l++)
+								{
+									if (userDeck[position].Card[l].Order == command[0] - '0')
+										usingEffect(userDeck[position], command[0] - '0', 1);
+								}
+								compairList[i].Index.erase(compairList[i].Index.begin() + j);
 							}
-							compairList[i].Index.erase(compairList[i].Index.begin() + j);
 						}
+						//////////////////////////////////////////
+						//發動上半部效果:
+						usingEffect(userDeck[position], compairList[i].Index[0], 0);
+						compairList[i].Index.clear();
+						//////////////////////////////////////////
 					}
-					//////////////////////////////////////////
-					//發動上半部效果:
-					usingEffect(userDeck[position], compairList[i].Index[0], 0);
-					compairList[i].Index.clear();
-					//////////////////////////////////////////
+					else if (command[1] == 'u')
+					{
+						//////////////////////////////////////////
+						//發動上半部效果:
+						for (j = 0; j < compairList[i].Index.size(); j++)
+						{
+							if (compairList[i].Index[j] == command[0] - '0')
+							{
+								for (l = 0; l < userDeck[position].Card.size(); l++)
+								{
+									if (userDeck[position].Card[l].Order == command[0] - '0')
+										usingEffect(userDeck[position], command[0] - '0', 0);
+								}
+								compairList[i].Index.erase(compairList[i].Index.begin() + j);
+							}
+						}
+						//////////////////////////////////////////
+						//發動下半部效果:
+						usingEffect(userDeck[position], compairList[i].Index[0], 1);
+						compairList[i].Index.clear();
+						//////////////////////////////////////////
+					}
 				}
-				else if (command[1] == 'u')
+				else
 				{
-					//////////////////////////////////////////
-					//發動上半部效果:
-					for (j = 0; j < compairList[i].Index.size(); j++)
-					{
-						if (compairList[i].Index[j] == command[0] - '0')
-						{
-							for (l = 0; l < userDeck[position].Card.size(); l++)
-							{
-								if (userDeck[position].Card[l].Order == command[0] - '0')
-									usingEffect(userDeck[position], command[0] - '0', 0);
-							}
-							compairList[i].Index.erase(compairList[i].Index.begin() + j);
-						}
-					}
-					//////////////////////////////////////////
-					//發動下半部效果:
-					usingEffect(userDeck[position], compairList[i].Index[0], 1);
-					compairList[i].Index.clear();
-					//////////////////////////////////////////
+					cout << "英雄" << userDeck[position].Icon << "長休" << endl;
+					rest(userDeck[position]);
 				}
+
 			}
-			else
+			else if (compairList[i].Icon >= 'a' && compairList[i].Icon <= 'z') //敵人方
 			{
-				cout << "英雄" << userDeck[position].Icon << "長休" << endl;
+				position = findCreatureDeckPosition(1, compairList[i].Icon);
+				cout << "敵人" << enemyDeck[position].Icon << "出牌" << endl;
+				usingEffect(enemyDeck[position], compairList[i].Index[0]);
 			}
-			
-		}
-		else if (compairList[i].Icon >='a' &&compairList[i].Icon <='z') //敵人方
-		{
-			position = findCreatureDeckPosition(1, compairList[i].Icon);
-			cout << "敵人" << enemyDeck[position].Icon << "出牌" << endl;
-			usingEffect(enemyDeck[position], compairList[i].Index[0]);
 		}
 	}
 }
@@ -400,4 +382,25 @@ int  Management::findCreatureDeckPosition(int camp, char icon)
 		}
 	}
 	return -1;
+}
+
+void Management::rest(User& user)
+{
+	int index;
+	int i;
+	std::cout << "選擇一張牌刪除：" << std::endl;
+	while (std::cin >> index)
+	{
+		for (i = 0; i < user.disCardDeck.size(); i++)
+		{
+			if (user.disCardDeck[i].Order == index)
+			{
+				user.disCardDeck.erase(user.disCardDeck.begin() + i);
+				user.Card.insert(user.Card.end(), user.disCardDeck.begin(), user.disCardDeck.end());
+				user.disCardDeck.clear();
+				return;
+			}
+			cout << "重新選擇：" << std::endl;
+		}
+	}
 }
