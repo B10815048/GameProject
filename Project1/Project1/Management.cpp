@@ -19,6 +19,7 @@ void Management::runGAME()
 		playCard();
 		resetShield();
 	}
+	std::cout << "Ä¹¤FCHo²n" << std::endl;
 }
 
 int Management::getAbilityType(std::string Type)
