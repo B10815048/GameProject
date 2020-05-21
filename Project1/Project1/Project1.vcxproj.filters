@@ -18,9 +18,6 @@
     <ClCompile Include="main.cpp">
       <Filter>來源檔案</Filter>
     </ClCompile>
-    <ClCompile Include="Management.cpp">
-      <Filter>資源檔</Filter>
-    </ClCompile>
     <ClCompile Include="Management%28Print%29.cpp">
       <Filter>資源檔</Filter>
     </ClCompile>
@@ -43,6 +40,12 @@
       <Filter>資源檔</Filter>
     </ClCompile>
     <ClCompile Include="Management%28turnCheck%29.cpp">
+      <Filter>資源檔</Filter>
+    </ClCompile>
+    <ClCompile Include="Management.cpp">
+      <Filter>資源檔</Filter>
+    </ClCompile>
+    <ClCompile Include="Management%28existCheck%29.cpp">
       <Filter>資源檔</Filter>
     </ClCompile>
   </ItemGroup>

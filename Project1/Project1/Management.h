@@ -9,6 +9,7 @@ struct CompairCardDex
 	char Icon;
 	int Dex[2];
 	std::vector <int> Index;
+	bool cardExist(int index);
 };
 
 struct Point
@@ -50,6 +51,7 @@ struct User : public Creature
 	int HP;
 	std::vector < UserCard> Card;
 	std::vector < UserCard> disCardDeck;
+	bool cardExist(int index);
 };
 
 struct EnemyCard : public CardTable
@@ -67,6 +69,7 @@ struct Enemy : public Creature
 	int RGE[2];
 	std::vector <EnemyCard> Card;
 	std::vector <EnemyCard> disCardDeck;
+	bool cardExist(int index);
 };
 
 class Management
@@ -130,10 +133,7 @@ public:
 	void usingEffect(Enemy& enemy, int index);
 	//////////////////////////////////////////////////////////////////////
 	//playCard : 
-	bool cardExist(User& user, int index);
-	bool cardExist(Enemy& enemy, int index);
-	bool cardExist(CompairCardDex& compairCardDex, int index);
-	bool creatureExist(char icon);
+	bool userExist(char icon);
 	//template < typename T>
 	//bool inputCheck(T, string type, int base, int top , int n);
 	bool victoryCheck();
