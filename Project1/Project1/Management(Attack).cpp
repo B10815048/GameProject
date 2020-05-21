@@ -2,7 +2,7 @@
 #include <cmath>
 #include <iomanip>
 #include <string>
-
+/////////
 void  Management::Range(User& user, std::string command)
 {
 	user.Range = user.Range +stoi(command);
