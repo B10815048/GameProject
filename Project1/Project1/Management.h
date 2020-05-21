@@ -113,7 +113,7 @@ public:
 	void rest(User& user);
 	//////////////////////////////////////////////////////////////////////
 	void setMove(User& user, int step);
-	void Move(Creature &creature,std::string command);
+	bool Move(Creature &creature,std::string command);
 	void Heal(User& user, std::string command);
 	void Heal(Enemy& enemy, std::string command);
 	void Shield(Creature& creature, std::string command);
