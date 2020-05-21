@@ -15,13 +15,10 @@ void Management::runGAME()
 	printEnemy(p);
 	seletPoint();
 	playCard();
-
-
 }
 
 int Management::getAbilityType(std::string Type)
 {
-
 	if (Type == "move")
 		return 0;
 	else if (Type == "heal")

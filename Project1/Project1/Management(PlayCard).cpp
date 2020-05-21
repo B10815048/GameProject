@@ -1,6 +1,7 @@
 #include <iostream>
 #include <fstream>
 #include <vector>
+#include <string>
 #include "Management.h"
 using namespace std;
 
@@ -163,6 +164,9 @@ void Management::usingEffect(User& userDeck, int index, int part)
 								j++;
 						}
 					}
+					else if (userDeck.Card[i].BelowType[j] == 0)
+						setMove(userDeck, stoi(userDeck.Card[i].BelowAbilityValue[j]));
+
 					cout << "使用英雄技能卡下方：" << skill[userDeck.Card[i].BelowType[j]] << endl;
 				}
 			}
@@ -185,6 +189,8 @@ void Management::usingEffect(User& userDeck, int index, int part)
 								j++;
 						}
 					}
+					else if (userDeck.Card[i].BelowType[j] == 0)
+						setMove(userDeck, stoi(userDeck.Card[i].BelowAbilityValue[j]));
 					cout << "使用英雄技能卡上方：" << skill[userDeck.Card[i].TopType[j]] << endl;
 				}
 			}
@@ -314,15 +320,6 @@ void Management::usingEffect(Enemy& enemyDeck, int index)
 	}
 }
 
-bool Management::checkSpace(Point p)
-{
-	if (p.x < 0 || p.x >= width || p.x < 0 || p.x >= height)
-		return false;
-	else if (map[p.y][p.x] == '1')
-		return true;
-	else
-		return false;
-}
 int  Management::findCreatureDeckPosition(int camp, string name)
 {
 	int i;
