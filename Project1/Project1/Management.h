@@ -100,6 +100,7 @@ public:
 	bool viewableRange(Point start, Point end);
 	bool oneGapCheck(int x, float y1, float y2);
 	bool shootRange(Point start, Point end, int n,int camp);
+	int getStep(Point start, Point end, int camp);
 	int viewR(Point start,int n);
 	int viewU(Point start, int n);
 	int viewD(Point start, int n);

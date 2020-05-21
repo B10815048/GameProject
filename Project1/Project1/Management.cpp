@@ -13,10 +13,8 @@ void Management::runGAME()
 	getxy(p);
 	printMap(p);
 	printEnemy(p);
-	seletPoint();
+	seletPoint();	
 	playCard();
-
-
 }
 
 int Management::getAbilityType(std::string Type)

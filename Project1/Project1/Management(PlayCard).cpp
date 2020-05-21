@@ -291,6 +291,7 @@ void Management::usingEffect(Enemy& enemyDeck, int index)
 		{
 			for (j = 0; j < enemyDeck.Card[i].Type.size(); j++)
 			{
+				// 技能類型 0 = move, 1 = heal, 2 = shield, 3 = attack, 4 = range;
 				if (enemyDeck.Card[i].Type[j] == 3)
 				{
 					if (j != enemyDeck.Card[i].Type.size() - 1)
