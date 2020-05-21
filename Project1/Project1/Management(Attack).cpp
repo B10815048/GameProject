@@ -19,11 +19,11 @@ void Management::Attack(Creature& creature, std::string command)
 	int i, j;
 	int position;
 	int enemyX, enemyY;
-	int range = 0;
+	int damage = creature.Attack + stoi(command);
+	if (damage < 0)
+		damage = 0;
 	if (creature.Range == 0)
-		range++;
-	else
-		range = creature.Range;
+		creature.Range = 1;
 	if (creature.Camp == 0) //主角方
 	{
 		std::cout << "選擇攻擊敵人 : " << std::endl;
@@ -37,11 +37,11 @@ void Management::Attack(Creature& creature, std::string command)
 			else if (position = findCreatureDeckPosition(1, Icon)!=-1)
 			{
 				position = findCreatureDeckPosition(1, Icon);
-				if (shootRange(creature.P, enemyDeck[position].P, range, 0) && viewableRange(enemyDeck[position].P, creature.P))
+				if (shootRange(creature.P, enemyDeck[position].P, creature.Range, 0) && viewableRange(enemyDeck[position].P, creature.P))
 				{
-					if (stoi(command) > enemyDeck[position].Shield)
-						enemyDeck[position].HP[enemyDeck[position].Type] -= stoi(command) - enemyDeck[position].Shield;
-					std::cout << creature.Icon << " attack " << enemyDeck[position].Icon << " " << stoi(command) << " damage, " << enemyDeck[position].Icon << " shield " << enemyDeck[position].Shield
+					if (damage > enemyDeck[position].Shield)
+						enemyDeck[position].HP[enemyDeck[position].Type] -= damage - enemyDeck[position].Shield;
+					std::cout << creature.Icon << " attack " << enemyDeck[position].Icon << " " << damage << " damage, " << enemyDeck[position].Icon << " shield " << enemyDeck[position].Shield
 						<< " , " << enemyDeck[position].Icon << " remain " << enemyDeck[position].HP[enemyDeck[position].Type] << " hp" << std::endl;
 					return;
 				}
@@ -51,11 +51,8 @@ void Management::Attack(Creature& creature, std::string command)
 	}
 	else if (creature.Camp == 1) //敵人方
 	{
-		int step = 0, minStep = 99, count = 0, damage = 0;
+		int step = 0, minStep = 99, count = 0;
 		int userIndex[4] = { 0,0,0,0 };
-		for(int i=0;i<enemyDeck.size();i++)
-			if(enemyDeck[i].Icon == creature.Icon)
-				damage = stoi(command);
 		for (int i = 0; i < userDeck.size(); i++)
 		{
 			if (shootRange(creature.P, userDeck[i].P, creature.Range, 1) && viewableRange(userDeck[i].P, creature.P))
@@ -84,9 +81,9 @@ void Management::Attack(Creature& creature, std::string command)
 			{
 				if (userIndex[i] == 1)
 				{
-					if (stoi(command) > userDeck[i].Shield)
-						userDeck[i].HP -= stoi(command) - userDeck[i].Shield;
-					std::cout << creature.Icon << " attack " << userDeck[i].Icon << " " << stoi(command) << " damage, " << userDeck[i].Icon << " shield " << userDeck[i].Shield
+					if (damage > userDeck[i].Shield)
+						userDeck[i].HP -= damage - userDeck[i].Shield;
+					std::cout << creature.Icon << " attack " << userDeck[i].Icon << " " << damage << " damage, " << userDeck[i].Icon << " shield " << userDeck[i].Shield
 						<< " , " << userDeck[i].Icon << " remain " << userDeck[i].HP << " hp" << std::endl;
 				}
 			}
@@ -99,9 +96,9 @@ void Management::Attack(Creature& creature, std::string command)
 				{
 					if (compairList[i].Icon == userDeck[j].Icon && userIndex[j] == 1)
 					{
-						if (stoi(command) > userDeck[j].Shield)
-							userDeck[j].HP -= stoi(command) - userDeck[j].Shield;
-						std::cout << creature.Icon << " attack " << userDeck[j].Icon << " " << stoi(command) << " damage, " << userDeck[j].Icon << " shield " << userDeck[j].Shield
+						if (damage > userDeck[j].Shield)
+							userDeck[j].HP -= damage - userDeck[j].Shield;
+						std::cout << creature.Icon << " attack " << userDeck[j].Icon << " " << damage << " damage, " << userDeck[j].Icon << " shield " << userDeck[j].Shield
 							<< " , " << userDeck[j].Icon << " remain " << userDeck[j].HP << " hp" << std::endl;
 						return;
 					}
