@@ -14,7 +14,7 @@ void Management::runGAME()
 	printMap(p);
 	printEnemy(p);
 	seletPoint();
-
+	playCard();
 
 
 }
