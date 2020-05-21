@@ -37,7 +37,7 @@ void Management::Attack(Creature& creature, std::string command)
 			else if (position = findCreatureDeckPosition(1, Icon)!=-1)
 			{
 				position = findCreatureDeckPosition(1, Icon);
-				if (shootRange(creature.P, enemyDeck[position].P, range, 0) /*&& viewableRange(enemyDeck[position].P, creature.P)*/)
+				if (shootRange(creature.P, enemyDeck[position].P, range, 0) && viewableRange(enemyDeck[position].P, creature.P))
 				{
 					if (stoi(command) > enemyDeck[position].Shield)
 						enemyDeck[position].HP[enemyDeck[position].Type] -= stoi(command) - enemyDeck[position].Shield;
@@ -61,9 +61,9 @@ bool  Management::oneGapCheck(int x, float y1, float y2)
 	for (j = ceil(y1); j != floor(y2); j = j + (floor(y2) - ceil(y1)) / abs(floor(y2) - ceil(y1)))
 	{
 		if (map[j - 1][x] == '3')
-			return false;
+			return true;
 	}
-	return true;
+	return false;
 }
 bool Management::viewableRange(Point start, Point end)
 {
