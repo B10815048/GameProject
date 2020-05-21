@@ -133,6 +133,9 @@ public:
 	bool cardExist(User& user, int index);
 	bool cardExist(Enemy& enemy, int index);
 	bool cardExist(CompairCardDex& compairCardDex, int index);
+	bool creatureExist(char icon);
+	//template < typename T>
+	//bool inputCheck(T, string type, int base, int top , int n);
 	void survivalCheck();
 	void doorOpenCheck();
 	char Search(std::vector<std::vector<char> >& map, int x, int y);

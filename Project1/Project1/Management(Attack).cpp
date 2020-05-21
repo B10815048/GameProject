@@ -54,6 +54,8 @@ void Management::Attack(Creature& creature, std::string command)
 	{
 		int step = 0, minStep = 99, count = 0;
 		int userIndex[4] = { 0,0,0,0 };
+		for (int j = 0; j < 4; j++)
+			userIndex[j] = 0;
 		for (int i = 0; i < userDeck.size(); i++)
 		{
 			if (shootRange(creature.P, userDeck[i].P, creature.Range, 1) && viewableRange(userDeck[i].P, creature.P))
@@ -74,6 +76,8 @@ void Management::Attack(Creature& creature, std::string command)
 					count += 1;
 				}
 			}
+			else
+				std::cout << "range::" << userDeck[i].Range << std::endl;
 		}
 
 		if (count == 1)
@@ -107,6 +111,7 @@ void Management::Attack(Creature& creature, std::string command)
 			}
 		}
 	}
+	resetRange();
 }
 
 bool  Management::oneGapCheck(int x, float y1, float y2)

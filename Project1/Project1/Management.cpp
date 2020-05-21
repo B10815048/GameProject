@@ -14,7 +14,7 @@ void Management::runGAME()
 	printMap(p);
 	printEnemy(p);
 	seletPoint();
-	while (1)
+	while (enemyDeck.size()>0)
 	{
 		playCard();
 		resetShield();

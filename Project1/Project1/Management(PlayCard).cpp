@@ -37,7 +37,23 @@ void Management::userPlayCards()
 	std::cout << "出牌:" << endl;
 	for (int i = 0; i < userDeck.size(); i++)
 	{
-		cin >> icon;
+		cin >> input;
+		if (input == "check")
+		{
+			for (int j = 0; j < userDeck.size(); j++)
+			{
+				cout << userDeck[j].Icon << "-hp: " << userDeck[j].HP << ", shield: " << userDeck[j].Shield << endl;
+			}
+			for (int j = 0; j < enemyDeck.size(); j++)
+			{
+				if(checkSpace(enemyDeck[j].P))
+					cout << enemyDeck[j].Icon << "-hp: " << enemyDeck[j].HP[enemyDeck[j].Type] << ", shield: " << enemyDeck[j].Shield << endl;
+			}
+			i--;
+			continue;
+		}
+		else
+			icon = input[0];
 		tmp.Index.clear();
 		position = findCreatureDeckPosition(0, icon);
 		tmp.Icon = userDeck[position].Icon;
@@ -45,7 +61,7 @@ void Management::userPlayCards()
 		if (input == "check") // check指令
 		{
 			cout << "hand: ";
-			for (int j = 0; j < userDeck[i].Card.size(); j++)
+			for (int j = 0; j < userDeck[position].Card.size(); j++)
 			{
 				if (j == userDeck[position].Card.size() - 1)
 					cout << userDeck[position].Card[j].Order << "; ";
@@ -103,7 +119,7 @@ void Management::enemyPlayCards()
 	CompairCardDex tmp;
 	for (i = 0; i < enemyDeck.size(); i++)
 	{
-		if (map[enemyDeck[i].P.y][enemyDeck[i].P.x] == '1')
+		if (checkSpace(enemyDeck[i].P))
 		{
 			tmp.Index.clear();
 			minIndex = enemyDeck[i].Card[0].Order;
@@ -295,6 +311,9 @@ void Management::playCard()
 	round_count += 1;
 	cout << "--------------------------------------------" << endl <<
 		"round " << round_count << ":" << endl;
+	cout << compairList.size() << endl;
+	int n;
+	cin >> n;
 	for(i = 0; i < compairList.size(); i++)
 	{
 		if (!compairList[i].skip)
@@ -306,7 +325,21 @@ void Management::playCard()
 				{
 					cout << "角色" << userDeck[position].Icon << "出牌" << endl;
 					cin >> command;
-					if (command[1] == 'd')
+					if (command == "check")
+					{
+						for (int j = 0; j < userDeck.size(); j++)
+						{
+							cout << userDeck[j].Icon << "-hp: " << userDeck[j].HP << ", shield: " << userDeck[j].Shield << endl;
+						}
+						for (int j = 0; j < enemyDeck.size(); j++)
+						{
+							if (checkSpace(enemyDeck[j].P))
+								cout << enemyDeck[j].Icon << "-hp: " << enemyDeck[j].HP[enemyDeck[j].Type] << ", shield: " << enemyDeck[j].Shield << endl;
+						}
+						i--;
+						continue;
+					}
+					else if (command[1] == 'd')
 					{
 						//////////////////////////////////////////
 						//發動下半部效果:
@@ -428,6 +461,7 @@ void Management::rest(User& user)
 			if (user.disCardDeck[i].Order == index)
 			{
 				user.disCardDeck.erase(user.disCardDeck.begin() + i);
+				
 				user.Card.insert(user.Card.end(), user.disCardDeck.begin(), user.disCardDeck.end());
 				user.disCardDeck.clear();
 				return;

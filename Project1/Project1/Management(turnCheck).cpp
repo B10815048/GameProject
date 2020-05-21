@@ -13,13 +13,14 @@ void Management::survivalCheck()
 		if (userDeck[i-1].HP <= 0)
 		{
 			std::cout << userDeck[i].Icon << " is killed!!" << std::endl;
+			check = true;
 			for (j = 0; j < compairList.size(); j++)
 			{
 				if (compairList[j].Icon == userDeck[i - 1].Icon)
 					compairList[j].skip = true;
 			}
 			userDeck.erase(userDeck.begin() + i-1);
-			check = true;
+			
 		}
 	}
 	for (i = enemyDeck.size(); i > 0; i--)
