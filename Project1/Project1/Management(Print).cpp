@@ -34,7 +34,7 @@ void Management::printUser(Point p)
 {
 	for (int i = 0; i < userDeck.size(); i++)
 	{
-		if (map[userDeck[i].P.y][userDeck[i].P.x] == '1')
+		if (map[userDeck[i].P.y][userDeck[i].P.x] == '1'|| checkDoor(userDeck[i].P))
 		{
 			gotoxy({ p.x + userDeck[i].P.x,p.y + userDeck[i].P.y });
 			std::cout << userDeck[i].Icon;
@@ -47,7 +47,7 @@ void Management::printEnemy(Point p)
 {
 	for (int i = 0; i < enemyDeck.size(); i++)
 	{
-		if (map[enemyDeck[i].P.y][enemyDeck[i].P.x] == '1')
+		if (map[enemyDeck[i].P.y][enemyDeck[i].P.x] == '1' || checkDoor(enemyDeck[i].P))
 		{
 			gotoxy({ p.x + enemyDeck[i].P.x,p.y + enemyDeck[i].P.y });
 			std::cout << enemyDeck[i].Icon;

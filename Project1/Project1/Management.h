@@ -106,6 +106,7 @@ public:
 	int viewD(Point start, int n);
 	int viewL(Point start, int n);
 	//////////////////////////////////////////////////////////////////////
+	void setMove(User& user, int step);
 	void Move(Creature &creature,std::string command);
 	void Heal(User& user, std::string command);
 	void Heal(Enemy& enemy, std::string command);
@@ -123,6 +124,7 @@ public:
 	void usingEffect(Enemy& enemy, int index);
 	//////////////////////////////////////////////////////////////////////
 	bool checkSpace(Point p);
+	bool checkDoor(Point p);
 	int creatureOnPoint(Point p);
 	int enemyOnPoint(Point p,int Camp);
 	int getAbilityType(std::string Type);
