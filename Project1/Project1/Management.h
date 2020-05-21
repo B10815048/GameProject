@@ -136,6 +136,7 @@ public:
 	bool creatureExist(char icon);
 	//template < typename T>
 	//bool inputCheck(T, string type, int base, int top , int n);
+	bool victoryCheck();
 	void survivalCheck();
 	void doorOpenCheck();
 	char Search(std::vector<std::vector<char> >& map, int x, int y);

@@ -3,6 +3,29 @@
 #include <string>
 #include <sstream>
 
+bool  Management::victoryCheck()
+{
+	int i, j;
+	int count = 0;
+	if (enemyDeck.size() == 0)
+	{
+		for (i = 0; i < height; i++)
+		{
+			for (j = 0; j < width; j++)
+			{
+				if (checkDoor({ j,i }))
+					count++;
+			}
+		}
+		if (count==0)
+			return true;
+		else
+			return false;
+	}
+	else
+		return false;
+}
+
 void Management::survivalCheck()
 {
 	int i, j;

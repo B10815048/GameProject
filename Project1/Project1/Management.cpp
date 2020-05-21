@@ -14,12 +14,15 @@ void Management::runGAME()
 	printMap(p);
 	printEnemy(p);
 	seletPoint();
-	while (enemyDeck.size()>0)
+	while (!victoryCheck() && userDeck.size()>0)
 	{
 		playCard();
 		resetShield();
 	}
-	std::cout << "Ä¹¤FCHo²n" << std::endl;
+	if (victoryCheck())
+		std::cout << "character win~" << std::endl;
+	else
+		std::cout << "monster win~" << std::endl;
 }
 
 int Management::getAbilityType(std::string Type)
