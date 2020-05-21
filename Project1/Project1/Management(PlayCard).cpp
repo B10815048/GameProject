@@ -29,17 +29,40 @@ int Management::findCardPosition(Enemy& enemy, int index)
 
 void Management::userPlayCards()
 {
-	int position;
-	int i, j, k, l, m, index, index1, index2;
+	int position, index, index1, index2;
+	string input;
 	CompairCardDex tmp;
 	char icon;
-	for (i = 0; i < userDeck.size(); i++)
+	for (int i = 0; i < userDeck.size(); i++)
 	{
 		cin >> icon;
 		tmp.Index.clear();
 		position = findCreatureDeckPosition(0, icon);
 		tmp.Icon = userDeck[position].Icon;
-		cin >> index;
+		cin >> input;
+		if (input == "check") // check«ü¥O
+		{
+			cout << "hand: ";
+			for (int j = 0; j < userDeck[i].Card.size(); j++)
+			{
+				if(j == userDeck[position].Card.size() - 1)
+					cout << userDeck[position].Card[j].Order << "; ";
+				else
+					cout << userDeck[position].Card[j].Order << ", ";
+			}
+			cout << "discard: ";
+			for (int j = 0; j < userDeck[position].disCardDeck.size(); j++)
+			{
+				cout << userDeck[position].disCardDeck[j].Order;
+				if (j != userDeck[position].disCardDeck.size() - 1)
+					cout << ", ";				
+			}
+			cout << endl;
+			i--;
+			continue;
+		}
+		else
+			index = stoi(input);
 		if (index == -1) //ªø¥ð«ü¥O
 		{
 			tmp.Dex[0] = 99;

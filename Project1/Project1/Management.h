@@ -5,6 +5,7 @@
 
 struct CompairCardDex
 {
+	bool skip = false;
 	char Icon;
 	int Dex[2];
 	std::vector <int> Index;

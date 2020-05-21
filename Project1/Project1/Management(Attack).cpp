@@ -43,6 +43,7 @@ void Management::Attack(Creature& creature, std::string command)
 						enemyDeck[position].HP[enemyDeck[position].Type] -= damage - enemyDeck[position].Shield;
 					std::cout << creature.Icon << " attack " << enemyDeck[position].Icon << " " << damage << " damage, " << enemyDeck[position].Icon << " shield " << enemyDeck[position].Shield
 						<< " , " << enemyDeck[position].Icon << " remain " << enemyDeck[position].HP[enemyDeck[position].Type] << " hp" << std::endl;
+
 					return;
 				}
 			}
