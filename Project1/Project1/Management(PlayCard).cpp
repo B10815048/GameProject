@@ -277,6 +277,7 @@ void Management::usingEffect(Enemy& enemyDeck, int index)
 
 void Management::playCard()
 {
+	static int round_count = 0;
 	int position;
 	int i, j, k, l, index, index1, index2;
 	string command;
@@ -291,6 +292,9 @@ void Management::playCard()
 	sort_compairList();
 	//依序出牌 
 	string skill[] = { "move", "heal", "shield", "attack","range" };
+	round_count += 1;
+	cout << "--------------------------------------------" << endl <<
+		"round " << round_count << ":" << endl;
 	for(i = 0; i < compairList.size(); i++)
 	{
 		if (!compairList[i].skip)
@@ -361,8 +365,11 @@ void Management::playCard()
 				usingEffect(enemyDeck[position], compairList[i].Index[0]);
 			}
 		}
-		survivalCheck();
+		// 每個物件行動結束計算
+		survivalCheck();		
 	}
+	// 每輪結束計算
+	doorOpenCheck();
 }
 
 int  Management::findCreaturePosition(int camp, string name)

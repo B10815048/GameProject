@@ -45,3 +45,44 @@ void Management::survivalCheck()
 		printUser(tmp);
 	}
 }
+
+void Management::doorOpenCheck()
+{
+	bool haveOpen = false;
+	bool haveEnemy = false;
+	for (int i = 0; i < enemyDeck.size(); i++)
+	{
+		if (map[enemyDeck[i].P.y][enemyDeck[i].P.x] == '1' && enemyDeck[i].HP > 0)
+			haveEnemy = true;
+	}
+	if (!haveEnemy)
+	{
+		for (int i = 0; i < height; i++)
+		{
+			for (int j = 0; j < width; j++)
+			{
+				// 找到所有的門並確認有沒有角色站在上面
+				if (map[i][j] == '3')
+				{
+					for (int k = 0; k < userDeck.size(); k++)
+					{
+						if (userDeck[k].P.x == j && userDeck[k].P.y == i)
+						{
+							map[i][j] = 'x';
+							haveOpen = true;
+							Search(map, j, i);
+						}
+					}
+				}
+			}
+		}
+	}
+	if (haveOpen)
+	{
+		Point p;
+		getxy(p);
+		printMap(p);
+		printEnemy(p);
+		printUser(p);
+	}
+}

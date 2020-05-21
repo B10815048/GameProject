@@ -4,7 +4,7 @@
 #include <sstream>
 #include <vector>
 
-char Search(std::vector<std::vector<char> >& map, int x, int y)
+char Management::Search(std::vector<std::vector<char> >& map, int x, int y)
 {
 	if (map[y][x] != 'x' || map[y][x] == '4')
 	{

@@ -147,7 +147,7 @@
     <ClCompile Include="Management%28Move%29.cpp" />
     <ClCompile Include="Management%28PlayCard%29.cpp" />
     <ClCompile Include="Management%28Attack%29.cpp" />
-    <ClCompile Include="Management%281%29.cpp" />
+    <ClCompile Include="Management%28turnCheck%29.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Management.h" />

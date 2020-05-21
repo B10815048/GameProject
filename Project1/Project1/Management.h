@@ -134,6 +134,8 @@ public:
 	bool cardExist(Enemy& enemy, int index);
 	bool cardExist(CompairCardDex& compairCardDex, int index);
 	void survivalCheck();
+	void doorOpenCheck();
+	char Search(std::vector<std::vector<char> >& map, int x, int y);
 	//////////////////////////////////////////////////////////////////////
 	bool checkSpace(Point p);
 	bool checkDoor(Point p);
