@@ -44,3 +44,12 @@ bool Management::userExist(char icon)
 	else
 		return true;
 }
+
+bool Management::enemyExist(char icon)
+{
+	int i;
+	if (findCreatureDeckPosition(1, icon) == -1)
+		return false;
+	else
+		return true;
+}

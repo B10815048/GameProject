@@ -134,6 +134,7 @@ public:
 	//////////////////////////////////////////////////////////////////////
 	//playCard : 
 	bool userExist(char icon);
+	bool enemyExist(char icon);
 	//template < typename T>
 	//bool inputCheck(T, string type, int base, int top , int n);
 	bool victoryCheck();

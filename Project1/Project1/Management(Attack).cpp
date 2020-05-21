@@ -297,7 +297,6 @@ int Management::viewU(Point start, int n)
 //«ô³X¤U¤è : 
 int Management::viewD(Point start, int n)
 {
-
 	if (checkMap[start.y + 1][start.x] == -2)
 	{
 		checkMap[start.y + 1][start.x] = n + 1;
