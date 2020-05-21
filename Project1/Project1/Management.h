@@ -115,9 +115,10 @@ public:
 	void seletUser();//c7
 	void seletPoint();
 	void playCard();
+	void useEffect(int type);
 	void userPlayCards();
 	void enemyPlayCards();
-	void sort_compairList();
+	void sort_compairList();	
 	//////////////////////////////////////////////////////////////////////
 	bool checkSpace(Point p);
 	int creatureOnPoint(Point p);

@@ -22,28 +22,33 @@ void Management::Attack(Creature& creature, std::string command)
 	if (creature.Camp == 0) //主角方
 	{
 		std::cout << "媽的選角拉 : " << std::endl;
-		std::cin >> Icon;
-		if (Icon == 0)
+		while (std::cin >> Icon)
 		{
-			std::cout << "媽的不公及 : " << std::endl;
-			return;
-		}
-		else
-		{
-			for (i = 0; i < enemyDeck.size(); i++)
+			if (Icon == '0')
 			{
-				if (Icon == enemyDeck[i].Icon)
-					position = i;
-			}
-			std::cout << creature.P.x << " " << creature.P.y << std::endl;
-			std::cout << enemyDeck[position].P.x << " " << enemyDeck[position].P.y << std::endl;
-			if (shootRange(creature.P, enemyDeck[position].P, creature.Range, 0)&& viewableRange(enemyDeck[position].P, creature.P))
-			{
-				std::cout << "attack : " << std::endl;
+				std::cout << "媽的不公及 : " << std::endl;
+				return;
 			}
 			else
 			{
-				std::cout << "0? " << std::endl;
+				for (i = 0; i < enemyDeck.size(); i++)
+				{
+					if (Icon == enemyDeck[i].Icon)
+						position = i;
+				}
+
+				if (shootRange(creature.P, enemyDeck[position].P, creature.Range, 0) && viewableRange(enemyDeck[position].P, creature.P))
+				{
+					if (stoi(command) > enemyDeck[position].Shield)
+						enemyDeck[position].HP[enemyDeck[position].Type] -= stoi(command) - enemyDeck[position].Shield;
+					std::cout << creature.Icon << " attack " << enemyDeck[position].Icon << " " << stoi(command) << " damage, " << enemyDeck[position].Icon << " shield " << enemyDeck[position].Shield
+						<< " , " << enemyDeck[position].Icon << " remain " << enemyDeck[position].HP[enemyDeck[position].Type] << " hp" << std::endl;
+					return;
+				}
+				else
+				{
+					std::cout << "error target!!!" << std::endl;
+				}
 			}
 		}
 	}

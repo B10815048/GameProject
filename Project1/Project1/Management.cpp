@@ -14,7 +14,9 @@ void Management::runGAME()
 	printMap(p);
 	printEnemy(p);
 	seletPoint();
-	playCard();
+
+
+
 }
 
 int Management::getAbilityType(std::string Type)
