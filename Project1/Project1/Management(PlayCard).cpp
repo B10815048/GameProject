@@ -175,6 +175,8 @@ void Management::sort_compairList()
 			}
 		}
 	}
+	for (i = 0; i < compairList.size(); i++)
+		cout << "¶¶§Ç" << i << " " << compairList[i].Dex[0] << endl;
 }	
 
 void Management::usingEffect(User& userDeck, int index, int part)
@@ -284,7 +286,7 @@ void Management::usingEffect(Enemy& enemyDeck, int index)
 				}
 
 			}
-			//±óµP
+			//±óµPe
 			enemyDeck.disCardDeck.push_back(enemyDeck.Card[i]);
 			enemyDeck.Card.erase(enemyDeck.Card.begin() + i);
 		}
@@ -311,9 +313,6 @@ void Management::playCard()
 	round_count += 1;
 	cout << "--------------------------------------------" << endl <<
 		"round " << round_count << ":" << endl;
-	cout << compairList.size() << endl;
-	int n;
-	cin >> n;
 	for(i = 0; i < compairList.size(); i++)
 	{
 		if (!compairList[i].skip)
