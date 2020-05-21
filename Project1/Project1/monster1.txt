@@ -1,6 +1,6 @@
 2
 guard 3 2 99 6 3 0
-guard 0 30 move sd attack 99 d
+guard 0 1 move wd attack 99 d
 guard 1 55 move wa attack 0 d
 guard 2 15 shield 2 r
 guard 3 35 move wd attack 0 d
