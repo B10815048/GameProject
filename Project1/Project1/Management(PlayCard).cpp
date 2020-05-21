@@ -335,22 +335,22 @@ void Management::playCard()
 	}
 }
 
-int  Management::findCreatureDeckPosition(int camp, string name)
+int  Management::findCreaturePosition(int camp, string name)
 {
 	int i;
 	if (camp == 0)
 	{
-		for (i = 0; i < userDeck.size(); i++)
+		for (i = 0; i < user.size(); i++)
 		{
-			if (userDeck[i].name == name)
+			if (user[i].name == name)
 				return i;
 		}
 	}
 	else if (camp == 1)
 	{
-		for (i = 0; i < enemyDeck.size(); i++)
+		for (i = 0; i < enemy.size(); i++)
 		{
-			if (enemyDeck[i].name == name)
+			if (enemy[i].name == name)
 				return i;
 		}
 	}

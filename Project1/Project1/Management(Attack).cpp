@@ -10,7 +10,7 @@ void  Management::Range(User& user, std::string command)
 
 void Management::Range(Enemy& enemy, std::string command)
 {
-	enemy.Range[enemy.Type] = enemy.Range[enemy.Type] + stoi(command);
+	enemy.Range = enemy.Range + stoi(command);
 }
 
 void Management::Attack(Creature& creature, std::string command)
@@ -19,11 +19,9 @@ void Management::Attack(Creature& creature, std::string command)
 	int i, j;
 	int position;
 	int enemyX, enemyY;
-	int range = 0;
+	int att = creature.Attack + stoi(command);
 	if (creature.Range == 0)
-		range++;
-	else
-		range = creature.Range;
+		creature.Range = 1;
 	if (creature.Camp == 0) //主角方
 	{
 		std::cout << "選擇攻擊敵人 : " << std::endl;
@@ -37,7 +35,7 @@ void Management::Attack(Creature& creature, std::string command)
 			else if (position = findCreatureDeckPosition(1, Icon)!=-1)
 			{
 				position = findCreatureDeckPosition(1, Icon);
-				if (shootRange(creature.P, enemyDeck[position].P, range, 0) && viewableRange(enemyDeck[position].P, creature.P))
+				if (shootRange(creature.P, enemyDeck[position].P, creature.Range, 0) && viewableRange(enemyDeck[position].P, creature.P))
 				{
 					if (stoi(command) > enemyDeck[position].Shield)
 						enemyDeck[position].HP[enemyDeck[position].Type] -= stoi(command) - enemyDeck[position].Shield;
@@ -107,6 +105,7 @@ void Management::Attack(Creature& creature, std::string command)
 			}
 		}
 	}
+	resetRange();
 }
 
 bool  Management::oneGapCheck(int x, float y1, float y2)
@@ -301,3 +300,34 @@ int Management::viewL(Point start, int n)
 	}
 }
 //////////////////////////////////////////////////////////////
+void Management::resetRange()
+{
+	int i, j;
+	int position;
+	for (i = 0; i < userDeck.size(); i++)
+	{
+		position = findCreaturePosition(0, userDeck[i].name);
+		userDeck[i].Range = user[position].Range;
+	}
+	for (i = 0; i < enemyDeck.size(); i++)
+	{
+		position = findCreaturePosition(0, enemyDeck[i].name);
+		enemyDeck[i].Range = enemy[position].Range;
+	}
+}
+
+void Management::resetShield()
+{
+	int i, j;
+	int position;
+	for (i = 0; i < userDeck.size(); i++)
+	{
+		position = findCreaturePosition(0, userDeck[i].name);
+		userDeck[i].Shield = user[position].Shield;
+	}
+	for (i = 0; i < enemyDeck.size(); i++)
+	{
+		position = findCreaturePosition(0, enemyDeck[i].name);
+		enemyDeck[i].Shield = enemy[position].Shield;
+	}
+}

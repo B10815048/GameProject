@@ -134,11 +134,13 @@ void Management::loadMapfile()
 		}
 		else if (int_buffer == 1)
 		{
+			enemyDeck[i].Attack = enemyDeck[i].STR[0];
 			enemyDeck[i].Type = 0;
 			i++;
 		}
 		else if (int_buffer == 2)
 		{
+			enemyDeck[i].Attack = enemyDeck[i].STR[1];
 			enemyDeck[i].Type = 1;
 			i++;
 		}
@@ -188,7 +190,7 @@ void Management::loadEnemyfile() //載入怪物資料
 		{
 			file >> enemy[i].HP[j];
 			file >> enemy[i].STR[j];
-			file >> enemy[i].Range[j];
+			file >> enemy[i].RGE[j];
 		}
 		enemy[i].Card.resize(6);
 		for (j = 0; j < 6; j++)

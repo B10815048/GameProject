@@ -41,6 +41,7 @@ struct Creature
 	int CardOnHand = 6;
 	int Shield = 0;
 	int Range = 0;
+	int Attack = 0;
 };
 
 struct User : public Creature
@@ -62,7 +63,7 @@ struct Enemy : public Creature
 	int Type;
 	int HP[2];
 	int STR[2];
-	int Range[2];
+	int RGE[2];
 	std::vector <EnemyCard> Card;
 	std::vector <EnemyCard> disCardDeck;
 };
@@ -97,6 +98,8 @@ public:
 	void Attack(Creature& creature, std::string command); // ¦³range return 1; µLrange return 0
 	void Range(User& user, std::string command);
 	void Range(Enemy& enemy, std::string command);
+	void resetRange();
+	void resetShield();
 	bool viewableRange(Point start, Point end);
 	bool oneGapCheck(int x, float y1, float y2);
 	bool shootRange(Point start, Point end, int n,int camp);
@@ -128,7 +131,7 @@ public:
 	int creatureOnPoint(Point p);
 	int enemyOnPoint(Point p,int Camp);
 	int getAbilityType(std::string Type);
-	int findCreatureDeckPosition(int camp, std::string name);
+	int findCreaturePosition(int camp, std::string name);
 	int findCardPosition(User& user, int index);
 	int findCardPosition(Enemy& enemy, int index);
 	int findCreatureDeckPosition(int camp, char icon);
