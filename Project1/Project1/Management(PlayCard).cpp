@@ -148,6 +148,7 @@ void Management::usingEffect(User& userDeck, int index, int part)
 			{
 				for (j = 0; j < userDeck.Card[i].BelowType.size(); j++)
 				{
+					cout << "發動角色" << userDeck.Icon << "技能卡下方效果：" << skill[userDeck.Card[i].BelowType[j]] << endl;
 					if (userDeck.Card[i].BelowType[j] == 0)
 						setMove(userDeck, stoi(userDeck.Card[i].BelowAbilityValue[j]));
 					else if (userDeck.Card[i].BelowType[j] == 1)
@@ -169,13 +170,13 @@ void Management::usingEffect(User& userDeck, int index, int part)
 								j++;
 						}
 					}
-					cout << "使用英雄技能卡下方：" << skill[userDeck.Card[i].BelowType[j]] << endl;
 				}
 			}
 			else if (part == 0) //卡牌上半部技能
 			{
 				for (j = 0; j < userDeck.Card[i].TopType.size(); j++)
 				{
+					cout << "發動角色" << userDeck.Icon << "技能卡上方效果：" << skill[userDeck.Card[i].TopType[j]] << endl;
 					if (userDeck.Card[i].TopType[j] == 0)
 						setMove(userDeck, stoi(userDeck.Card[i].TopAbilityValue[j]));
 					else if (userDeck.Card[i].TopType[j] == 1)
@@ -198,7 +199,7 @@ void Management::usingEffect(User& userDeck, int index, int part)
 					}
 					else if (userDeck.Card[i].TopType[j] == 0)
 						setMove(userDeck, stoi(userDeck.Card[i].TopAbilityValue[j]));
-					cout << "使用英雄技能卡上方：" << skill[userDeck.Card[i].TopType[j]] << endl;
+
 				}
 			}
 			//棄牌
@@ -219,6 +220,7 @@ void Management::usingEffect(Enemy& enemyDeck, int index)
 		{
 			for (j = 0; j < enemyDeck.Card[i].Type.size(); j++)
 			{
+				cout << "發動敵人" << enemyDeck.Icon << "技能卡效果：" <<  skill[enemyDeck.Card[i].Type[j]] << endl;
 				if (enemyDeck.Card[i].Type[j] == 0)
 					Move(enemyDeck, enemyDeck.Card[i].AbilityValue[j]);
 				else if (enemyDeck.Card[i].Type[j] == 1)
@@ -239,7 +241,7 @@ void Management::usingEffect(Enemy& enemyDeck, int index)
 							j++;
 					}
 				}
-				cout << "使用敵人技能卡：" << skill[enemyDeck.Card[i].Type[j]] << endl;
+
 			}
 			//棄牌
 			enemyDeck.disCardDeck.push_back(enemyDeck.Card[i]);
@@ -271,7 +273,7 @@ void Management::playCard()
 			position = findCreatureDeckPosition(0, compairList[i].Icon);
 			if (compairList[i].Index[0] != -1)
 			{
-				cout << "英雄" << userDeck[position].Icon << "出牌" << endl;
+				cout << "角色" << userDeck[position].Icon << "出牌" << endl;
 				cin >> command;
 				if (command[1] == 'd')
 				{
@@ -327,7 +329,7 @@ void Management::playCard()
 		else if (compairList[i].Icon >='a' &&compairList[i].Icon <='z') //敵人方
 		{
 			position = findCreatureDeckPosition(1, compairList[i].Icon);
-			cout << "敵人出牌" << endl;
+			cout << "敵人" << enemyDeck[position].Icon << "出牌" << endl;
 			usingEffect(enemyDeck[position], compairList[i].Index[0]);
 		}
 	}

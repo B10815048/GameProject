@@ -38,7 +38,6 @@ void Management::Move(Creature& creature, std::string command)
 			break;
 		}
 	}
-	std::cout << creature.P.x << " " << creature.P.y << std::endl;
 	getxy(tmp);
 	printMap(tmp);
 	printEnemy(tmp);

@@ -24,7 +24,6 @@ void Management::Attack(Creature& creature, std::string command)
 		range++;
 	else
 		range = creature.Range;
-	std::cout << range << std::endl;
 	if (creature.Camp == 0) //主角方
 	{
 		std::cout << "選擇攻擊敵人 : " << std::endl;
@@ -61,7 +60,7 @@ bool  Management::oneGapCheck(int x, float y1, float y2)
 	int j;
 	for (j = ceil(y1); j != floor(y2); j = j + (floor(y2) - ceil(y1)) / abs(floor(y2) - ceil(y1)))
 	{
-		if (map[j - 1][x] == '2')
+		if (map[j - 1][x] == '3')
 			return false;
 	}
 	return true;
@@ -92,10 +91,10 @@ bool Management::viewableRange(Point start, Point end)
 	{
 		for (i = start.y; i != end.y; i = i + (end.y - start.y) / abs(end.y - start.y))
 		{
-			if (map[i][start.x] == '2')
+			if (map[i][start.x] == '3')
 				return false;
 		}	
-		if (map[i][start.x] == '2')
+		if (map[i][start.x] == '3')
 			return false;
 	}
 	return true;
@@ -147,7 +146,6 @@ bool Management::shootRange(Point start, Point end, int step, int camp)
 		}
 	}
 	checkMap[start.y][start.x] = 0;
-	std::cout << checkMap[end.y][end.x] << std::endl;
 	if (checkMap[end.y][end.x] <= step)
 		return true;
 	else
