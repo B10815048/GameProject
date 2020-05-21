@@ -35,7 +35,7 @@ struct UserCard : public CardTable
 struct Creature
 {
 	std::string name;
-	int Camp;
+	int Camp;  //0使用者 1敵人
 	Point P;
 	char Icon;
 	int CardOnHand = 6;
@@ -115,15 +115,17 @@ public:
 	void seletUser();//c7
 	void seletPoint();
 	void playCard();
-	void useEffect(int type);
 	void userPlayCards();
 	void enemyPlayCards();
-	void sort_compairList();	
+	void sort_compairList();
+	void usingEffect(User& user,int index, int part); //part 0:卡牌上半部，part 1:卡牌下半部
+	void usingEffect(Enemy& enemy, int index);
 	//////////////////////////////////////////////////////////////////////
 	bool checkSpace(Point p);
 	int creatureOnPoint(Point p);
 	int enemyOnPoint(Point p,int Camp);
 	int getAbilityType(std::string Type);
-
+	int findCreatureDeckPosition(int camp, std::string name);
+	int findCreatureDeckPosition(int camp, char icon);
 };
 
