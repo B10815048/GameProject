@@ -10,7 +10,7 @@ void  Management::Range(User& user, std::string command)
 
 void Management::Range(Enemy& enemy, std::string command)
 {
-	enemy.Range[enemy.Type] = enemy.Range[enemy.Type] + stoi(command);
+	enemy.RGE[enemy.Type] = enemy.RGE[enemy.Type] + stoi(command);
 }
 
 void Management::Attack(Creature& creature, std::string command)
