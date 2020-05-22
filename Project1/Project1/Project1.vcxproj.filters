@@ -24,9 +24,6 @@
     <ClCompile Include="Management%28File%29.cpp">
       <Filter>資源檔</Filter>
     </ClCompile>
-    <ClCompile Include="Management%28gameAction_seletPoint%29.cpp">
-      <Filter>資源檔</Filter>
-    </ClCompile>
     <ClCompile Include="Management%28Move%29.cpp">
       <Filter>資源檔</Filter>
     </ClCompile>
@@ -46,6 +43,15 @@
       <Filter>資源檔</Filter>
     </ClCompile>
     <ClCompile Include="Management%28existCheck%29.cpp">
+      <Filter>資源檔</Filter>
+    </ClCompile>
+    <ClCompile Include="Management%28SelectUser%29.cpp">
+      <Filter>資源檔</Filter>
+    </ClCompile>
+    <ClCompile Include="Management%28SeletPoint%29.cpp">
+      <Filter>資源檔</Filter>
+    </ClCompile>
+    <ClCompile Include="Management%28UserTurn%29.cpp">
       <Filter>資源檔</Filter>
     </ClCompile>
   </ItemGroup>

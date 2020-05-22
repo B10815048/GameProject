@@ -3,6 +3,7 @@
 #include <string>
 #include <sstream>
 #include <vector>
+#include <regex>
 
 char Management::Search(std::vector<std::vector<char> >& map, int x, int y)
 {
@@ -76,9 +77,21 @@ void Management::loadMapfile()
 	std::string fileName;
 	int count = 0;
 	int enemyCount;
+	std::regex form(".+txt$");
 	std::cout << "選擇地圖 : " << std::endl;
-	std::cin >> fileName;
-	file.open(fileName, std::ios::in);
+	while (std::cin >> fileName)
+	{
+		if (std::regex_match(fileName, form))
+		{
+			file.open(fileName, std::ios::in);
+			if (file.is_open())
+				break;
+			else
+				std::cout << "重新輸入：" << std::endl;
+		}
+		else
+			std::cout << "重新輸入：" << std::endl;
+	}
 	file >> height >> width;
 	map.resize(height);
 	for (int i = 0; i < height; i++)

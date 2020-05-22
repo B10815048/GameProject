@@ -27,83 +27,6 @@ int Management::findCardPosition(Enemy& enemy, int index)
 	return -1;
 }
 
-void Management::userPlayCards()
-{
-	int position;
-	int i, j, k, l, m, index, index1, index2;
-	CompairCardDex tmp;
-	char icon;
-	string input;
-	std::cout << "出牌:" << endl;
-	for (int i = 0; i < userDeck.size(); i++)
-	{
-		cin >> input;
-		if (input == "check")
-		{
-			for (int j = 0; j < userDeck.size(); j++)
-			{
-				cout << userDeck[j].Icon << "-hp: " << userDeck[j].HP << ", shield: " << userDeck[j].Shield << endl;
-			}
-			for (int j = 0; j < enemyDeck.size(); j++)
-			{
-				if(checkSpace(enemyDeck[j].P))
-					cout << enemyDeck[j].Icon << "-hp: " << enemyDeck[j].HP[enemyDeck[j].Type] << ", shield: " << enemyDeck[j].Shield << endl;
-			}
-			i--;
-			continue;
-		}
-		else
-			icon = input[0];
-		tmp.Index.clear();
-		position = findCreatureDeckPosition(0, icon);
-		tmp.Icon = userDeck[position].Icon;
-		cin >> input;
-		if (input == "check") // check指令
-		{
-			cout << "hand: ";
-			for (int j = 0; j < userDeck[position].Card.size(); j++)
-			{
-				if (j == userDeck[position].Card.size() - 1)
-					cout << userDeck[position].Card[j].Order << "; ";
-				else
-					cout << userDeck[position].Card[j].Order << ", ";
-			}
-			cout << "discard: ";
-			for (int j = 0; j < userDeck[position].disCardDeck.size(); j++)
-			{
-				cout << userDeck[position].disCardDeck[j].Order;
-				if (j != userDeck[position].disCardDeck.size() - 1)
-					cout << ", ";
-			}
-			cout << endl;
-			i--;
-			continue;
-		}
-		else
-			index = stoi(input);
-		if (index == -1) //長休指令
-		{
-			tmp.Dex[0] = 99;
-			tmp.Dex[1] = 99;
-			tmp.Index.push_back(-1);
-			tmp.Index.push_back(-1);
-		}
-		else //出牌指令
-		{
-			////////////////////////////
-			index1 = findCardPosition(userDeck[position], index);
-			tmp.Index.push_back(userDeck[position].Card[index1].Order);
-			cin >> index;
-			index2 = findCardPosition(userDeck[position], index);
-			tmp.Index.push_back(userDeck[position].Card[index2].Order);
-			////////////////////////////
-			tmp.Dex[0] = userDeck[position].Card[index1].DEX;
-			tmp.Dex[1] = userDeck[position].Card[index2].DEX;
-		}
-		compairList.push_back(tmp);
-	}
-}
-
 void Management::enemyPlayCards()
 {
 	int i, j;
@@ -122,7 +45,7 @@ void Management::enemyPlayCards()
 				if (enemyDeck[i].name == nameExist[j])
 					exist = true;
 			}
-			if (exist)
+			if (!exist)
 			{
 				tmp.Index.clear();
 				minIndex = enemyDeck[i].Card[0].Order;
