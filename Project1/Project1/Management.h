@@ -145,6 +145,7 @@ public:
 	//////////////////////////////////////////////////////////////////////
 	bool checkSpace(Point p);
 	bool checkDoor(Point p);
+	bool havePlayed(char icon);
 	int creatureOnPoint(Point p);
 	int enemyOnPoint(Point p,int Camp);
 	int getAbilityType(std::string Type);

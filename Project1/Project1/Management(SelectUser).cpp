@@ -15,7 +15,7 @@ void Management::seletUser()
 	std::regex form("^[2-4]{1}$");
 	std::string input;
 	std::cout << "請輸入出場角色數量:" << std::endl;
-	while (getline(std::cin, input))
+	while (std::cin>>input)
 	{
 		if (std::regex_match(input, form))
 			break;

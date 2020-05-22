@@ -17,9 +17,18 @@ int  Management::findCardPosition(CompairCardDex& compairCardDex, int index)
 	return -1;
 }
 
+bool  Management::havePlayed(char icon)
+{
+	int i;
+	for (i = 0; i < compairList.size(); i++)
+	{
+		if (compairList[i].Icon == icon)
+			return true;
+	}
+	return false;
+}
 void Management::playCard()
 {
-	static int round_count = 0;
 	int position;
 	int p1;
 	int i, j, k, l, index, index1, index2;
@@ -29,6 +38,10 @@ void Management::playCard()
 	std::regex userCheck("^[A-D]{1} check$");
 	std::regex creatureCheck("check");
 	char icon;
+	// 每輪開始
+	round_count += 1;
+	std::cout << "--------------------------------------------" << std::endl <<
+		"round " << round_count << ":" << std::endl;
 	compairList.clear();
 	// 玩家出牌
 	userPlayCards();
@@ -37,10 +50,6 @@ void Management::playCard()
 	//所有牌排序
 	sort_compairList();
 	//依序出牌 
-	string skill[] = { "move", "heal", "shield", "attack","range" };
-	round_count += 1;
-	cout << "--------------------------------------------" << endl <<
-		"round " << round_count << ":" << endl;
 	for (i = 0; i < compairList.size(); i++)
 	{
 		if (!compairList[i].skip)
@@ -50,8 +59,8 @@ void Management::playCard()
 				position = findCreatureDeckPosition(0, compairList[i].Icon);
 				if (compairList[i].Index[0] != -1)
 				{
-					cout << "角色" << userDeck[position].Icon << "出牌" << endl;
-					while (getline(cin, command))
+					std::cout << "輪到角色" << userDeck[position].Icon << "使用牌的回合 (u/d/check)" << std::endl;
+					while (getline(cin , command))
 					{
 						if (std::regex_match(command, creatureCheck)) //顯示所有生物狀態
 						{
@@ -67,6 +76,8 @@ void Management::playCard()
 						else if (std::regex_match(command, userCheck) && findCreatureDeckPosition(0, command[0]) != -1) //顯示指定user狀態
 						{
 							position = findCreatureDeckPosition(0, command[0]);
+							sort_card(position);
+							sort_discard(position);
 							cout << "hand: ";
 							for (int j = 0; j < userDeck[position].Card.size(); j++)
 							{
@@ -87,6 +98,7 @@ void Management::playCard()
 						else if (std::regex_match(command, play) && compairList[i].cardExist(command[0]-'0')) //選擇卡片
 						{
 							p1 = findCardPosition(compairList[i], command[0] - '0');
+							std::cout << userDeck[position].Icon << "'s turn: card " << compairList[i].Index[0] << " " << compairList[i].Index[1] << std::endl;
 							if (command[1] == 'd')
 							{
 								usingEffect(userDeck[position], compairList[i].Index[p1], 1);
@@ -100,13 +112,17 @@ void Management::playCard()
 							break;
 						}
 						else
-							std::cout << "不合規範：" << std::endl;
+						{
+							if (command.size() != 0)
+								std::cout << "不合規範：" << std::endl;
+						}
 					}
 
 				}
 				else
 				{
 					cout << "英雄" << userDeck[position].Icon << "長休" << endl;
+					Heal(userDeck[position], "2");
 					rest(userDeck[position]);
 				}
 

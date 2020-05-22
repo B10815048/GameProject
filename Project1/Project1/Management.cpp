@@ -5,6 +5,10 @@
 
 void Management::runGAME()
 {
+	userDeck.clear();
+	enemyDeck.clear();
+	user.clear();
+	enemy.clear();
 	std::string input = "";
 	Point p;
 	round_count = 0;

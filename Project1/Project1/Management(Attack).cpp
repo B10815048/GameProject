@@ -2,7 +2,8 @@
 #include <cmath>
 #include <iomanip>
 #include <string>
-/////////
+#include <regex>
+
 void  Management::Range(User& user, std::string command)
 {
 	user.Range = user.Range +stoi(command);
@@ -15,10 +16,12 @@ void Management::Range(Enemy& enemy, std::string command)
 
 void Management::Attack(Creature& creature, std::string command)
 {
-	char Icon;
 	int i, j;
 	int position;
 	int enemyX, enemyY;
+	std::string input;
+	std::regex attack("^[a-z]{1}$");
+	std::regex giveUp("0");
 	int damage = creature.Attack + stoi(command);
 	if (damage < 0)
 		damage = 0;
@@ -27,26 +30,29 @@ void Management::Attack(Creature& creature, std::string command)
 	if (creature.Camp == 0) //¥D¨¤¤è
 	{
 		std::cout << "¿ï¾Ü§ðÀ»¼Ä¤H : " << std::endl;
-		while (std::cin >> Icon)
+		while (std::cin >> input)
 		{
-			if (Icon == '0')
+			if (std::regex_match(input, attack) && findCreatureDeckPosition(1, input[0]) != -1)
 			{
-				std::cout << "©ñ±ó§ðÀ»..." << std::endl;
-				return;
-			}
-			else if (position = findCreatureDeckPosition(1, Icon)!=-1)
-			{
-				position = findCreatureDeckPosition(1, Icon);
+				position = findCreatureDeckPosition(1, input[0]);
 				if (shootRange(creature.P, enemyDeck[position].P, 0, creature.Range) && viewableRange(enemyDeck[position].P, creature.P))
 				{
 					if (damage > enemyDeck[position].Shield)
 						enemyDeck[position].HP[enemyDeck[position].Type] -= damage - enemyDeck[position].Shield;
 					std::cout << creature.Icon << " attack " << enemyDeck[position].Icon << " " << damage << " damage, " << enemyDeck[position].Icon << " shield " << enemyDeck[position].Shield
 						<< " , " << enemyDeck[position].Icon << " remain " << enemyDeck[position].HP[enemyDeck[position].Type] << " hp" << std::endl;
-
 					return;
 				}
+				else
+					std::cout << "error target!!!" << std::endl;
+
 			}
+			else if (std::regex_match(input, giveUp))
+			{
+				std::cout << "©ñ±ó§ðÀ»..." << std::endl;
+				return;
+			}
+			else
 			std::cout << "error target!!!" << std::endl;
 		}
 	}
@@ -61,7 +67,6 @@ void Management::Attack(Creature& creature, std::string command)
 			if (shootRange(creature.P, userDeck[i].P, 1, creature.Range)&& viewableRange(userDeck[i].P, creature.P))
 			{
 				step = getStep(creature.P, userDeck[i].P, 1, creature.Range);
-				std::cout << step << std::endl;
 				if (step < minStep)
 				{
 					for (int j = 0; j < 4; j++)
