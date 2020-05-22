@@ -1,13 +1,23 @@
 #include "Management.h"
 #include <iostream>
+#include <regex>
+
 void  Management::setMove(User& user, int step)
 {
 	std::cout << "輸入移動：" << std::endl;
 	std::string moveCommand;
+	std::regex form1("^[wasd]+$");
+	std::regex form2("e");
 	while (std::cin >> moveCommand)
 	{
-		if (moveCommand.size() <= step && Move(user, moveCommand))
-			break;
+		if (std::regex_match(moveCommand, form1) || std::regex_match(moveCommand, form2))
+		{
+			if (moveCommand.size() <= step && Move(user, moveCommand))
+				break;
+			else
+				std::cout << "不合規範" << std::endl;
+		}
+		else
 		std::cout << "不合規範" << std::endl;
 	}
 }

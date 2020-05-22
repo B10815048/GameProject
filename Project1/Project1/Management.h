@@ -151,6 +151,7 @@ public:
 	int findCreaturePosition(int camp, std::string name);
 	int findCardPosition(User& user, int index);
 	int findCardPosition(Enemy& enemy, int index);
+	int findCardPosition(CompairCardDex& compairCardDex, int index);
 	int findCreatureDeckPosition(int camp, char icon);
 };
 

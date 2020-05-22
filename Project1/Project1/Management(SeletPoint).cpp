@@ -2,6 +2,7 @@
 #include <fstream>
 #include <vector>
 #include "Management.h"
+#include <regex>
 
 void Management::seletPoint()
 {
@@ -10,11 +11,18 @@ void Management::seletPoint()
 	int count;
 	std::vector <Point> point;
 	std::string command;
-
+	std::regex form1("^[wasd]+$");
+	std::regex form2("e");
 	for (int i = 0; i < this->userDeck.size(); i++)
 	{
-		std::cout << "選擇角色位置: " << std::endl;
-		std::cin >> command;
+		std::cout << "選擇角色位置：" << std::endl;
+		while (std::cin >> command)
+		{
+			if (std::regex_match(command, form1) || std::regex_match(command, form2))
+				break;
+			else
+				std::cout << "錯誤輸入：" << std::endl;
+		}
 		point.clear();
 		bool haveFind = false;
 

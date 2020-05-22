@@ -54,37 +54,6 @@ bool Point::operator==(Point b)
 	return (this->x == b.x && this->y == b.y);
 }
 
-void Management::seletUser()
-{
-	int int_buffer;
-	std::string string_buffer;
-	int i, j;
-	int Point;
-	std::cout << "請輸入出場角色數量:" << std::endl;
-	std::cin >> int_buffer;
-	userDeck.resize(int_buffer);
-	for (i = 0; i < userDeck.size(); i++)
-	{
-		std::cin >> string_buffer;
-		for (j = 0; j < user.size(); j++)
-		{
-			if (user[j].name == string_buffer)
-			{
-				userDeck[i] = user[j];
-				Point = j;
-			}
-		}
-		userDeck[i].Camp = 0;
-		userDeck[i].Icon = 65 + i;
-		userDeck[i].Card.clear();
-		for (j = 0; j < userDeck[i].CardOnHand; j++)
-		{
-			std::cin >> int_buffer;
-			userDeck[i].Card.push_back(user[Point].Card[int_buffer]);
-		}
-	}
-}
-
 int  Management::creatureOnPoint(Point p)
 {
 	int count;
