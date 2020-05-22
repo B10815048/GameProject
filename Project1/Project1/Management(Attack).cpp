@@ -157,8 +157,6 @@ bool Management::viewableRange(Point start, Point end)
 }
 int Management::getStep(Point start, Point end, int camp,int maxRange)
 {
-	std::cout << start.x << " " << start.y << std::endl;
-	std::cout << end.x << " " << end.y << std::endl;
 	int i, j;
 	if (map[end.y][end.x] != '1')
 		return false;
@@ -184,14 +182,6 @@ int Management::getStep(Point start, Point end, int camp,int maxRange)
 	viewU(start, 0);
 	viewD(start, 0);
 	viewL(start, 0);
-	for (i = 0; i < height; i++)
-	{
-		for (j = 0; j < width; j++)
-		{
-			std::cout << checkMap[i][j] << " " ;
-		}
-		std::cout << std::endl;
-	}
 	int n = 0;
 	while (checkMap[end.y][end.x] <= 0 && n <= maxRange)
 	{

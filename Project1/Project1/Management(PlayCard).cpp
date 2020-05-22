@@ -111,8 +111,6 @@ void Management::sort_compairList()
 			}
 		}
 	}
-	for (i = 0; i < compairList.size(); i++)
-		cout << "順序" << i << " " << compairList[i].Dex[0] << endl;
 }	
 
 void Management::usingEffect(User& userDeck, int index, int part)
@@ -229,117 +227,6 @@ void Management::usingEffect(Enemy& enemyDeck, int index)
 	}
 }
 
-void Management::playCard()
-{
-	static int round_count = 0;
-	int position;
-	int i, j, k, l, index, index1, index2;
-	string command;
-	CompairCardDex tmp;
-	char icon;
-	compairList.clear();
-	// 玩家出牌
-	userPlayCards();
-	//敵人出牌
-	enemyPlayCards();
-	//所有牌排序
-	sort_compairList();
-	//依序出牌 
-	string skill[] = { "move", "heal", "shield", "attack","range" };
-	round_count += 1;
-	cout << "--------------------------------------------" << endl <<
-		"round " << round_count << ":" << endl;
-	for(i = 0; i < compairList.size(); i++)
-	{
-		if (!compairList[i].skip)
-		{
-			if (compairList[i].Icon >= 'A' && compairList[i].Icon <= 'Z') //主角方
-			{
-				position = findCreatureDeckPosition(0, compairList[i].Icon);
-				if (compairList[i].Index[0] != -1)
-				{
-					cout << "角色" << userDeck[position].Icon << "出牌" << endl;
-					cin >> command;
-					if (command == "check")
-					{
-						for (int j = 0; j < userDeck.size(); j++)
-						{
-							cout << userDeck[j].Icon << "-hp: " << userDeck[j].HP << ", shield: " << userDeck[j].Shield << endl;
-						}
-						for (int j = 0; j < enemyDeck.size(); j++)
-						{
-							if (checkSpace(enemyDeck[j].P))
-								cout << enemyDeck[j].Icon << "-hp: " << enemyDeck[j].HP[enemyDeck[j].Type] << ", shield: " << enemyDeck[j].Shield << endl;
-						}
-						i--;
-						continue;
-					}
-					else if (command[1] == 'd')
-					{
-						//////////////////////////////////////////
-						//發動下半部效果:
-						for (j = 0; j < compairList[i].Index.size(); j++)
-						{
-							if (compairList[i].Index[j] == command[0] - '0')
-							{
-								for (l = 0; l < userDeck[position].Card.size(); l++)
-								{
-									if (userDeck[position].Card[l].Order == command[0] - '0')
-										usingEffect(userDeck[position], command[0] - '0', 1);
-								}
-								compairList[i].Index.erase(compairList[i].Index.begin() + j);
-							}
-						}
-						//////////////////////////////////////////
-						//發動上半部效果:
-						usingEffect(userDeck[position], compairList[i].Index[0], 0);
-						compairList[i].Index.clear();
-						//////////////////////////////////////////
-					}
-					else if (command[1] == 'u')
-					{
-						//////////////////////////////////////////
-						//發動上半部效果:
-						for (j = 0; j < compairList[i].Index.size(); j++)
-						{
-							if (compairList[i].Index[j] == command[0] - '0')
-							{
-								for (l = 0; l < userDeck[position].Card.size(); l++)
-								{
-									if (userDeck[position].Card[l].Order == command[0] - '0')
-										usingEffect(userDeck[position], command[0] - '0', 0);
-								}
-								compairList[i].Index.erase(compairList[i].Index.begin() + j);
-							}
-						}
-						//////////////////////////////////////////
-						//發動下半部效果:
-						usingEffect(userDeck[position], compairList[i].Index[0], 1);
-						compairList[i].Index.clear();
-						//////////////////////////////////////////
-					}
-				}
-				else
-				{
-					cout << "英雄" << userDeck[position].Icon << "長休" << endl;
-					rest(userDeck[position]);
-				}
-
-			}
-			else if (compairList[i].Icon >= 'a' && compairList[i].Icon <= 'z') //敵人方
-			{
-				position = findCreatureDeckPosition(1, compairList[i].Icon);
-				cout << "敵人" << enemyDeck[position].Icon << "出牌" << endl;
-				usingEffect(enemyDeck[position], compairList[i].Index[0]);
-			}
-		}
-		// 每個物件行動結束計算
-		survivalCheck();		
-	}
-	// 每輪結束計算
-	doorOpenCheck();
-}
-
 int  Management::findCreaturePosition(int camp, string name)
 {
 	int i;
@@ -401,7 +288,7 @@ void Management::rest(User& user)
 				user.disCardDeck.clear();
 				return;
 			}
-			cout << "重新選擇：" << std::endl;
 		}
+		cout << "重新選擇：" << std::endl;
 	}
 }
