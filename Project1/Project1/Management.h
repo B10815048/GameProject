@@ -76,6 +76,7 @@ class Management
 {
 private:
 	//////////////////////////////////////////////////////////////////////
+	int round_count = 0;
 	int width, height;
 	std::vector <std::vector<char> > map;
 	std::vector <std::vector<int> >checkMap;
@@ -106,7 +107,7 @@ public:
 	void resetShield();
 	bool viewableRange(Point start, Point end);
 	bool oneGapCheck(int x, float y1, float y2);
-	bool shootRange(Point start, Point end, int n,int camp, int maxRange);
+	bool shootRange(Point start, Point end, int camp, int maxRange);
 	int getStep(Point start, Point end, int camp,int maxRange);
 	int viewR(Point start,int n);
 	int viewU(Point start, int n);
@@ -129,6 +130,8 @@ public:
 	void userPlayCards();
 	void enemyPlayCards();
 	void sort_compairList();
+	void sort_card(int index);
+	void sort_discard(int index);
 	void usingEffect(User& user,int index, int part); //part 0:卡牌上半部，part 1:卡牌下半部
 	void usingEffect(Enemy& enemy, int index);
 	//////////////////////////////////////////////////////////////////////

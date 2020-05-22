@@ -136,12 +136,14 @@ void Management::loadMapfile()
 		{
 			enemyDeck[i].Attack = enemyDeck[i].STR[0];
 			enemyDeck[i].Type = 0;
+			enemyDeck[i].Range = enemyDeck[i].RGE[enemyDeck[i].Type];
 			i++;
 		}
 		else if (int_buffer == 2)
 		{
 			enemyDeck[i].Attack = enemyDeck[i].STR[1];
 			enemyDeck[i].Type = 1;
+			enemyDeck[i].Range = enemyDeck[i].RGE[enemyDeck[i].Type];
 			i++;
 		}
 		for (j = userDeck.size(); j < 4; j++)

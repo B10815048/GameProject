@@ -5,7 +5,9 @@
 
 void Management::runGAME()
 {
+	std::string input = "";
 	Point p;
+	round_count = 0;
 	loadUserfile();
 	loadEnemyfile();
 	seletUser();
@@ -14,7 +16,7 @@ void Management::runGAME()
 	printMap(p);
 	printEnemy(p);
 	seletPoint();
-	while (!victoryCheck() && userDeck.size()>0)
+	while (!victoryCheck() && userDeck.size() > 0)
 	{
 		playCard();
 		resetShield();

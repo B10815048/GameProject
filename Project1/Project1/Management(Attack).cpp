@@ -37,7 +37,7 @@ void Management::Attack(Creature& creature, std::string command)
 			else if (position = findCreatureDeckPosition(1, Icon)!=-1)
 			{
 				position = findCreatureDeckPosition(1, Icon);
-				if (shootRange(creature.P, enemyDeck[position].P, creature.Range, 0, creature.Range) && viewableRange(enemyDeck[position].P, creature.P))
+				if (shootRange(creature.P, enemyDeck[position].P, 0, creature.Range) && viewableRange(enemyDeck[position].P, creature.P))
 				{
 					if (damage > enemyDeck[position].Shield)
 						enemyDeck[position].HP[enemyDeck[position].Type] -= damage - enemyDeck[position].Shield;
@@ -58,9 +58,10 @@ void Management::Attack(Creature& creature, std::string command)
 			userIndex[j] = 0;
 		for (i = 0; i < userDeck.size(); i++)
 		{
-			if (shootRange(creature.P, userDeck[i].P, creature.Range, 1, creature.Range) && viewableRange(userDeck[i].P, creature.P))
+			if (shootRange(creature.P, userDeck[i].P, 1, creature.Range)&& viewableRange(userDeck[i].P, creature.P))
 			{
 				step = getStep(creature.P, userDeck[i].P, 1, creature.Range);
+				std::cout << step << std::endl;
 				if (step < minStep)
 				{
 					for (int j = 0; j < 4; j++)
@@ -77,12 +78,17 @@ void Management::Attack(Creature& creature, std::string command)
 				}
 			}	
 		}
-		if (count == 1)
+		if (count == 0)
+		{
+			std::cout << "no one lock" << std::endl;
+		}
+		else if (count == 1)
 		{
 			for (int i = 0; i < userDeck.size(); i++)
 			{
 				if (userIndex[i] == 1)
 				{
+					std::cout << creature.Icon << " lock " << userDeck[i].Icon << " in distance " << minStep << std::endl;
 					if (damage > userDeck[i].Shield)
 						userDeck[i].HP -= damage - userDeck[i].Shield;
 					std::cout << creature.Icon << " attack " << userDeck[i].Icon << " " << damage << " damage, " << userDeck[i].Icon << " shield " << userDeck[i].Shield
@@ -98,6 +104,7 @@ void Management::Attack(Creature& creature, std::string command)
 				{
 					if (compairList[i].Icon == userDeck[j].Icon && userIndex[j] == 1)
 					{
+						std::cout << creature.Icon << " lock " << userDeck[i].Icon << " in distance " << minStep << std::endl;
 						if (damage > userDeck[j].Shield)
 							userDeck[j].HP -= damage - userDeck[j].Shield;
 						std::cout << creature.Icon << " attack " << userDeck[j].Icon << " " << damage << " damage, " << userDeck[j].Icon << " shield " << userDeck[j].Shield
@@ -157,8 +164,6 @@ bool Management::viewableRange(Point start, Point end)
 }
 int Management::getStep(Point start, Point end, int camp,int maxRange)
 {
-	std::cout << start.x << " " << start.y << std::endl;
-	std::cout << end.x << " " << end.y << std::endl;
 	int i, j;
 	if (map[end.y][end.x] != '1')
 		return false;
@@ -184,14 +189,6 @@ int Management::getStep(Point start, Point end, int camp,int maxRange)
 	viewU(start, 0);
 	viewD(start, 0);
 	viewL(start, 0);
-	for (i = 0; i < height; i++)
-	{
-		for (j = 0; j < width; j++)
-		{
-			std::cout << checkMap[i][j] << " " ;
-		}
-		std::cout << std::endl;
-	}
 	int n = 0;
 	while (checkMap[end.y][end.x] <= 0 && n <= maxRange)
 	{
@@ -215,21 +212,21 @@ int Management::getStep(Point start, Point end, int camp,int maxRange)
 	checkMap[start.y][start.x] = 0;
 	return checkMap[end.y][end.x];
 }
-bool Management::shootRange(Point start, Point end, int step, int camp, int maxRange)
+bool Management::shootRange(Point start, Point end, int camp, int maxRange)
 {
 	int i, j;
-	if (map[end.y][end.x] != '1' && map[end.y][end.x] !='3')
+	if (map[end.y][end.x] != '1')
 		return false;
 
 	checkMap.resize(height);
 	for (i = 0; i < checkMap.size(); i++)
 		checkMap[i].resize(width);
-	
+
 	for (i = 0; i < height; i++)
 	{
 		for (j = 0; j < width; j++)
 		{
-			if (map[i][j] == '3' || map[i][j] == '0' || (enemyOnPoint({ j,i }, camp)!=0 && !(end == Point{ j, i })))
+			if (map[i][j] == '0' || (enemyOnPoint({ j,i }, camp) != 0 && !(end == Point{ j, i })))
 			{
 				checkMap[i][j] = -1;
 			}
@@ -242,7 +239,6 @@ bool Management::shootRange(Point start, Point end, int step, int camp, int maxR
 	viewU(start, 0);
 	viewD(start, 0);
 	viewL(start, 0);
-
 	int n = 0;
 	while (checkMap[end.y][end.x] <= 0 && n <= maxRange)
 	{
@@ -261,10 +257,9 @@ bool Management::shootRange(Point start, Point end, int step, int camp, int maxR
 			}
 		}
 	}
-	checkMap[start.y][start.x] = 0;
 	if (n > maxRange)
 		return false;
-	else if (checkMap[end.y][end.x] <= step)
+	else if (checkMap[end.y][end.x] <= maxRange)
 		return true;
 	else
 		return false;
