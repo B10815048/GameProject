@@ -84,13 +84,13 @@ private:
 	std::vector <User> userDeck; // 出場人數
 	std::vector <Enemy> enemyDeck;
 	std::vector<CompairCardDex> compairList;
-	void gotoxy(Point p);
-	void getxy(Point& p);
 public:
 	//////////////////////////////////////////////////////////////////////
-	//print : 
-	void printMap(Point p);//Yo
-	void printEnemy(Point p); //c7
+	//print :
+	void gotoxy(Point p);
+	void getxy(Point& p);
+	void printMap(Point p);
+	void printEnemy(Point p);
 	void printUser(Point p);
 	//////////////////////////////////////////////////////////////////////
 	//loadFile : 
@@ -135,8 +135,6 @@ public:
 	//playCard : 
 	bool userExist(char icon);
 	bool enemyExist(char icon);
-	//template < typename T>
-	//bool inputCheck(T, string type, int base, int top , int n);
 	bool victoryCheck();
 	void survivalCheck();
 	void doorOpenCheck();

@@ -108,27 +108,48 @@ void Management::enemyPlayCards()
 {
 	int i, j;
 	int minIndex, position;
+	vector <string> nameExist;
+	bool exist;
+	nameExist.clear();
 	CompairCardDex tmp;
 	for (i = 0; i < enemyDeck.size(); i++)
 	{
 		if (checkSpace(enemyDeck[i].P))
 		{
-			tmp.Index.clear();
-			minIndex = enemyDeck[i].Card[0].Order;
-			position = 0;
-			for (j = 0; j < enemyDeck[i].Card.size(); j++)
+			exist = false;
+			for (j = 0; j < nameExist.size(); j++)
 			{
-				if (enemyDeck[i].Card[j].Order < minIndex)
-				{
-					minIndex = enemyDeck[i].Card[j].Order;
-					position = j;
-				}
+				if (enemyDeck[i].name == nameExist[j])
+					exist = true;
 			}
-			tmp.Index.push_back(minIndex);
-			tmp.Dex[0] = enemyDeck[i].Card[position].DEX;
-			tmp.Dex[1] = 99;
-			tmp.Icon = enemyDeck[i].Icon;
-			compairList.push_back(tmp);
+			if (exist)
+			{
+				tmp.Index.clear();
+				minIndex = enemyDeck[i].Card[0].Order;
+				position = 0;
+				for (j = 0; j < enemyDeck[i].Card.size(); j++)
+				{
+					if (enemyDeck[i].Card[j].Order < minIndex)
+					{
+						minIndex = enemyDeck[i].Card[j].Order;
+						position = j;
+					}
+				}
+				tmp.Index.push_back(minIndex);
+				tmp.Dex[0] = enemyDeck[i].Card[position].DEX;
+				tmp.Dex[1] = 99;
+				tmp.Icon = enemyDeck[i].Icon;
+				compairList.push_back(tmp);
+				for (j = i + 1; j < enemyDeck.size(); j++)
+				{
+					if (enemyDeck[j].name == enemyDeck[i].name)
+					{
+						tmp.Icon = enemyDeck[j].Icon;
+						compairList.push_back(tmp);
+					}
+				}
+				nameExist.push_back(enemyDeck[i].name);
+			}
 		}
 	}
 }
