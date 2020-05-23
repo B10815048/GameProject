@@ -30,9 +30,8 @@ void Management::Attack(Creature& creature, std::string command)
 	std::regex attack("^[a-z]{1}$");
 	std::regex giveUp("0");
 	int damage = creature.Attack + stoi(command);
-
 	positiveValue(creature.Range);
-
+	positiveValue(damage);
 	if (creature.Range == 0)
 		creature.Range = 1;
 	if (creature.Camp == 0) //主角方
@@ -40,7 +39,7 @@ void Management::Attack(Creature& creature, std::string command)
 		std::cout << "選擇攻擊敵人 : " << std::endl;
 		while (std::cin >> input)
 		{
-			if (std::regex_match(input, attack) && findCreatureDeckPosition(1, input[0]) != -1)
+			if (std::regex_match(input, attack) && findCreatureDeckPosition(1, input[0]) != -1) //符合攻擊目標及在攻擊範圍內
 			{
 				position = findCreatureDeckPosition(1, input[0]);
 				if (shootRange(creature.P, enemyDeck[position].P, 0, creature.Range) && viewableRange(enemyDeck[position].P, creature.P))
@@ -131,50 +130,6 @@ void Management::Attack(Creature& creature, std::string command)
 	resetRange();
 }
 
-bool  Management::oneGapCheck(int x, float y1, float y2)
-{
-	int j;
-	for (j = ceil(y1); j != floor(y2); j = j + (floor(y2) - ceil(y1)) / abs(floor(y2) - ceil(y1)))
-	{
-		if (map[j - 1][x] == '3')
-			return true;
-	}
-	return false;
-}
-bool Management::viewableRange(Point start, Point end)
-{
-	int i,j;
-	float a, gap;
-	if (start.x != end.x)
-	{
-		a = (float)(end.y-start.y)/ abs(end.x-start.x);
-		gap = 0.5 + start.y;
-		if(oneGapCheck(start.x, gap+ (a/2),gap ))
-			return false;
-		gap = gap + (a/2) ;
-		i = start.x;
-		while (i != end.x - (end.x - start.x) / abs(end.x - start.x))
-		{
-			if (oneGapCheck(i + (end.x - start.x) / abs(end.x - start.x), gap + a, gap))
-				return false;
-			i = i + (end.x - start.x) / abs(end.x - start.x);
-			gap = a + gap;
-		}
-		if(oneGapCheck(end.x, gap + (a / 2), gap))
-			return false;
-	}
-	else
-	{
-		for (i = start.y; i != end.y; i = i + (end.y - start.y) / abs(end.y - start.y))
-		{
-			if (map[i][start.x] == '3')
-				return false;
-		}	
-		if (map[i][start.x] == '3')
-			return false;
-	}
-	return true;
-}
 int Management::getStep(Point start, Point end, int camp,int maxRange)
 {
 	int i, j;

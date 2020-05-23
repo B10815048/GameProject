@@ -18,6 +18,7 @@ void Management::runGAME()
 	loadMapfile();
 	getxy(p);
 	printMap(p);
+
 	printEnemy(p);
 	seletPoint();
 	while (!victoryCheck() && userDeck.size() > 0)

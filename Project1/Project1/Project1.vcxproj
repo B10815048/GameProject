@@ -152,6 +152,7 @@
     <ClCompile Include="Management%28SelectUser%29.cpp" />
     <ClCompile Include="Management%28UserTurn%29.cpp" />
     <ClCompile Include="Management%28CardTurn%29.cpp" />
+    <ClCompile Include="Management%28viewRange%29.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Management.h" />
