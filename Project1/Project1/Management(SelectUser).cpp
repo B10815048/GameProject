@@ -43,7 +43,7 @@ void Management::seletUser()
 		userDeck[i].Camp = 0;
 		userDeck[i].Icon = 65 + i;
 		userDeck[i].Card.clear();
-		form = ("^[0-9]$");
+		form = ("^[0-9]+$");
 		for (j = 0; j < userDeck[i].CardOnHand; j++)
 		{
 			while (std::cin >> input)

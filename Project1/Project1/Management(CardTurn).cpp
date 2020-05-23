@@ -98,6 +98,7 @@ void Management::playCard()
 						else if (std::regex_match(command, play) && compairList[i].cardExist(command[0]-'0')) //¿ï¾Ü¥d¤ù
 						{
 							p1 = findCardPosition(compairList[i], command[0] - '0');
+							position = findCreatureDeckPosition(0, compairList[i].Icon);
 							std::cout << userDeck[position].Icon << "'s turn: card " << compairList[i].Index[0] << " " << compairList[i].Index[1] << std::endl;
 							if (command[1] == 'd')
 							{

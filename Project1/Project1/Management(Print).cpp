@@ -21,7 +21,7 @@ void Management::printMap(Point p)
 	{
 		for (int j = 0; j < this->width; j++)
 		{
-			if (map[i][j] == '0' || map[i][j] == 'x' || map[i][j] == 'y' || map[i][j] == '4')
+			if (map[i][j] == '0' || map[i][j] == 'x' || map[i][j] == 'y' | map[i][j] == '4')
 				std::cout << " ";
 			else
 				std::cout << map[i][j];
