@@ -87,11 +87,10 @@ private:
 	std::vector<CompairCardDex> compairList;
 public:
 	//////////////////////////////////////////////////////////////////////
-	//viewRange:
+	//Range:
 	bool viewableRange(Point start, Point end);
 	bool oneGapCheck(int x, float y1, float y2);
-	
-	
+	int shootRange(Point start, Point end, int camp, int maxRange);
 	//////////////////////////////////////////////////////////////////////
 	//Attack:
 	void Attack(Creature& creature, std::string command); // ¦³range return 1; µLrange return 0
@@ -99,8 +98,6 @@ public:
 	void Range(Enemy& enemy, std::string command);
 	void resetRange();
 	void resetShield();
-	bool shootRange(Point start, Point end, int camp, int maxRange);
-	int getStep(Point start, Point end, int camp, int maxRange);
 	int viewR(Point start, int n);
 	int viewU(Point start, int n);
 	int viewD(Point start, int n);
