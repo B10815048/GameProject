@@ -7,10 +7,12 @@
 
 char Management::Search(std::vector<std::vector<char> >& map, int x, int y)
 {
-	if (map[y][x] != 'x' || map[y][x] == '4')
+	if (map[y][x] != 'x' || map[y][x] == '4' || map[y][x] == 'y')
 	{
-		if(map[y][x] == '4')
+		if (map[y][x] == '4')
 			map[y][x] = '3';
+		else if (map[y][x] == 'y')
+			map[y][x] = '2';
 		return 'x';
 	}		
 	else
@@ -109,7 +111,7 @@ void Management::loadMapfile()
 			else if (block == '1') //可走的區域
 				map[i][j] = 'x';
 			else if (block == '2') //障礙物
-				map[i][j] = '2';
+				map[i][j] = 'y';
 			else if (block == '3') //門
 				map[i][j] = '4';
 		}

@@ -1,4 +1,4 @@
-2
+4
 brute 14 6
 8
 0 05 attack 4 - shield 2
@@ -17,3 +17,17 @@ scoundrel 8 5
 3 38 attack 2 attack 2 attack 2 - move 4
 4 44 attack 7 - move 2 attack 3 move 2
 5 68 attack 4 range 4 - heal 3
+purplestar 20 6
+6
+0 10 attack 3 range 2 - move 3 heal 3
+1 20 attack 4 heal 2  - move 3
+2 30 attack 5 - move 3
+3 40 attack 2 attack 3 attack 5 - move 4 shield 3
+4 50 attack 6 shield 2 - move 2 attack 3 move 2
+5 60 attack 4 range 4 - heal 3 shield 5
+trashman 10 4
+4
+0 05 attack 2 shield 1 - move 3
+1 15 attack 4 heal 2 - move 4
+2 25 attack 5 - move 5 heal 3
+3 35 attack 3 attack 3 - move 4 shield 4
