@@ -154,5 +154,6 @@ public:
 	int findCardPosition(Enemy& enemy, int index);
 	int findCardPosition(CompairCardDex& compairCardDex, int index);
 	int findCreatureDeckPosition(int camp, char icon);
+	void positiveValue(int& num);
 };
 

@@ -14,6 +14,13 @@ void Management::Range(Enemy& enemy, std::string command)
 	enemy.Range = enemy.Range + stoi(command);
 }
 
+void Management::positiveValue(int& num)
+{
+	if (num < 0)
+		num = 0;
+	return;
+}
+
 void Management::Attack(Creature& creature, std::string command)
 {
 	int i, j;
@@ -23,8 +30,9 @@ void Management::Attack(Creature& creature, std::string command)
 	std::regex attack("^[a-z]{1}$");
 	std::regex giveUp("0");
 	int damage = creature.Attack + stoi(command);
-	if (damage < 0)
-		damage = 0;
+
+	positiveValue(creature.Range);
+
 	if (creature.Range == 0)
 		creature.Range = 1;
 	if (creature.Camp == 0) //¥D¨¤¤è

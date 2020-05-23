@@ -166,35 +166,25 @@ void Management::sort_compairList()
 			std::cout << compairList[i].Index[0] << " " << compairList[i].Index[1] << std::endl;
 		else
 		{
-			int position = 0;
-			for (int j = 0; j < enemyDeck.size(); j++)
+			int p1;
+			int p2;
+			p1 = findCreatureDeckPosition(1, compairList[i].Icon); 
+			p2 = findCardPosition(enemyDeck[p1], compairList[i].Index[0]);
+			for (int k = 0; k < enemyDeck[p1].Card[p2].Type.size(); k++)
 			{
-				if (compairList[i].Icon == enemyDeck[j].Icon)
-				{
-					for (int k = 0; k < enemyDeck[j].Card.size(); k++)
-					{
-						if (enemyDeck[j].Card[i].Order == compairList[i].Index[0])
-							position = k;
-					}
-
-					for (int k = 0; k < enemyDeck[j].Card[position].Type.size(); k++)
-					{
-						if (enemyDeck[j].Card[position].Type[k] == 0)
-							std::cout << "move ";
-						else if (enemyDeck[j].Card[position].Type[k] == 1)
-							std::cout << "heal ";
-						else if (enemyDeck[j].Card[position].Type[k] == 2)
-							std::cout << "shield ";
-						else if (enemyDeck[j].Card[position].Type[k] == 3)
-							std::cout << "attack ";
-						else if (enemyDeck[j].Card[position].Type[k] == 4)
-							std::cout << "range ";
-						std::cout << enemyDeck[j].Card[position].AbilityValue[k] << " ";
-					}
-					std::cout << std::endl;
-					break;
-				}
+				if (enemyDeck[p1].Card[p2].Type[k] == 0)
+					std::cout << "move ";
+				else if (enemyDeck[p1].Card[p2].Type[k] == 1)
+					std::cout << "heal ";
+				else if (enemyDeck[p1].Card[p2].Type[k] == 2)
+					std::cout << "shield ";
+				else if (enemyDeck[p1].Card[p2].Type[k] == 3)
+					std::cout << "attack ";
+				else if (enemyDeck[p1].Card[p2].Type[k] == 4)
+					std::cout << "range ";
+				std::cout << enemyDeck[p1].Card[p2].AbilityValue[k] << " ";
 			}
+			std::cout << std::endl;
 		}
 		
 	}	
