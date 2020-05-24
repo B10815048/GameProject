@@ -33,21 +33,6 @@
     <ClCompile Include="Management%28turnCheck%29.cpp">
       <Filter>資源檔</Filter>
     </ClCompile>
-    <ClCompile Include="Management.cpp">
-      <Filter>資源檔</Filter>
-    </ClCompile>
-    <ClCompile Include="Management%28existCheck%29.cpp">
-      <Filter>資源檔</Filter>
-    </ClCompile>
-    <ClCompile Include="Management%28SelectUser%29.cpp">
-      <Filter>資源檔</Filter>
-    </ClCompile>
-    <ClCompile Include="Management%28SeletPoint%29.cpp">
-      <Filter>資源檔</Filter>
-    </ClCompile>
-    <ClCompile Include="Management%28CardTurn%29.cpp">
-      <Filter>資源檔</Filter>
-    </ClCompile>
     <ClCompile Include="Management%28Range%29.cpp">
       <Filter>資源檔</Filter>
     </ClCompile>
@@ -58,6 +43,12 @@
       <Filter>資源檔</Filter>
     </ClCompile>
     <ClCompile Include="Management%28playCard%29.cpp">
+      <Filter>資源檔</Filter>
+    </ClCompile>
+    <ClCompile Include="Management%28GameAction%29.cpp">
+      <Filter>資源檔</Filter>
+    </ClCompile>
+    <ClCompile Include="Management%28Math%29.cpp">
       <Filter>資源檔</Filter>
     </ClCompile>
   </ItemGroup>

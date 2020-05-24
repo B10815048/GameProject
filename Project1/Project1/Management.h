@@ -110,6 +110,7 @@ public:
 	void printUser(Point p);
 	void printCreatureCheck();
 	void printUserCheck(char icon);
+	void printExecutionOrder();
 	//////////////////////////////////////////////////////////////////////
 	//File : 
 	void loadUserfile();
@@ -132,27 +133,28 @@ public:
 	//playCard : 
 	void userPlayCards();
 	void enemyPlayCards();
-
+	void sort_Enemycard();
+	void sort_Usercard(int index);
+	void sort_compairList();
+	void sort_discard(int index);
+	//////////////////////////////////////////////////////////////////////
+	//cardExecution : 
+	void usingEffect(User& user, int index, int part); //礟场part=0礟场part=1
+	void usingEffect(Enemy& enemy, int index);
 	//////////////////////////////////////////////////////////////////////
 	//gameAction : 
 	void runGAME();
 	void seletUser();
 	void seletPoint();
 	void playCard();
-	void sort_compairList();
-	void sort_card(int index);
-	void sort_discard(int index);
-	void usingEffect(User& user,int index, int part); //part 0:礟场part 1:礟场
-	void usingEffect(Enemy& enemy, int index);
 	//////////////////////////////////////////////////////////////////////
-	//cardExecution : 
-	bool userExist(char icon);
-	bool enemyExist(char icon);
-	bool victoryCheck();
+	//turnCheck : 
 	void survivalCheck();
 	void doorOpenCheck();
+	bool victoryCheck();
 	char Search(std::vector<std::vector<char> >& map, int x, int y);
 	//////////////////////////////////////////////////////////////////////
+	//math : 
 	bool havePlayed(char icon);
 	int creatureOnPoint(Point p);
 	int enemyOnPoint(Point p,int Camp);

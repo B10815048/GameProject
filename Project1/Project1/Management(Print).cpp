@@ -79,7 +79,7 @@ void Management::printUserCheck(char icon)
 {
 	int position;
 	position = findCreatureDeckPosition(0, icon);
-	sort_card(position);
+	sort_Usercard(position);
 	sort_discard(position);
 	std::cout << "hand: ";
 	for (int j = 0; j < userDeck[position].Card.size(); j++)
@@ -97,5 +97,48 @@ void Management::printUserCheck(char icon)
 			std::cout << ", ";
 	}
 	std::cout << std::endl;
+}
+////////////////////////////////////////////////////////////
+//打印生物執行順序：
+void Management::printExecutionOrder()
+{
+	int i, position;
+	std::cout << "生物行動執行順序:" << std::endl;
+	for (i = 0; i < compairList.size(); i++)
+	{
+		if (compairList[i].Icon >= 'A' && compairList[i].Icon <= 'Z')
+			std::cout << compairList[i].Icon << " ";
+		else
+		{
+			position = findCreatureDeckPosition(1, compairList[i].Icon);
+			std::cout << enemyDeck[position].name << " ";
+		}
+		if (compairList[i].Dex[0] < 10)
+			std::cout << "0";
+		std::cout << compairList[i].Dex[0] << " ";
+		if (compairList[i].Icon >= 'A' && compairList[i].Icon <= 'Z')
+			std::cout << compairList[i].Index[0] << " " << compairList[i].Index[1] << std::endl;
+		else
+		{
+			int p1, p2;
+			p1 = findCreatureDeckPosition(1, compairList[i].Icon);
+			p2 = findCardPosition(enemyDeck[p1], compairList[i].Index[0]);
+			for (int k = 0; k < enemyDeck[p1].Card[p2].Type.size(); k++)
+			{
+				if (enemyDeck[p1].Card[p2].Type[k] == 0)
+					std::cout << "move ";
+				else if (enemyDeck[p1].Card[p2].Type[k] == 1)
+					std::cout << "heal ";
+				else if (enemyDeck[p1].Card[p2].Type[k] == 2)
+					std::cout << "shield ";
+				else if (enemyDeck[p1].Card[p2].Type[k] == 3)
+					std::cout << "attack ";
+				else if (enemyDeck[p1].Card[p2].Type[k] == 4)
+					std::cout << "range ";
+				std::cout << enemyDeck[p1].Card[p2].AbilityValue[k] << " ";
+			}
+			std::cout << std::endl;
+		}
+	}
 }
 ////////////////////////////////////////////////////////////

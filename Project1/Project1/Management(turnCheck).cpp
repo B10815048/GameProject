@@ -2,7 +2,8 @@
 #include <fstream>
 #include <string>
 #include <sstream>
-
+////////////////////////////////////////////////////////////
+//勝利確認：
 bool  Management::victoryCheck()
 {
 	int i, j;
@@ -13,7 +14,7 @@ bool  Management::victoryCheck()
 		{
 			for (j = 0; j < width; j++)
 			{
-				if (checkDoor({ j,i }))
+				if (checkDoor({ j,i })) //確認場上有沒有門
 					count++;
 			}
 		}
@@ -25,8 +26,9 @@ bool  Management::victoryCheck()
 	else
 		return false;
 }
-
-void Management::survivalCheck()
+////////////////////////////////////////////////////////////
+//確認該回合有無生物死亡：
+void Management::survivalCheck() 
 {
 	int i, j;
 	bool check = false;
@@ -61,7 +63,7 @@ void Management::survivalCheck()
 
 		}
 	}
-	if (check)
+	if (check) //有生物死亡時則重新打印地圖
 	{
 		getxy(tmp);
 		printMap(tmp);
@@ -69,14 +71,15 @@ void Management::survivalCheck()
 		printUser(tmp);
 	}
 }
-
+////////////////////////////////////////////////////////////
+//確認該回合有無生物死亡：
 void Management::doorOpenCheck()
 {
 	bool haveOpen = false;
 	bool haveEnemy = false;
 	for (int i = 0; i < enemyDeck.size(); i++)
 	{
-		if (map[enemyDeck[i].P.y][enemyDeck[i].P.x] == '1' && enemyDeck[i].HP > 0)
+		if (map[enemyDeck[i].P.y][enemyDeck[i].P.x] == '1')
 			haveEnemy = true;
 	}
 	if (!haveEnemy)
@@ -90,7 +93,7 @@ void Management::doorOpenCheck()
 				{
 					for (int k = 0; k < userDeck.size(); k++)
 					{
-						if (userDeck[k].P.x == j && userDeck[k].P.y == i)
+						if (userDeck[k].P == Point{j,i})
 						{
 							map[i][j] = 'x';
 							haveOpen = true;
@@ -110,3 +113,21 @@ void Management::doorOpenCheck()
 		printUser(p);
 	}
 }
+////////////////////////////////////////////////////////////
+//搜尋地圖可視區域：
+char Management::Search(std::vector<std::vector<char> >& map, int x, int y)
+{
+	if (map[y][x] != 'x' || map[y][x] == 'y' || map[y][x] == '4')
+	{
+		if (map[y][x] == '4')
+			map[y][x] = '3';
+		else if (map[y][x] == 'y')
+			map[y][x] = '2';
+		return 'x';
+	}
+	else
+		map[y][x] = '1';
+	if (Search(map, x + 1, y) != 'x' || Search(map, x - 1, y) != 'x' || Search(map, x, y + 1) != 'x' || Search(map, x, y - 1) != 'x')
+		return 'x';
+}
+////////////////////////////////////////////////////////////

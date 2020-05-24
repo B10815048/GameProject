@@ -1,5 +1,5 @@
 4
-brute 14 2
+brute 14 6
 8
 0 05 attack 4 - shield 2
 1 14 attack 3 range 3 - move 3
@@ -9,7 +9,7 @@ brute 14 2
 5 49 shield 2 - attack 3 range 2
 6 56 heal 3 - move 3
 7 88 attack 3 - move 3
-scoundrel 8 1
+scoundrel 8 5
 6
 0 04 attack 5 - move 3
 1 08 attack 4 - move 3

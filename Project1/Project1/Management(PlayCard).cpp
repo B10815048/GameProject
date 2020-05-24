@@ -117,3 +117,151 @@ void Management::userPlayCards()
 		}
 	}
 }
+////////////////////////////////////////////////////////////
+//使用者整理牌：
+void Management::sort_Usercard(int index)
+{
+	UserCard tmp;
+	for (int i = 0; i < userDeck[index].Card.size(); i++)
+	{
+		for (int j = 0; j < userDeck[index].Card.size() - i - 1; j++)
+		{
+			if (userDeck[index].Card[j].Order > userDeck[index].Card[j + 1].Order)
+			{
+				tmp = userDeck[index].Card[j];
+				userDeck[index].Card[j] = userDeck[index].Card[j + 1];
+				userDeck[index].Card[j + 1] = tmp;
+			}
+		}
+	}
+}
+////////////////////////////////////////////////////////////
+//使用者整理棄牌堆：
+void Management::sort_discard(int index)
+{
+	UserCard tmp;
+	for (int i = 0; i < userDeck[index].disCardDeck.size(); i++)
+	{
+		for (int j = 0; j < userDeck[index].disCardDeck.size() - i - 1; j++)
+		{
+			if (userDeck[index].disCardDeck[j].Order > userDeck[index].disCardDeck[j + 1].Order)
+			{
+				tmp = userDeck[index].disCardDeck[j];
+				userDeck[index].disCardDeck[j] = userDeck[index].disCardDeck[j + 1];
+				userDeck[index].disCardDeck[j + 1] = tmp;
+			}
+		}
+	}
+}
+////////////////////////////////////////////////////////////
+//怪物整理牌：
+void Management::sort_Enemycard()
+{
+	int i, j, k;
+	EnemyCard tmp;
+	for (i = 0; i < enemyDeck.size(); i++)
+	{
+		for (j = 0; j < enemyDeck[i].Card.size(); j++)
+		{
+			for ( k = 0; k < enemyDeck[i].Card.size() - j - 1; k++)
+			{
+				if (enemyDeck[i].Card[k].Order > enemyDeck[i].Card[k + 1].Order)
+				{
+					tmp = enemyDeck[i].Card[k];
+					enemyDeck[i].Card[k] = enemyDeck[i].Card[k + 1];
+					enemyDeck[i].Card[k + 1] = tmp;
+				}
+			}
+		}
+	}
+}
+////////////////////////////////////////////////////////////
+//怪物出牌：
+void Management::enemyPlayCards()
+{
+	int i, j;
+	std::vector <std::string> nameExist;
+	bool exist;
+	nameExist.clear();
+	CompairCardDex tmp;
+	sort_Enemycard();
+	for (i = 0; i < enemyDeck.size(); i++)
+	{
+		if (checkSpace(enemyDeck[i].P))
+		{
+			exist = false;
+			for (j = 0; j < nameExist.size(); j++)
+			{
+				if (enemyDeck[i].name == nameExist[j])
+					exist = true;
+			}
+			if (!exist)
+			{
+				tmp.Index.clear();
+				tmp.Index.push_back(enemyDeck[i].Card[0].Order);
+				tmp.Dex[0] = enemyDeck[i].Card[0].DEX;
+				tmp.Dex[1] = 99;
+				for (j = i; j < enemyDeck.size(); j++)
+				{
+					if (enemyDeck[j].name == enemyDeck[i].name)
+					{
+						tmp.Icon = enemyDeck[j].Icon;
+						compairList.push_back(tmp);
+					}
+				}
+				nameExist.push_back(enemyDeck[i].name);
+			}
+		}
+	}
+}
+////////////////////////////////////////////////////////////
+//依照敏捷值排序：
+void Management::sort_compairList()
+{
+	int i, j;
+	int position;
+	CompairCardDex tmp;
+	for (i = compairList.size() - 1; i > 0; i--)
+	{
+		for (j = 0; j <= i - 1; j++)
+		{
+			if (compairList[j].Dex[0] > compairList[j + 1].Dex[0]) //較快的敏捷度比較
+			{
+				tmp = compairList[j];
+				compairList[j] = compairList[j + 1];
+				compairList[j + 1] = tmp;
+			}
+			else if (compairList[j].Dex[0] == compairList[j + 1].Dex[0]) //第二張敏捷度比較
+			{
+				if (compairList[j].Dex[1] > compairList[j + 1].Dex[1])
+				{
+					tmp = compairList[j];
+					compairList[j] = compairList[j + 1];
+					compairList[j + 1] = tmp;
+				}
+				else if (compairList[j].Dex[1] == compairList[j + 1].Dex[1])
+				{
+					//都是怪物時
+					if ((compairList[j].Icon >= 'a' && compairList[j].Icon <= 'z')&& compairList[j+1].Icon >= 'a' && compairList[j+1].Icon <= 'z')
+					{
+						if (enemyDeck[findCreatureDeckPosition(1, compairList[j].Icon)].name > enemyDeck[findCreatureDeckPosition(1, compairList[j + 1].Icon)].name)
+						{
+							tmp = compairList[j];
+							compairList[j] = compairList[j + 1];
+							compairList[j + 1] = tmp;
+						}
+					}
+					else if (compairList[j].Icon > compairList[j + 1].Icon)
+					{
+						tmp = compairList[j];
+						compairList[j] = compairList[j + 1];
+						compairList[j + 1] = tmp;
+					}
+				}
+			}
+		}
+	}
+
+
+}
+////////////////////////////////////////////////////////////
