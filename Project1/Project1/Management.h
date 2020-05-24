@@ -129,20 +129,23 @@ public:
 	bool checkSpace(Point p);
 	bool checkDoor(Point p);
 	//////////////////////////////////////////////////////////////////////
-	//gameAction : 
-	void runGAME();
-	void seletUser();//c7
-	void seletPoint();
-	void playCard();
+	//playCard : 
 	void userPlayCards();
 	void enemyPlayCards();
+
+	//////////////////////////////////////////////////////////////////////
+	//gameAction : 
+	void runGAME();
+	void seletUser();
+	void seletPoint();
+	void playCard();
 	void sort_compairList();
 	void sort_card(int index);
 	void sort_discard(int index);
 	void usingEffect(User& user,int index, int part); //part 0:卡牌上半部，part 1:卡牌下半部
 	void usingEffect(Enemy& enemy, int index);
 	//////////////////////////////////////////////////////////////////////
-	//playCard : 
+	//cardExecution : 
 	bool userExist(char icon);
 	bool enemyExist(char icon);
 	bool victoryCheck();

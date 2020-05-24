@@ -1,357 +1,119 @@
 #include <iostream>
-#include <fstream>
 #include <vector>
 #include <string>
 #include "Management.h"
-
-int Management::findCardPosition(User& user, int index)
+#include <sstream>
+#include <regex>
+using namespace std;
+////////////////////////////////////////////////////////////
+//使用者出牌：
+void Management::userPlayCards()
 {
-	int i;
-	for (i = 0; i < user.Card.size(); i++)
-	{
-		if (user.Card[i].Order == index)
-			return i;
-	}
-	return -1;
-}
-
-int Management::findCardPosition(Enemy& enemy, int index)
-{
-	int i;
-	for (i = 0; i < enemy.Card.size(); i++)
-	{
-		if (enemy.Card[i].Order == index)
-			return i;
-	}
-	return -1;
-}
-
-void Management::enemyPlayCards()
-{
-	int i, j;
-	int minIndex, position;
-	std::vector <std::string> nameExist;
-	bool exist;
-	nameExist.clear();
+	int position;
+	int i, j, index, index1, index2;
+	int p2;
 	CompairCardDex tmp;
-	for (i = 0; i < enemyDeck.size(); i++)
+	char icon;
+	string input;
+	std::regex play("^[A-D]{1} [0-9]+ [0-9]+$");
+	std::regex userCheck("^[A-D]{1} check$");
+	std::regex creatureCheck("check");
+	std::regex rest("^[A-D]{1} \-1$");
+	std::cout << "出牌:" << endl;
+	for (int i = 0; i < userDeck.size(); i++) // 檢查角色是否不能選擇長休或出牌
 	{
-		if (checkSpace(enemyDeck[i].P))
+		if (userDeck[i].Card.size() < 2 && userDeck[i].disCardDeck.size() < 2)
 		{
-			exist = false;
-			for (j = 0; j < nameExist.size(); j++)
+			std::cout << userDeck[i].Icon << " is killed!!" << std::endl;
+			userDeck.erase(userDeck.begin() + i);
+			Point p;
+			getxy(p);
+			printMap(p);
+			printEnemy(p);
+			printUser(p);
+			i--;
+			continue;
+		}
+	}
+	for (int i = 0; i < userDeck.size(); i++)
+	{
+		while (getline(cin,input))
+		{
+			if (std::regex_match(input, creatureCheck)) //顯示所有生物狀態
+				printCreatureCheck();
+			else if (std::regex_match(input, userCheck) && findCreatureDeckPosition(0, input[0]) != -1) //顯示指定user狀態
+				printUserCheck(input[0]);
+			else if (std::regex_match(input, play) && findCreatureDeckPosition(0, input[0])!=-1)
 			{
-				if (enemyDeck[i].name == nameExist[j])
-					exist = true;
-			}
-			if (!exist)
-			{
+				position = findCreatureDeckPosition(0, input[0]);
+				if (havePlayed(userDeck[position].Icon))
+				{
+					std::cout << "不合規範：" << std::endl;
+					continue;
+				}
+				if (userDeck[position].Card.size() < 2)
+				{
+					std::cout << "手牌張數小於2,請選擇長休";
+					continue;
+				}
 				tmp.Index.clear();
-				minIndex = enemyDeck[i].Card[0].Order;
-				position = 0;
-				for (j = 0; j < enemyDeck[i].Card.size(); j++)
+				tmp.Icon = userDeck[position].Icon;
+				stringstream ss(input);
+				ss >> input;
+				ss >> index1;
+				ss >> index2;
+				if (index2 == index1)
 				{
-					if (enemyDeck[i].Card[j].Order < minIndex)
-					{
-						minIndex = enemyDeck[i].Card[j].Order;
-						position = j;
-					}
+					std::cout << "不合規範：" << std::endl;
+					continue;
 				}
-				tmp.Index.push_back(minIndex);
-				tmp.Dex[0] = enemyDeck[i].Card[position].DEX;
-				tmp.Dex[1] = 99;
-				tmp.Icon = enemyDeck[i].Icon;
+				p2 = findCardPosition(userDeck[position], index1);
+				if (p2 != -1)
+				{
+					tmp.Index.push_back(userDeck[position].Card[p2].Order);
+					tmp.Dex[0] = userDeck[position].Card[p2].DEX;
+				}
+				else
+				{
+					std::cout << "不合規範：" << std::endl;
+					continue;
+				}
+				p2 = findCardPosition(userDeck[position], index2);
+				if (p2 != -1)
+				{
+					tmp.Index.push_back(userDeck[position].Card[p2].Order);
+					tmp.Dex[1] = userDeck[position].Card[p2].DEX;
+				}
+				else
+				{
+					std::cout << "不合規範：" << std::endl;
+					continue;
+				}
 				compairList.push_back(tmp);
-				for (j = i + 1; j < enemyDeck.size(); j++)
+				break;
+			}
+			else if (std::regex_match(input, rest) && findCreatureDeckPosition(0, input[0]) != -1)
+			{
+				position = findCreatureDeckPosition(0, input[0]);
+				if (userDeck[position].disCardDeck.size() < 2)
 				{
-					if (enemyDeck[j].name == enemyDeck[i].name)
-					{
-						tmp.Icon = enemyDeck[j].Icon;
-						compairList.push_back(tmp);
-					}
+					std::cout << "棄牌堆張數小於2,請選擇出牌";
+					continue;
 				}
-				nameExist.push_back(enemyDeck[i].name);
-			}
-		}
-	}
-}
-
-void Management::sort_card(int index)
-{
-	UserCard tmp;
-	for (int i = 0; i < userDeck[index].Card.size(); i++)
-	{
-		for (int j = 0; j < userDeck[index].Card.size() - i - 1; j++)
-		{
-			if (userDeck[index].Card[j].Order > userDeck[index].Card[j + 1].Order)
-			{
-				tmp = userDeck[index].Card[j];
-				userDeck[index].Card[j] = userDeck[index].Card[j + 1];
-				userDeck[index].Card[j + 1] = tmp;
-			}
-		}
-	}
-}
-
-void Management::sort_discard(int index)
-{
-	UserCard tmp;
-	for (int i = 0; i < userDeck[index].disCardDeck.size(); i++)
-	{
-		for (int j = 0; j < userDeck[index].disCardDeck.size() - i - 1; j++)
-		{
-			if (userDeck[index].disCardDeck[j].Order > userDeck[index].disCardDeck[j + 1].Order)
-			{
-				tmp = userDeck[index].disCardDeck[j];
-				userDeck[index].disCardDeck[j] = userDeck[index].disCardDeck[j + 1];
-				userDeck[index].disCardDeck[j + 1] = tmp;
-			}
-		}
-	}
-}
-
-void Management::sort_compairList()
-{
-	int i, j;
-	CompairCardDex tmp;
-	for (i = compairList.size() - 1; i > 0; i--)
-	{
-		for (j = 0; j <= i - 1; j++)
-		{
-			if (compairList[j].Dex[0] > compairList[j + 1].Dex[0]) //較快的敏捷度比較
-			{
-				tmp = compairList[j];
-				compairList[j] = compairList[j + 1];
-				compairList[j + 1] = tmp;
-			}
-			else if (compairList[j].Dex[0] == compairList[j + 1].Dex[0]) //第二張敏捷度比較
-			{
-				if (compairList[j].Dex[1] > compairList[j + 1].Dex[1])
-				{
-					tmp = compairList[j];
-					compairList[j] = compairList[j + 1];
-					compairList[j + 1] = tmp;
-				}
-				else if (compairList[j].Dex[1] == compairList[j + 1].Dex[1])
-				{
-					if (compairList[j].Icon > compairList[j + 1].Icon)
-					{
-						tmp = compairList[j];
-						compairList[j] = compairList[j + 1];
-						compairList[j + 1] = tmp;
-					}
-				}
-			}
-		}
-	}
-
-	std::cout << "生物行動執行順序:" << std::endl;
-	for (i = 0; i < compairList.size(); i++)
-	{
-		if (compairList[i].Icon >= 'A' && compairList[i].Icon <= 'Z')
-			std::cout << compairList[i].Icon << " ";
-		else
-		{
-			for (int j = 0; j < enemyDeck.size(); j++)
-			{
-				if (compairList[i].Icon == enemyDeck[j].Icon)
-					std::cout << enemyDeck[j].name << " ";
-			}
-		}
-
-		if (compairList[i].Dex[0] < 10)
-			std::cout << "0";
-		std::cout << compairList[i].Dex[0] << " ";
-		if(compairList[i].Icon >= 'A' && compairList[i].Icon <= 'Z')
-			std::cout << compairList[i].Index[0] << " " << compairList[i].Index[1] << std::endl;
-		else
-		{
-			int p1;
-			int p2;
-			p1 = findCreatureDeckPosition(1, compairList[i].Icon); 
-			p2 = findCardPosition(enemyDeck[p1], compairList[i].Index[0]);
-			for (int k = 0; k < enemyDeck[p1].Card[p2].Type.size(); k++)
-			{
-				if (enemyDeck[p1].Card[p2].Type[k] == 0)
-					std::cout << "move ";
-				else if (enemyDeck[p1].Card[p2].Type[k] == 1)
-					std::cout << "heal ";
-				else if (enemyDeck[p1].Card[p2].Type[k] == 2)
-					std::cout << "shield ";
-				else if (enemyDeck[p1].Card[p2].Type[k] == 3)
-					std::cout << "attack ";
-				else if (enemyDeck[p1].Card[p2].Type[k] == 4)
-					std::cout << "range ";
-				std::cout << enemyDeck[p1].Card[p2].AbilityValue[k] << " ";
-			}
-			std::cout << std::endl;
-		}
-		
-	}	
-}	
-
-void Management::usingEffect(User& userDeck, int index, int part)
-{
-	int i, j;
-	std::string skill[] = { "move", "heal", "shield", "attack","range" };
-	for (i = 0; i < userDeck.Card.size(); i++)
-	{
-		if (userDeck.Card[i].Order == index)
-		{
-			if (part == 1) //卡牌下半部效果
-			{
-				for (j = 0; j < userDeck.Card[i].BelowType.size(); j++)
-				{
-					std::cout << "發動角色" << userDeck.Icon << "技能卡下方效果：" << skill[userDeck.Card[i].BelowType[j]] << std::endl;
-					if (userDeck.Card[i].BelowType[j] == 0)
-						setMove(userDeck, stoi(userDeck.Card[i].BelowAbilityValue[j]));
-					else if (userDeck.Card[i].BelowType[j] == 1)
-						Heal(userDeck, userDeck.Card[i].BelowAbilityValue[j]);
-					else if (userDeck.Card[i].BelowType[j] == 2)
-						Shield(userDeck, userDeck.Card[i].BelowAbilityValue[j]);
-					else if (userDeck.Card[i].BelowType[j] == 3)
-					{
-						if (j != userDeck.Card[i].BelowType.size() - 1)
-						{
-							if (userDeck.Card[i].BelowType[j + 1] == 4)
-								Range(userDeck, userDeck.Card[i].BelowAbilityValue[j + 1]);
-
-						}
-						Attack(userDeck, userDeck.Card[i].BelowAbilityValue[j]);
-						if (j != userDeck.Card[i].BelowType.size() - 1)
-						{
-							if (userDeck.Card[i].BelowType[j + 1] == 4)
-								j++;
-						}
-					}
-				}
-			}
-			else if (part == 0) //卡牌上半部技能
-			{
-				for (j = 0; j < userDeck.Card[i].TopType.size(); j++)
-				{
-					std::cout << "發動角色" << userDeck.Icon << "技能卡上方效果：" << skill[userDeck.Card[i].TopType[j]] << std::endl;
-					if (userDeck.Card[i].TopType[j] == 0)
-						setMove(userDeck, stoi(userDeck.Card[i].TopAbilityValue[j]));
-					else if (userDeck.Card[i].TopType[j] == 1)
-						Heal(userDeck, userDeck.Card[i].TopAbilityValue[j]);
-					else if (userDeck.Card[i].TopType[j] == 2)
-						Shield(userDeck, userDeck.Card[i].TopAbilityValue[j]);
-					else if (userDeck.Card[i].TopType[j] == 3)
-					{
-						if (j != userDeck.Card[i].TopType.size() - 1)
-						{
-							if (userDeck.Card[i].TopType[j + 1] == 4)
-								Range(userDeck, userDeck.Card[i].TopAbilityValue[j + 1]);
-						}
-						Attack(userDeck, userDeck.Card[i].TopAbilityValue[j]);
-						if (j != userDeck.Card[i].TopType.size() - 1)
-						{
-							if (userDeck.Card[i].TopType[j + 1] == 4)
-								j++;
-						}
-					}
-					else if (userDeck.Card[i].TopType[j] == 0)
-						setMove(userDeck, stoi(userDeck.Card[i].TopAbilityValue[j]));
-
-				}
-			}
-			//棄牌
-			userDeck.disCardDeck.push_back(userDeck.Card[i]);
-			userDeck.Card.erase(userDeck.Card.begin() + i);
-		}
-	}
-	
-}
-
-void Management::usingEffect(Enemy& enemyDeck, int index)
-{
-	int i, j;
-	std::string skill[] = { "move", "heal", "shield", "attack","range" };
-	for (i = 0; i < enemyDeck.Card.size(); i++)
-	{
-		if (enemyDeck.Card[i].Order == index)
-		{
-			for (j = 0; j < enemyDeck.Card[i].Type.size(); j++)
-			{
-				std::cout << "發動敵人" << enemyDeck.Icon << "技能卡效果：" <<  skill[enemyDeck.Card[i].Type[j]] << std::endl;
-				if (enemyDeck.Card[i].Type[j] == 0)
-					Move(enemyDeck, enemyDeck.Card[i].AbilityValue[j]);
-				else if (enemyDeck.Card[i].Type[j] == 1)
-					Heal(enemyDeck, enemyDeck.Card[i].AbilityValue[j]);
-				else if (enemyDeck.Card[i].Type[j] == 2)
-					Shield(enemyDeck, enemyDeck.Card[i].AbilityValue[j]);
-				else if (enemyDeck.Card[i].Type[j] == 3)
-				{
-					if (j != enemyDeck.Card[i].Type.size() - 1)
-					{
-						if (enemyDeck.Card[i].Type[j + 1] == 4)
-							Range(enemyDeck, enemyDeck.Card[i].AbilityValue[j + 1]);
-					}
-					Attack(enemyDeck, enemyDeck.Card[i].AbilityValue[j]);
-					if (j != enemyDeck.Card[i].Type.size() - 1)
-					{
-						if (enemyDeck.Card[i].Type[j + 1] == 4)
-							j++;
-					}
-				}
-
-			}
-			if (enemyDeck.Card[i].Shuffle)
-			{
-				enemyDeck.Card.insert(enemyDeck.Card.end(), enemyDeck.disCardDeck.begin(), enemyDeck.disCardDeck.end());
-				enemyDeck.disCardDeck.clear();
+				tmp.Index.clear();
+				tmp.Icon = userDeck[position].Icon;
+				tmp.Dex[0] = 99;
+				tmp.Dex[1] = 99;
+				tmp.Index.push_back(-1);
+				tmp.Index.push_back(-1);
+				compairList.push_back(tmp);
+				break;
 			}
 			else
 			{
-				enemyDeck.disCardDeck.push_back(enemyDeck.Card[i]);
-				enemyDeck.Card.erase(enemyDeck.Card.begin() + i);
-			}			
+				if (input.size() != 0)
+				std::cout << "不合規範：" << std::endl;
+			}
 		}
 	}
-}
-
-
-int  Management::findCreaturePosition(int camp, std::string name)
-{
-	int i;
-	if (camp == 0)
-	{
-		for (i = 0; i < user.size(); i++)
-		{
-			if (user[i].name == name)
-				return i;
-		}
-	}
-	else if (camp == 1)
-	{
-		for (i = 0; i < enemy.size(); i++)
-		{
-			if (enemy[i].name == name)
-				return i;
-		}
-	}
-	return -1;
-}
-
-int  Management::findCreatureDeckPosition(int camp, char icon)
-{
-	int i;
-	if (camp == 0)
-	{
-		for (i = 0; i < userDeck.size(); i++)
-		{
-			if (userDeck[i].Icon == icon)
-				return i;
-		}
-	}
-	else if (camp == 1)
-	{
-		for (i = 0; i < enemyDeck.size(); i++)
-		{
-			if (enemyDeck[i].Icon == icon)
-				return i;
-		}
-	}
-	return -1;
 }
