@@ -168,3 +168,20 @@ void Management::viewL(Point start, int n)
 		return;
 }
 ////////////////////////////////////////////////////////////
+//還原所有人的射程
+void  Management::resetRange()
+{
+	int i, j;
+	int position;
+	for (i = 0; i < userDeck.size(); i++)
+	{
+		position = findCreaturePosition(0, userDeck[i].name);
+		userDeck[i].Range = user[position].Range;
+	}
+	for (i = 0; i < enemyDeck.size(); i++)
+	{
+		position = findCreaturePosition(1, enemyDeck[i].name);
+		enemyDeck[i].Range = enemy[position].Range;
+	}
+}
+////////////////////////////////////////////////////////////

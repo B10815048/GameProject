@@ -1,13 +1,14 @@
 #include "Management.h"
 #include <iostream>
 #include <regex>
-
+////////////////////////////////////////////////////////////
+//輸入移動命令：
 void  Management::setMove(User& user, int step)
 {
 	std::cout << "輸入移動：" << std::endl;
 	std::string moveCommand;
 	std::regex form1("^[wasd]+$");
-	std::regex form2("e");
+	std::regex form2("e"); //輸入只有一個e
 	while (std::cin >> moveCommand)
 	{
 		if (std::regex_match(moveCommand, form1) || std::regex_match(moveCommand, form2))
@@ -15,13 +16,14 @@ void  Management::setMove(User& user, int step)
 			if (moveCommand.size() <= step && Move(user, moveCommand))
 				break;
 			else
-				std::cout << "不合規範" << std::endl;
+				std::cout << "error move!!!" << std::endl;
 		}
 		else
-		std::cout << "不合規範" << std::endl;
+		std::cout << "error move!!!" << std::endl;
 	}
 }
-
+////////////////////////////////////////////////////////////
+//生物移動功能：
 bool Management::Move(Creature& creature, std::string command)
 {
 	int i, j;
@@ -62,7 +64,7 @@ bool Management::Move(Creature& creature, std::string command)
 	}
 	for (i = point.size(); i > 0; i--)
 	{
-		if (creatureOnPoint(point[i - 1]) == 0)
+		if (creatureOnPoint(point[i - 1]) == 0) //不能與生物重疊
 		{
 			creature.P = point[i - 1];
 			break;
@@ -74,7 +76,8 @@ bool Management::Move(Creature& creature, std::string command)
 	printUser(tmp);
 	return true;
 }
-
+////////////////////////////////////////////////////////////
+//確認該位置是否為門：
 bool Management::checkDoor(Point p)
 {
 	if (p.x < 0 || p.x >= width || p.x < 0 || p.x >= height)
@@ -84,7 +87,8 @@ bool Management::checkDoor(Point p)
 	else
 		return false;
 }
-
+////////////////////////////////////////////////////////////
+//確認該位置是否為空地：
 bool Management::checkSpace(Point p)
 {
 	if (p.x < 0 || p.x >= width || p.x < 0 || p.x >= height)
@@ -94,3 +98,4 @@ bool Management::checkSpace(Point p)
 	else
 		return false;
 }
+////////////////////////////////////////////////////////////

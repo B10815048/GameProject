@@ -3,6 +3,31 @@
 #include <string>
 #include <sstream>
 
+////////////////////////////////////////////////////////////
+//±´³X¥iµø°Ï°ì¡G
+char Management::Search(std::vector<std::vector<char> >& map, int x, int y)
+{
+	if (map[y][x] != 'x' || map[y][x] == 'y' || map[y][x] == '4')
+	{
+		if (map[y][x] == '4')
+			map[y][x] = '3';
+		else if (map[y][x] == 'y')
+			map[y][x] = '2';
+		return 'x';
+	}
+	else
+		map[y][x] = '1';
+	if (Search(map, x + 1, y) != 'x' || Search(map, x - 1, y) != 'x' || Search(map, x, y + 1) != 'x' || Search(map, x, y - 1) != 'x')
+		return 'x';
+}
+
+void Management::positiveValue(int& num)
+{
+	if (num < 0)
+		num = 0;
+	return;
+}
+
 void Management::runGAME()
 {
 	userDeck.clear();

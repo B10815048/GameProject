@@ -355,25 +355,3 @@ int  Management::findCreatureDeckPosition(int camp, char icon)
 	}
 	return -1;
 }
-
-void Management::rest(User& user)
-{
-	int index;
-	int i;
-	std::cout << "選擇一張牌刪除：" << std::endl;
-	while (std::cin >> index)
-	{
-		for (i = 0; i < user.disCardDeck.size(); i++)
-		{
-			if (user.disCardDeck[i].Order == index)
-			{
-				user.disCardDeck.erase(user.disCardDeck.begin() + i);
-				
-				user.Card.insert(user.Card.end(), user.disCardDeck.begin(), user.disCardDeck.end());
-				user.disCardDeck.clear();
-				return;
-			}
-		}
-		std::cout << "重新選擇：" << std::endl;
-	}
-}

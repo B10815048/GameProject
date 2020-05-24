@@ -63,38 +63,9 @@ void Management::playCard()
 					while (getline(cin , command))
 					{
 						if (std::regex_match(command, creatureCheck)) //顯示所有生物狀態
-						{
-
-							for (j = 0; j < userDeck.size(); j++)
-								cout << userDeck[j].Icon << "-hp: " << userDeck[j].HP << ", shield: " << userDeck[j].Shield << endl;
-							for (j = 0; j < enemyDeck.size(); j++)
-							{
-								if (checkSpace(enemyDeck[j].P))
-									cout << enemyDeck[j].Icon << "-hp: " << enemyDeck[j].HP[enemyDeck[j].Type] << ", shield: " << enemyDeck[j].Shield << endl;
-							}
-						}
+							printCreatureCheck();
 						else if (std::regex_match(command, userCheck) && findCreatureDeckPosition(0, command[0]) != -1) //顯示指定user狀態
-						{
-							position = findCreatureDeckPosition(0, command[0]);
-							sort_card(position);
-							sort_discard(position);
-							cout << "hand: ";
-							for (int j = 0; j < userDeck[position].Card.size(); j++)
-							{
-								if (j == userDeck[position].Card.size() - 1)
-									cout << userDeck[position].Card[j].Order << "; ";
-								else
-									cout << userDeck[position].Card[j].Order << ", ";
-							}
-							cout << "discard: ";
-							for (int j = 0; j < userDeck[position].disCardDeck.size(); j++)
-							{
-								cout << userDeck[position].disCardDeck[j].Order;
-								if (j != userDeck[position].disCardDeck.size() - 1)
-									cout << ", ";
-							}
-							cout << endl;
-						}
+							printUserCheck(command[0]);
 						else if (std::regex_match(command, play) && compairList[i].cardExist(command[0]-'0')) //選擇卡片
 						{
 							p1 = findCardPosition(compairList[i], command[0] - '0');

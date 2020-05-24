@@ -91,17 +91,16 @@ public:
 	bool viewableRange(Point start, Point end);
 	bool oneGapCheck(int x, float y1, float y2);
 	void Range(Creature& creature, std::string command);
+	int shootRange(Point start, Point end, int camp, int maxRange);
 	bool canViewed(Point p);
 	void viewR(Point start, int n);
 	void viewU(Point start, int n);
 	void viewD(Point start, int n);
 	void viewL(Point start, int n);
+	void resetRange();
 	//////////////////////////////////////////////////////////////////////
 	//Attack:
 	void Attack(Creature& creature, std::string command);
-	int shootRange(Point start, Point end, int camp, int maxRange);
-	void resetRange();
-	void resetShield();
 	//////////////////////////////////////////////////////////////////////
 	//print :
 	void gotoxy(Point p);
@@ -109,19 +108,26 @@ public:
 	void printMap(Point p);
 	void printEnemy(Point p);
 	void printUser(Point p);
+	void printCreatureCheck();
+	void printUserCheck(char icon);
 	//////////////////////////////////////////////////////////////////////
-	//loadFile : 
-	void loadUserfile();//c7
-	void loadEnemyfile();//c7
-	void loadMapfile();//Yo
+	//File : 
+	void loadUserfile();
+	void loadEnemyfile();
+	void loadMapfile();
 	//////////////////////////////////////////////////////////////////////
+	//Heal_Shield_rest
+	void Shield(Creature& creature, std::string command);
 	void rest(User& user);
-	//////////////////////////////////////////////////////////////////////
-	void setMove(User& user, int step);
-	bool Move(Creature &creature,std::string command);
+	void resetShield();
 	void Heal(User& user, std::string command);
 	void Heal(Enemy& enemy, std::string command);
-	void Shield(Creature& creature, std::string command);
+	//////////////////////////////////////////////////////////////////////
+	//Move
+	void setMove(User& user, int step);
+	bool Move(Creature &creature,std::string command);
+	bool checkSpace(Point p);
+	bool checkDoor(Point p);
 	//////////////////////////////////////////////////////////////////////
 	//gameAction : 
 	void runGAME();
@@ -144,8 +150,6 @@ public:
 	void doorOpenCheck();
 	char Search(std::vector<std::vector<char> >& map, int x, int y);
 	//////////////////////////////////////////////////////////////////////
-	bool checkSpace(Point p);
-	bool checkDoor(Point p);
 	bool havePlayed(char icon);
 	int creatureOnPoint(Point p);
 	int enemyOnPoint(Point p,int Camp);

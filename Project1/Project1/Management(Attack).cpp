@@ -1,21 +1,12 @@
 #include "Management.h"
-#include <cmath>
-#include <iomanip>
 #include <string>
 #include <regex>
-
-void Management::positiveValue(int& num)
-{
-	if (num < 0)
-		num = 0;
-	return;
-}
-
+////////////////////////////////////////////////////////////
+//攻擊功能：
 void Management::Attack(Creature& creature, std::string command)
 {
 	int i, j;
 	int position;
-	int enemyX, enemyY;
 	std::string input;
 	std::regex attack("^[a-z]{1}$");
 	std::regex giveUp("0");
@@ -34,13 +25,14 @@ void Management::Attack(Creature& creature, std::string command)
 				position = findCreatureDeckPosition(1, input[0]);
 				if (shootRange(creature.P, enemyDeck[position].P, 0, creature.Range) <= creature.Range && viewableRange(enemyDeck[position].P, creature.P))
 				{
-					if (damage > enemyDeck[position].Shield)
-						enemyDeck[position].HP[enemyDeck[position].Type] -= damage - enemyDeck[position].Shield;
+					damage = damage - enemyDeck[position].Shield; //實際傷害
+					positiveValue(damage);
+					enemyDeck[position].HP[enemyDeck[position].Type] -= damage;
 					std::cout << creature.Icon << " attack " << enemyDeck[position].Icon << " " << damage << " damage, " << enemyDeck[position].Icon << " shield " << enemyDeck[position].Shield
 						<< " , " << enemyDeck[position].Icon << " remain " << enemyDeck[position].HP[enemyDeck[position].Type] << " hp" << std::endl;
 					return;
 				}
-				else
+				else //超出攻擊範圍
 					std::cout << "error target!!!" << std::endl;
 
 			}
@@ -49,7 +41,7 @@ void Management::Attack(Creature& creature, std::string command)
 				std::cout << "放棄攻擊..." << std::endl;
 				return;
 			}
-			else
+			else  //沒有此敵人
 			std::cout << "error target!!!" << std::endl;
 		}
 	}
@@ -80,7 +72,7 @@ void Management::Attack(Creature& creature, std::string command)
 				}
 			}	
 		}
-		if (count == 0)
+		if (count == 0) //攻擊範圍內沒有敵人
 		{
 			std::cout << "no one lock" << std::endl;
 		}
@@ -119,35 +111,4 @@ void Management::Attack(Creature& creature, std::string command)
 	}
 	resetRange();
 }
-
-void  Management::resetShield()
-{
-	int i, j;
-	int position;
-	for (i = 0; i < userDeck.size(); i++)
-	{
-		position = findCreaturePosition(0, userDeck[i].name);
-		userDeck[i].Shield = user[position].Shield;
-	}
-	for (i = 0; i < enemyDeck.size(); i++)
-	{
-		position = findCreaturePosition(1, enemyDeck[i].name);
-		enemyDeck[i].Shield = enemy[position].Shield;
-	}
-}
-
-void  Management::resetRange()
-{
-	int i, j;
-	int position;
-	for (i = 0; i < userDeck.size(); i++)
-	{
-		position = findCreaturePosition(0, userDeck[i].name);
-		userDeck[i].Range = user[position].Range;
-	}
-	for (i = 0; i < enemyDeck.size(); i++)
-	{
-		position = findCreaturePosition(1, enemyDeck[i].name);
-		enemyDeck[i].Range = enemy[position].Range;
-	}
-}
+////////////////////////////////////////////////////////////
