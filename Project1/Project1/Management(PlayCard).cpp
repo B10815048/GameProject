@@ -114,6 +114,8 @@ void Management::sort_compairList()
 {
 	int i, j;
 	CompairCardDex tmp;
+	for (i = 0; i < compairList.size(); i++)
+		std::cout << compairList[i].Dex[0] << " ";
 	for (i = compairList.size() - 1; i > 0; i--)
 	{
 		for (j = 0; j <= i - 1; j++)
@@ -145,6 +147,8 @@ void Management::sort_compairList()
 		}
 	}
 
+	for (i = 0; i < compairList.size(); i++)
+			std::cout << compairList[i].Icon << " ";
 	std::cout << "生物行動執行順序:" << std::endl;
 	for (i = 0; i < compairList.size(); i++)
 	{
