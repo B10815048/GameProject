@@ -1,38 +1,18 @@
 #include "Management.h"
-#include <cmath>
-#include <iomanip>
 #include <string>
 #include <regex>
-
-void  Management::Range(User& user, std::string command)
-{
-	user.Range = user.Range +stoi(command);
-}
-
-void Management::Range(Enemy& enemy, std::string command)
-{
-	enemy.Range = enemy.Range + stoi(command);
-}
-
-void Management::positiveValue(int& num)
-{
-	if (num < 0)
-		num = 0;
-	return;
-}
-
+////////////////////////////////////////////////////////////
+//攻擊功能：
 void Management::Attack(Creature& creature, std::string command)
 {
 	int i, j;
 	int position;
-	int enemyX, enemyY;
 	std::string input;
 	std::regex attack("^[a-z]{1}$");
 	std::regex giveUp("0");
 	int damage = creature.Attack + stoi(command);
-
 	positiveValue(creature.Range);
-
+	positiveValue(damage);
 	if (creature.Range == 0)
 		creature.Range = 1;
 	if (creature.Camp == 0) //主角方
@@ -40,18 +20,19 @@ void Management::Attack(Creature& creature, std::string command)
 		std::cout << "選擇攻擊敵人 : " << std::endl;
 		while (std::cin >> input)
 		{
-			if (std::regex_match(input, attack) && findCreatureDeckPosition(1, input[0]) != -1)
+			if (std::regex_match(input, attack) && findCreatureDeckPosition(1, input[0]) != -1) //符合攻擊目標及在攻擊範圍內
 			{
 				position = findCreatureDeckPosition(1, input[0]);
-				if (shootRange(creature.P, enemyDeck[position].P, 0, creature.Range) && viewableRange(enemyDeck[position].P, creature.P))
+				if (shootRange(creature.P, enemyDeck[position].P, 0, creature.Range) <= creature.Range && viewableRange(enemyDeck[position].P, creature.P))
 				{
-					if (damage > enemyDeck[position].Shield)
-						enemyDeck[position].HP[enemyDeck[position].Type] -= damage - enemyDeck[position].Shield;
+					damage = damage - enemyDeck[position].Shield; //實際傷害
+					positiveValue(damage);
+					enemyDeck[position].HP[enemyDeck[position].Type] -= damage;
 					std::cout << creature.Icon << " attack " << enemyDeck[position].Icon << " " << damage << " damage, " << enemyDeck[position].Icon << " shield " << enemyDeck[position].Shield
 						<< " , " << enemyDeck[position].Icon << " remain " << enemyDeck[position].HP[enemyDeck[position].Type] << " hp" << std::endl;
 					return;
 				}
-				else
+				else //超出攻擊範圍
 					std::cout << "error target!!!" << std::endl;
 
 			}
@@ -60,7 +41,7 @@ void Management::Attack(Creature& creature, std::string command)
 				std::cout << "放棄攻擊..." << std::endl;
 				return;
 			}
-			else
+			else  //沒有此敵人
 			std::cout << "error target!!!" << std::endl;
 		}
 	}
@@ -72,9 +53,9 @@ void Management::Attack(Creature& creature, std::string command)
 			userIndex[j] = 0;
 		for (i = 0; i < userDeck.size(); i++)
 		{
-			if (shootRange(creature.P, userDeck[i].P, 1, creature.Range)&& viewableRange(userDeck[i].P, creature.P))
+			if (shootRange(creature.P, userDeck[i].P, 1, creature.Range) <= creature.Range && viewableRange(userDeck[i].P, creature.P))
 			{
-				step = getStep(creature.P, userDeck[i].P, 1, creature.Range);
+				step = shootRange(creature.P, userDeck[i].P, 1, creature.Range);
 				if (step < minStep)
 				{
 					for (int j = 0; j < 4; j++)
@@ -91,7 +72,7 @@ void Management::Attack(Creature& creature, std::string command)
 				}
 			}	
 		}
-		if (count == 0)
+		if (count == 0) //攻擊範圍內沒有敵人
 		{
 			std::cout << "no one lock" << std::endl;
 		}
@@ -130,230 +111,4 @@ void Management::Attack(Creature& creature, std::string command)
 	}
 	resetRange();
 }
-
-bool  Management::oneGapCheck(int x, float y1, float y2)
-{
-	int j;
-	for (j = ceil(y1); j != floor(y2); j = j + (floor(y2) - ceil(y1)) / abs(floor(y2) - ceil(y1)))
-	{
-		if (map[j - 1][x] == '3')
-			return true;
-	}
-	return false;
-}
-bool Management::viewableRange(Point start, Point end)
-{
-	int i,j;
-	float a, gap;
-	if (start.x != end.x)
-	{
-		a = (float)(end.y-start.y)/ abs(end.x-start.x);
-		gap = 0.5 + start.y;
-		if(oneGapCheck(start.x, gap+ (a/2),gap ))
-			return false;
-		gap = gap + (a/2) ;
-		i = start.x;
-		while (i != end.x - (end.x - start.x) / abs(end.x - start.x))
-		{
-			if (oneGapCheck(i + (end.x - start.x) / abs(end.x - start.x), gap + a, gap))
-				return false;
-			i = i + (end.x - start.x) / abs(end.x - start.x);
-			gap = a + gap;
-		}
-		if(oneGapCheck(end.x, gap + (a / 2), gap))
-			return false;
-	}
-	else
-	{
-		for (i = start.y; i != end.y; i = i + (end.y - start.y) / abs(end.y - start.y))
-		{
-			if (map[i][start.x] == '3')
-				return false;
-		}	
-		if (map[i][start.x] == '3')
-			return false;
-	}
-	return true;
-}
-int Management::getStep(Point start, Point end, int camp,int maxRange)
-{
-	int i, j;
-	if (map[end.y][end.x] != '1')
-		return false;
-
-	checkMap.resize(height);
-	for (i = 0; i < checkMap.size(); i++)
-		checkMap[i].resize(width);
-
-	for (i = 0; i < height; i++)
-	{
-		for (j = 0; j < width; j++)
-		{
-			if (map[i][j] == '0' || (enemyOnPoint({ j,i }, camp) != 0 && !(end == Point{ j, i })))
-			{
-				checkMap[i][j] = -1;
-			}
-			else
-				checkMap[i][j] = -2;
-		}
-	}
-	checkMap[start.y][start.x] = 0;
-	viewR(start, 0);
-	viewU(start, 0);
-	viewD(start, 0);
-	viewL(start, 0);
-	int n = 0;
-	while (checkMap[end.y][end.x] <= 0 && n <= maxRange)
-	{
-		n++;
-		for (i = 0; i < height; i++)
-		{
-			for (j = 0; j < width; j++)
-			{
-				if (checkMap[i][j] == n)
-				{
-					viewR({ j, i }, n);
-					viewU({ j, i }, n);
-					viewD({ j, i }, n);
-					viewL({ j, i }, n);
-				}
-			}
-		}
-	}
-	if (n > maxRange)
-		return maxRange + 1;
-	checkMap[start.y][start.x] = 0;
-	return checkMap[end.y][end.x];
-}
-bool Management::shootRange(Point start, Point end, int camp, int maxRange)
-{
-	int i, j;
-	if (map[end.y][end.x] != '1')
-		return false;
-
-	checkMap.resize(height);
-	for (i = 0; i < checkMap.size(); i++)
-		checkMap[i].resize(width);
-
-	for (i = 0; i < height; i++)
-	{
-		for (j = 0; j < width; j++)
-		{
-			if (map[i][j] == '0' || (enemyOnPoint({ j,i }, camp) != 0 && !(end == Point{ j, i })))
-			{
-				checkMap[i][j] = -1;
-			}
-			else
-				checkMap[i][j] = -2;
-		}
-	}
-	checkMap[start.y][start.x] = 0;
-	viewR(start, 0);
-	viewU(start, 0);
-	viewD(start, 0);
-	viewL(start, 0);
-	int n = 0;
-	while (checkMap[end.y][end.x] <= 0 && n <= maxRange)
-	{
-		n++;
-		for (i = 0; i < height; i++)
-		{
-			for (j = 0; j < width; j++)
-			{
-				if (checkMap[i][j] == n)
-				{
-					viewR({ j, i }, n);
-					viewU({ j, i }, n);
-					viewD({ j, i }, n);
-					viewL({ j, i }, n);
-				}
-			}
-		}
-	}
-	if (n > maxRange)
-		return false;
-	else if (checkMap[end.y][end.x] <= maxRange)
-		return true;
-	else
-		return false;
-}
-//////////////////////////////////////////////////////////////
-//拜訪右側 : 
-int Management::viewR(Point start, int n)
-{
-	if (checkMap[start.y][start.x + 1] == -2)
-	{
-		checkMap[start.y][start.x + 1] = n + 1;
-		return viewR({ start.x + 1,start.y }, n + 1);
-	}
-	else
-	return 0;
-}
-//////////////////////////////////////////////////////////////
-//拜訪上方 : 
-int Management::viewU(Point start, int n)
-{
-	if (checkMap[start.y - 1][start.x] == -2)
-	{
-		checkMap[start.y - 1][start.x] = n + 1;
-		return viewU({ start.x,start.y - 1 }, n + 1);
-	}
-	else
-		return 0;
-}
-//////////////////////////////////////////////////////////////
-//拜訪下方 : 
-int Management::viewD(Point start, int n)
-{
-	if (checkMap[start.y + 1][start.x] == -2)
-	{
-		checkMap[start.y + 1][start.x] = n + 1;
-		return viewD({ start.x,start.y + 1 }, n + 1);
-	}
-	else 
-		return 0;
-}
-//////////////////////////////////////////////////////////////
-//拜訪左側 : 
-int Management::viewL(Point start, int n)
-{
-	if (checkMap[start.y][start.x - 1] == -2)
-	{
-		checkMap[start.y][start.x - 1] = n + 1;
-		return viewL({ start.x - 1,start.y }, n + 1);
-	}
-	else
-		return 0;
-}
-//////////////////////////////////////////////////////////////
-void  Management::resetShield()
-{
-	int i, j;
-	int position;
-	for (i = 0; i < userDeck.size(); i++)
-	{
-		position = findCreaturePosition(0, userDeck[i].name);
-		userDeck[i].Shield = user[position].Shield;
-	}
-	for (i = 0; i < enemyDeck.size(); i++)
-	{
-		position = findCreaturePosition(1, enemyDeck[i].name);
-		enemyDeck[i].Shield = enemy[position].Shield;
-	}
-}
-
-void  Management::resetRange()
-{
-	int i, j;
-	int position;
-	for (i = 0; i < userDeck.size(); i++)
-	{
-		position = findCreaturePosition(0, userDeck[i].name);
-		userDeck[i].Range = user[position].Range;
-	}
-	for (i = 0; i < enemyDeck.size(); i++)
-	{
-		position = findCreaturePosition(1, enemyDeck[i].name);
-		enemyDeck[i].Range = enemy[position].Range;
-	}
-}
+////////////////////////////////////////////////////////////

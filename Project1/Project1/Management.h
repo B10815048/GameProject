@@ -87,64 +87,74 @@ private:
 	std::vector<CompairCardDex> compairList;
 public:
 	//////////////////////////////////////////////////////////////////////
+	//Range:
+	bool viewableRange(Point start, Point end);
+	bool oneGapCheck(int x, float y1, float y2);
+	void Range(Creature& creature, std::string command);
+	int shootRange(Point start, Point end, int camp, int maxRange);
+	bool canViewed(Point p);
+	void viewR(Point start, int n);
+	void viewU(Point start, int n);
+	void viewD(Point start, int n);
+	void viewL(Point start, int n);
+	void resetRange();
+	//////////////////////////////////////////////////////////////////////
+	//Attack:
+	void Attack(Creature& creature, std::string command);
+	//////////////////////////////////////////////////////////////////////
 	//print :
 	void gotoxy(Point p);
 	void getxy(Point& p);
 	void printMap(Point p);
 	void printEnemy(Point p);
 	void printUser(Point p);
+	void printCreatureCheck();
+	void printUserCheck(char icon);
+	void printExecutionOrder();
 	//////////////////////////////////////////////////////////////////////
-	//loadFile : 
-	void loadUserfile();//c7
-	void loadEnemyfile();//c7
-	void loadMapfile();//Yo
+	//File : 
+	void loadUserfile();
+	void loadEnemyfile();
+	void loadMapfile();
 	//////////////////////////////////////////////////////////////////////
-	//Attack:
-	void Attack(Creature& creature, std::string command); // Τrange return 1; 礚range return 0
-	void Range(User& user, std::string command);
-	void Range(Enemy& enemy, std::string command);
-	void resetRange();
-	void resetShield();
-	bool viewableRange(Point start, Point end);
-	bool oneGapCheck(int x, float y1, float y2);
-	bool shootRange(Point start, Point end, int camp, int maxRange);
-	int getStep(Point start, Point end, int camp,int maxRange);
-	int viewR(Point start,int n);
-	int viewU(Point start, int n);
-	int viewD(Point start, int n);
-	int viewL(Point start, int n);
-	//////////////////////////////////////////////////////////////////////
+	//Heal_Shield_rest
+	void Shield(Creature& creature, std::string command);
 	void rest(User& user);
-	//////////////////////////////////////////////////////////////////////
-	void setMove(User& user, int step);
-	bool Move(Creature &creature,std::string command);
+	void resetShield();
 	void Heal(User& user, std::string command);
 	void Heal(Enemy& enemy, std::string command);
-	void Shield(Creature& creature, std::string command);
+	//////////////////////////////////////////////////////////////////////
+	//Move
+	void setMove(User& user, int step);
+	bool Move(Creature &creature,std::string command);
+	bool checkSpace(Point p);
+	bool checkDoor(Point p);
+	//////////////////////////////////////////////////////////////////////
+	//playCard : 
+	void userPlayCards();
+	void enemyPlayCards();
+	void sort_Enemycard();
+	void sort_Usercard(int index);
+	void sort_compairList();
+	void sort_discard(int index);
+	//////////////////////////////////////////////////////////////////////
+	//cardExecution : 
+	void usingEffect(User& user, int index, int part); //礟场part=0礟场part=1
+	void usingEffect(Enemy& enemy, int index);
 	//////////////////////////////////////////////////////////////////////
 	//gameAction : 
 	void runGAME();
-	void seletUser();//c7
+	void seletUser();
 	void seletPoint();
 	void playCard();
-	void userPlayCards();
-	void enemyPlayCards();
-	void sort_compairList();
-	void sort_card(int index);
-	void sort_discard(int index);
-	void usingEffect(User& user,int index, int part); //part 0:礟场part 1:礟场
-	void usingEffect(Enemy& enemy, int index);
 	//////////////////////////////////////////////////////////////////////
-	//playCard : 
-	bool userExist(char icon);
-	bool enemyExist(char icon);
-	bool victoryCheck();
+	//turnCheck : 
 	void survivalCheck();
 	void doorOpenCheck();
+	bool victoryCheck();
 	char Search(std::vector<std::vector<char> >& map, int x, int y);
 	//////////////////////////////////////////////////////////////////////
-	bool checkSpace(Point p);
-	bool checkDoor(Point p);
+	//math : 
 	bool havePlayed(char icon);
 	int creatureOnPoint(Point p);
 	int enemyOnPoint(Point p,int Camp);

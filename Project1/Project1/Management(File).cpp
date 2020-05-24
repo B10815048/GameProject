@@ -4,23 +4,8 @@
 #include <sstream>
 #include <vector>
 #include <regex>
-
-char Management::Search(std::vector<std::vector<char> >& map, int x, int y)
-{
-	if (map[y][x] != 'x' || map[y][x] == 'y' || map[y][x] == '4')
-	{
-		if (map[y][x] == '4')
-			map[y][x] = '3';
-		else if (map[y][x] == 'y')	
-			map[y][x] = '2';
-		return 'x';
-	}		
-	else
-		map[y][x] = '1';
-	if (Search(map, x + 1, y) != 'x' || Search(map, x - 1, y) != 'x' || Search(map, x, y + 1) != 'x' || Search(map, x, y - 1) != 'x')
-		return 'x';
-}
-
+////////////////////////////////////////////////////////////
+//讀取使用者檔案：
 void Management::loadUserfile()
 {
 	std::fstream file;
@@ -70,7 +55,8 @@ void Management::loadUserfile()
 		}
 	}
 }
-
+////////////////////////////////////////////////////////////
+//讀取地圖檔案：
 void Management::loadMapfile()
 {
 	std::vector <Point> CharaterPos;
@@ -95,10 +81,13 @@ void Management::loadMapfile()
 			std::cout << "重新輸入：" << std::endl;
 	}
 	file >> height >> width;
+	checkMap.resize(height);
 	map.resize(height);
 	for (int i = 0; i < height; i++)
+	{
 		map[i].resize(width);
-
+		checkMap[i].resize(width);
+	}
 	char block;
 	for (int i = 0; i < height; i++)
 	{
@@ -190,7 +179,8 @@ void Management::loadMapfile()
 	}
 	file.close();
 }
-
+////////////////////////////////////////////////////////////
+//讀取敵人檔案：
 void Management::loadEnemyfile() //載入怪物資料
 {
 	std::fstream file;
@@ -232,3 +222,4 @@ void Management::loadEnemyfile() //載入怪物資料
 	}
 	file.close();
 }
+////////////////////////////////////////////////////////////

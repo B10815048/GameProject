@@ -139,19 +139,17 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp" />
-    <ClCompile Include="Management(Heal).cpp" />
-    <ClCompile Include="Management.cpp" />
+    <ClCompile Include="Management%28Heal_Shield%29.cpp" />
+    <ClCompile Include="Management%28Math%29.cpp" />
     <ClCompile Include="Management%28Print%29.cpp" />
     <ClCompile Include="Management%28File%29.cpp" />
-    <ClCompile Include="Management%28SeletPoint%29.cpp" />
+    <ClCompile Include="Management%28GameAction%29.cpp" />
     <ClCompile Include="Management%28Move%29.cpp" />
-    <ClCompile Include="Management%28PlayCard%29.cpp" />
+    <ClCompile Include="Management%28cardExecution%29.cpp" />
     <ClCompile Include="Management%28Attack%29.cpp" />
     <ClCompile Include="Management%28turnCheck%29.cpp" />
-    <ClCompile Include="Management%28existCheck%29.cpp" />
-    <ClCompile Include="Management%28SelectUser%29.cpp" />
-    <ClCompile Include="Management%28UserTurn%29.cpp" />
-    <ClCompile Include="Management%28CardTurn%29.cpp" />
+    <ClCompile Include="Management%28playCard%29.cpp" />
+    <ClCompile Include="Management%28Range%29.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Management.h" />
