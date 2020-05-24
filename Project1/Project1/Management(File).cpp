@@ -95,10 +95,13 @@ void Management::loadMapfile()
 			std::cout << "­«·s¿é¤J¡G" << std::endl;
 	}
 	file >> height >> width;
+	checkMap.resize(height);
 	map.resize(height);
 	for (int i = 0; i < height; i++)
+	{
 		map[i].resize(width);
-
+		checkMap[i].resize(width);
+	}
 	char block;
 	for (int i = 0; i < height; i++)
 	{

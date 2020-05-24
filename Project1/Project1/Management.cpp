@@ -9,6 +9,8 @@ void Management::runGAME()
 	enemyDeck.clear();
 	user.clear();
 	enemy.clear();
+	map.clear();
+	checkMap.clear();
 	std::string input = "";
 	Point p;
 	round_count = 0;
@@ -18,7 +20,6 @@ void Management::runGAME()
 	loadMapfile();
 	getxy(p);
 	printMap(p);
-
 	printEnemy(p);
 	seletPoint();
 	while (!victoryCheck() && userDeck.size() > 0)

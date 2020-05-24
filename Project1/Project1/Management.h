@@ -90,18 +90,18 @@ public:
 	//Range:
 	bool viewableRange(Point start, Point end);
 	bool oneGapCheck(int x, float y1, float y2);
-	int shootRange(Point start, Point end, int camp, int maxRange);
+	void Range(Creature& creature, std::string command);
+	bool canViewed(Point p);
+	void viewR(Point start, int n);
+	void viewU(Point start, int n);
+	void viewD(Point start, int n);
+	void viewL(Point start, int n);
 	//////////////////////////////////////////////////////////////////////
 	//Attack:
-	void Attack(Creature& creature, std::string command); // ¦³range return 1; µLrange return 0
-	void Range(User& user, std::string command);
-	void Range(Enemy& enemy, std::string command);
+	void Attack(Creature& creature, std::string command);
+	int shootRange(Point start, Point end, int camp, int maxRange);
 	void resetRange();
 	void resetShield();
-	int viewR(Point start, int n);
-	int viewU(Point start, int n);
-	int viewD(Point start, int n);
-	int viewL(Point start, int n);
 	//////////////////////////////////////////////////////////////////////
 	//print :
 	void gotoxy(Point p);

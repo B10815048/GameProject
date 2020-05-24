@@ -57,7 +57,7 @@
     <ClCompile Include="Management%28CardTurn%29.cpp">
       <Filter>資源檔</Filter>
     </ClCompile>
-    <ClCompile Include="Management%28viewRange%29.cpp">
+    <ClCompile Include="Management%28Range%29.cpp">
       <Filter>資源檔</Filter>
     </ClCompile>
   </ItemGroup>
