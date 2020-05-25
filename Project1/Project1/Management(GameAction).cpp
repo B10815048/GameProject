@@ -89,7 +89,6 @@ void Management::runGAME()
 	user.clear();
 	enemy.clear();
 	map.clear();
-	checkMap.clear();
 	std::string input = "";
 	Point p;
 	round_count = 0;
