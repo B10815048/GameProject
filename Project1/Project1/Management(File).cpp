@@ -6,7 +6,7 @@
 #include <regex>
 ////////////////////////////////////////////////////////////
 //讀取使用者檔案：
-void Management::loadUserfile()
+void Management::loadUserfile(std::string fileName)
 {
 	std::fstream file;
 	int position;
@@ -14,7 +14,7 @@ void Management::loadUserfile()
 	int int_buffer;
 	std::string string_buffer, topbuffer, belowbuffer;
 	int i, j, k, l;
-	file.open("character1.txt", std::ios::in);
+	file.open(fileName, std::ios::in);
 	file >> usernum;
 	user.resize(usernum);
 	for (i = 0; i < usernum; i++)
@@ -81,13 +81,9 @@ void Management::loadMapfile()
 			std::cout << "重新輸入：" << std::endl;
 	}
 	file >> height >> width;
-	checkMap.resize(height);
 	map.resize(height);
 	for (int i = 0; i < height; i++)
-	{
 		map[i].resize(width);
-		checkMap[i].resize(width);
-	}
 	char block;
 	for (int i = 0; i < height; i++)
 	{
@@ -181,13 +177,13 @@ void Management::loadMapfile()
 }
 ////////////////////////////////////////////////////////////
 //讀取敵人檔案：
-void Management::loadEnemyfile() //載入怪物資料
+void Management::loadEnemyfile(std::string fileName) //載入怪物資料
 {
 	std::fstream file;
 	int enemynum;
 	std::string string_buffer;
 	int i, j;
-	file.open("monster1.txt", std::ios::in); //開啟指定的怪物檔案
+	file.open(fileName, std::ios::in); //開啟指定的怪物檔案
 	file >> enemynum; //讀取怪物數量
 	enemy.resize(enemynum);
 	for (i = 0; i < enemynum; i++)
@@ -223,3 +219,8 @@ void Management::loadEnemyfile() //載入怪物資料
 	file.close();
 }
 ////////////////////////////////////////////////////////////
+//設定遊戲模式：
+void  Management::setDebugMode(bool input)
+{
+	debugMode = input;
+}

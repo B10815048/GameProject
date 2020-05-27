@@ -4,6 +4,7 @@
 #include <string>
 #include "Management.h"
 #include <regex>
+#include <conio.h>
 using namespace std;
 ////////////////////////////////////////////////////////////
 //選擇使用角色：
@@ -84,17 +85,7 @@ void Management::seletUser()
 //執行一回合：
 void Management::runGAME()
 {
-	userDeck.clear();
-	enemyDeck.clear();
-	user.clear();
-	enemy.clear();
-	map.clear();
-	checkMap.clear();
-	std::string input = "";
 	Point p;
-	round_count = 0;
-	loadUserfile();
-	loadEnemyfile();
 	seletUser();
 	loadMapfile();
 	getxy(p);
@@ -110,6 +101,7 @@ void Management::runGAME()
 		std::cout << "character win~" << std::endl;
 	else
 		std::cout << "monster win~" << std::endl;
+	resetGame();
 }
 ////////////////////////////////////////////////////////////
 //選擇起始點：
@@ -300,7 +292,7 @@ void Management::playCard()
 				position = findCreatureDeckPosition(0, compairList[i].Icon);
 				if (compairList[i].Index[0] != -1)
 				{
-					std::cout << "輪到角色" << userDeck[position].Icon << "使用牌的回合 (u/d/check)" << std::endl;
+					std::cout << "角色"<< userDeck[position].Icon << "選擇卡片效果 " << compairList[i].Index[0] << " " << compairList[i].Index[1]<< std::endl;
 					while (getline(cin, command))
 					{
 						if (std::regex_match(command, creatureCheck)) //顯示所有生物狀態
@@ -345,6 +337,8 @@ void Management::playCard()
 				position = findCreatureDeckPosition(1, compairList[i].Icon);
 				cout << "敵人" << enemyDeck[position].Icon << "出牌" << endl;
 				usingEffect(enemyDeck[position], compairList[i].Index[0]);
+				if (!debugMode)
+					_getch();
 			}
 		}
 		// 每個物件行動結束計算
@@ -354,3 +348,11 @@ void Management::playCard()
 	doorOpenCheck();
 }
 ////////////////////////////////////////////////////////////
+//重設遊戲資料
+void Management::resetGame()
+{
+	userDeck.clear();
+	enemyDeck.clear();
+	map.clear();
+	round_count = 0;
+}

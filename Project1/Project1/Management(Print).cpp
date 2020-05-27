@@ -116,8 +116,10 @@ void Management::printExecutionOrder()
 		if (compairList[i].Dex[0] < 10)
 			std::cout << "0";
 		std::cout << compairList[i].Dex[0] << " ";
-		if (compairList[i].Icon >= 'A' && compairList[i].Icon <= 'Z')
+		if (compairList[i].Icon >= 'A' && compairList[i].Icon <= 'Z' && compairList[i].Index[1]!=-1)
 			std::cout << compairList[i].Index[0] << " " << compairList[i].Index[1] << std::endl;
+		else if (compairList[i].Icon >= 'A' && compairList[i].Icon <= 'Z')
+			std::cout << compairList[i].Index[0] << std::endl;
 		else
 		{
 			int p1, p2;

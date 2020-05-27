@@ -22,10 +22,10 @@ void Management::Heal(Enemy& enemy, std::string command)
 	std::stringstream ss;
 	ss << command;
 	ss >> value;
-	enemy.HP[enemy.Type] += value;
+	enemy.HP[enemy.Type] = value + enemy.HP[enemy.Type];
 	position = findCreaturePosition(1, enemy.name);
-	if (this->enemy[position].HP[this->enemy[position].Type] < enemy.HP[enemy.Type]) //超出血量最大值時
-		enemy.HP[enemy.Type] = this->enemy[position].HP[this->enemy[position].Type];
+	if (this->enemy[position].HP[enemy.Type] < enemy.HP[enemy.Type]) //超出血量最大值時
+		enemy.HP[enemy.Type] = this->enemy[position].HP[enemy.Type];
 	std::cout << enemy.Icon << " heal " << value << ", now hp is " << enemy.HP[enemy.Type] << std::endl;
 }
 ////////////////////////////////////////////////////////////

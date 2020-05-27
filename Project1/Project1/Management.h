@@ -78,8 +78,8 @@ private:
 	//////////////////////////////////////////////////////////////////////
 	int round_count = 0;
 	int width, height;
+	bool debugMode = false;
 	std::vector <std::vector<char> > map;
-	std::vector <std::vector<int> >checkMap;
 	std::vector <User> user; // 讀檔人數
 	std::vector <Enemy> enemy;
 	std::vector <User> userDeck; // 出場人數
@@ -92,11 +92,6 @@ public:
 	bool oneGapCheck(int x, float y1, float y2);
 	void Range(Creature& creature, std::string command);
 	int shootRange(Point start, Point end, int camp, int maxRange);
-	bool canViewed(Point p);
-	void viewR(Point start, int n);
-	void viewU(Point start, int n);
-	void viewD(Point start, int n);
-	void viewL(Point start, int n);
 	void resetRange();
 	//////////////////////////////////////////////////////////////////////
 	//Attack:
@@ -113,9 +108,10 @@ public:
 	void printExecutionOrder();
 	//////////////////////////////////////////////////////////////////////
 	//File : 
-	void loadUserfile();
-	void loadEnemyfile();
+	void loadUserfile(std::string fileName);
+	void loadEnemyfile(std::string fileName);
 	void loadMapfile();
+	void setDebugMode(bool input);
 	//////////////////////////////////////////////////////////////////////
 	//Heal_Shield_rest
 	void Shield(Creature& creature, std::string command);
@@ -143,6 +139,7 @@ public:
 	void usingEffect(Enemy& enemy, int index);
 	//////////////////////////////////////////////////////////////////////
 	//gameAction : 
+	void resetGame();
 	void runGAME();
 	void seletUser();
 	void seletPoint();
