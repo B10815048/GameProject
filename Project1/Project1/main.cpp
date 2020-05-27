@@ -1,17 +1,26 @@
 #include <iostream>
+#include <string>
 #include "Management.h"
 using namespace std;
-int main()
+void main(int argc, char* argv[])
 {
     Management management;
 	string input;
+	if (argc != 4)
+	{
+		cout << "輸入參數不足，請重新開啟" << endl;
+		return;
+	}
+	management.loadUserfile(argv[1]);
+	management.loadEnemyfile(argv[2]);
+	management.setDebugMode(stoi(argv[3]));
     //////////////////////////////////////////////////////
 	while (cin >> input)
 	{
 		if (input == "play")
 			management.runGAME();
 		else if (input == "exit")
-			return 0;
+			return;
 		else
 			std::cout << "輸入錯誤" << std::endl;
 	}

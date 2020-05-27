@@ -67,28 +67,17 @@ void Management::userPlayCards()
 					std::cout << "不合規範：" << std::endl;
 					continue;
 				}
+				else if (findCardPosition(userDeck[position], index1) == -1 || findCardPosition(userDeck[position], index2) == -1)
+				{
+					std::cout << "不合規範：" << std::endl;
+					continue;
+				}
 				p2 = findCardPosition(userDeck[position], index1);
-				if (p2 != -1)
-				{
-					tmp.Index.push_back(userDeck[position].Card[p2].Order);
-					tmp.Dex[0] = userDeck[position].Card[p2].DEX;
-				}
-				else
-				{
-					std::cout << "不合規範：" << std::endl;
-					continue;
-				}
+				tmp.Index.push_back(userDeck[position].Card[p2].Order);
+				tmp.Dex[0] = userDeck[position].Card[p2].DEX;
 				p2 = findCardPosition(userDeck[position], index2);
-				if (p2 != -1)
-				{
-					tmp.Index.push_back(userDeck[position].Card[p2].Order);
-					tmp.Dex[1] = userDeck[position].Card[p2].DEX;
-				}
-				else
-				{
-					std::cout << "不合規範：" << std::endl;
-					continue;
-				}
+				tmp.Index.push_back(userDeck[position].Card[p2].Order);
+				tmp.Dex[1] = userDeck[position].Card[p2].DEX;
 				compairList.push_back(tmp);
 				break;
 			}

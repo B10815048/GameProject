@@ -78,6 +78,7 @@ private:
 	//////////////////////////////////////////////////////////////////////
 	int round_count = 0;
 	int width, height;
+	bool debugMode = false;
 	std::vector <std::vector<char> > map;
 	std::vector <User> user; // ÅªÀÉ¤H¼Æ
 	std::vector <Enemy> enemy;
@@ -107,9 +108,10 @@ public:
 	void printExecutionOrder();
 	//////////////////////////////////////////////////////////////////////
 	//File : 
-	void loadUserfile();
-	void loadEnemyfile();
+	void loadUserfile(std::string fileName);
+	void loadEnemyfile(std::string fileName);
 	void loadMapfile();
+	void setDebugMode(bool input);
 	//////////////////////////////////////////////////////////////////////
 	//Heal_Shield_rest
 	void Shield(Creature& creature, std::string command);
@@ -137,6 +139,7 @@ public:
 	void usingEffect(Enemy& enemy, int index);
 	//////////////////////////////////////////////////////////////////////
 	//gameAction : 
+	void resetGame();
 	void runGAME();
 	void seletUser();
 	void seletPoint();

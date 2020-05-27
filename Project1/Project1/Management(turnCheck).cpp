@@ -1,7 +1,9 @@
 #include "Management.h"
 #include <fstream>
 #include <string>
+#include <conio.h>
 #include <sstream>
+
 ////////////////////////////////////////////////////////////
 //³Ó§Q½T»{¡G
 bool  Management::victoryCheck()
@@ -38,6 +40,8 @@ void Management::survivalCheck()
 		if (userDeck[i-1].HP <= 0)
 		{
 			std::cout << userDeck[i].Icon << " is killed!!" << std::endl;
+			if (!debugMode)
+				_getch();
 			check = true;
 			for (j = 0; j < compairList.size(); j++)
 			{
