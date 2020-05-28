@@ -67,7 +67,7 @@ void Management::loadMapfile()
 	int enemyCount;
 	std::regex form(".+txt$");
 	std::cout << "¿ï¾Ü¦a¹Ï : " << std::endl;
-	while (std::cin >> fileName)
+	while (getline(std::cin , fileName))
 	{
 		if (std::regex_match(fileName, form))
 		{

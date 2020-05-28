@@ -20,7 +20,7 @@ void Management::seletUser()
 	std::regex form("^[2-4]{1}$");
 	std::string input;
 	std::cout << "請輸入出場角色數量:" << std::endl;
-	while (std::cin >> input)
+	while (getline (cin,input))
 	{
 		if (std::regex_match(input, form))
 			break;
@@ -102,27 +102,7 @@ void Management::seletUser()
 		
 
 	}
-	/*for (i = 0; i < userDeck.size(); i++)
-	{
-		while (std::cin >> string_buffer)
-		{
-			p1 = findCreaturePosition(0, string_buffer);
-			if (p1 == -1)
-			{
-				std::cout << "重新輸入：" << std::endl;
-			}
-			else
-			{
-				userDeck[i] = user[p1];
-				break;
-			}
-		}
-		userDeck[i].Camp = 0;
-		userDeck[i].Icon = 65 + i;
-		userDeck[i].Card.clear();
-		form = ("^[0-9]+$");
 
-	}*/
 }
 ////////////////////////////////////////////////////////////
 //執行一回合：
@@ -160,7 +140,7 @@ void Management::seletPoint()
 	for (int i = 0; i < this->userDeck.size(); i++)
 	{
 		std::cout << "選擇角色位置：" << std::endl;
-		while (std::cin >> command)
+		while (getline(cin , command))
 		{
 			if (std::regex_match(command, form1) || std::regex_match(command, form2))
 				break;

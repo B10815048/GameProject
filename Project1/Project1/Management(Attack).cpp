@@ -18,7 +18,7 @@ void Management::Attack(Creature& creature, std::string command)
 	if (creature.Camp == 0) //主角方
 	{
 		std::cout << "選擇攻擊敵人 : " << std::endl;
-		while (std::cin >> input)
+		while (getline(std::cin , input))
 		{
 			if (std::regex_match(input, attack) && findCreatureDeckPosition(1, input[0]) != -1) //符合攻擊目標及在攻擊範圍內
 			{

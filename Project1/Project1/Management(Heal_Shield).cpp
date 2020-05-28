@@ -1,5 +1,7 @@
 #include "Management.h"
+#include <iostream>
 #include <sstream>
+#include <string>
 ////////////////////////////////////////////////////////////
 //使用者治療技能：
 void Management::Heal(User& user, std::string command)
@@ -43,11 +45,13 @@ void Management::Shield(Creature& creature, std::string command)
 //使用者長休技能：
 void Management::rest(User& user)
 {
+	std::string input;
 	int index;
 	int i;
 	std::cout << "選擇一張牌刪除：" << std::endl;
-	while (std::cin >> index)
+	while (getline(std::cin,input))
 	{
+		index = stoi(input);
 		for (i = 0; i < user.disCardDeck.size(); i++)
 		{
 			if (user.disCardDeck[i].Order == index)
