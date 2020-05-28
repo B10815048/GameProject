@@ -15,7 +15,7 @@ void main(int argc, char* argv[])
 	management.loadEnemyfile(argv[2]);
 	management.setDebugMode(stoi(argv[3]));
     //////////////////////////////////////////////////////
-	while (cin >> input)
+	while (getline(cin, input))
 	{
 		if (input == "play")
 			management.runGAME();
