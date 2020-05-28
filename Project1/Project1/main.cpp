@@ -8,7 +8,7 @@ void main(int argc, char* argv[])
 	string input;
 	if (argc != 4)
 	{
-		cout << "輸入參數不足，請重新開啟" << endl;
+		cout << "Testing" << endl;
 		return;
 	}
 	management.loadUserfile(argv[1]);

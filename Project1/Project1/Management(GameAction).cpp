@@ -2,6 +2,7 @@
 #include <fstream>
 #include <vector>
 #include <string>
+#include <sstream>
 #include "Management.h"
 #include <regex>
 #include <conio.h>
@@ -31,6 +32,78 @@ void Management::seletUser()
 	////////////////////////////////////////////////////////////
 	for (i = 0; i < userDeck.size(); i++)
 	{
+		while (getline(cin,string_buffer))
+		{
+			if (string_buffer.size() == 0)
+				continue;
+			stringstream ss(string_buffer);
+			ss >> string_buffer;
+			p1 = findCreaturePosition(0, string_buffer);
+			if (p1 == -1)
+			{
+				std::cout << "重新輸入：" << std::endl;
+			}
+			else
+			{
+				userDeck[i] = user[p1];
+				userDeck[i].Camp = 0;
+				userDeck[i].Icon = 65 + i;
+				userDeck[i].Card.clear();
+				string_buffer = "^";
+				for (j = 0; j < userDeck[i].CardOnHand; j++)
+						string_buffer = string_buffer + " [0-9]+";
+				string_buffer = string_buffer + "$";
+				getline(ss, input);
+				form = (string_buffer);
+				if (!std::regex_match(input, form))
+				{
+					std::cout << "卡牌數量不合" << std::endl;
+					continue;
+				}
+				else
+				{
+					stringstream s1(input);
+					for (j = 0; j < userDeck[i].CardOnHand; j++)
+					{
+						s1 >> input;
+						int_buffer = stoi(input);
+						p2 = -1;
+						for (k = 0; k < user[p1].Card.size(); k++)
+						{
+							if (user[p1].Card[k].Order == int_buffer)
+								p2 = k;
+						}
+						if (p2 == -1)
+						{
+							std::cout << "卡牌不存在" << std::endl;
+							break;
+						}
+						else
+						{
+							if (findCardPosition(userDeck[i], int_buffer) == -1)
+							{
+								userDeck[i].name = user[p1].name;
+								userDeck[i].Card.push_back(user[p1].Card[p2]);
+							}
+							else
+							{
+								std::cout << "重複的卡牌" << std::endl;
+								break;
+							}
+						}
+					}
+					if (userDeck[i].Card.size() != userDeck[i].CardOnHand)
+						continue;
+				}
+				break;
+			}
+		}
+
+		
+
+	}
+	/*for (i = 0; i < userDeck.size(); i++)
+	{
 		while (std::cin >> string_buffer)
 		{
 			p1 = findCreaturePosition(0, string_buffer);
@@ -48,38 +121,8 @@ void Management::seletUser()
 		userDeck[i].Icon = 65 + i;
 		userDeck[i].Card.clear();
 		form = ("^[0-9]+$");
-		for (j = 0; j < userDeck[i].CardOnHand; j++)
-		{
-			while (std::cin >> input)
-			{
-				if (std::regex_match(input, form))
-				{
-					int_buffer = stoi(input);
-					p2 = -1;
-					for (k = 0; k < user[p1].Card.size(); k++)
-					{
-						if (user[p1].Card[k].Order == int_buffer)
-							p2 = k;
-					}
-					if (p2 == -1)
-						std::cout << "找不到該牌" << std::endl;
-					else
-					{
-						if (findCardPosition(userDeck[i], int_buffer) == -1)
-						{
-							userDeck[i].name = user[p1].name;
-							userDeck[i].Card.push_back(user[p1].Card[p2]);
-							break;
-						}
-						else
-							std::cout << "重複的牌組" << std::endl;
-					}
-				}
-				else
-					std::cout << "輸入錯誤" << std::endl;
-			}
-		}
-	}
+
+	}*/
 }
 ////////////////////////////////////////////////////////////
 //執行一回合：
@@ -113,7 +156,7 @@ void Management::seletPoint()
 	std::vector <Point> point;
 	std::string command;
 	std::regex form1("^[wasd]+$");
-	std::regex form2("e");
+	std::regex form2("^e$");
 	for (int i = 0; i < this->userDeck.size(); i++)
 	{
 		std::cout << "選擇角色位置：" << std::endl;

@@ -8,7 +8,7 @@ void  Management::setMove(User& user, int step)
 	std::cout << "輸入移動：" << std::endl;
 	std::string moveCommand;
 	std::regex form1("^[wasd]+$");
-	std::regex form2("e"); //輸入只有一個e
+	std::regex form2("^e$"); //輸入只有一個e
 	while (std::cin >> moveCommand)
 	{
 		if (std::regex_match(moveCommand, form1) || std::regex_match(moveCommand, form2))
