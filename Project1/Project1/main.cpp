@@ -4,6 +4,7 @@
 using namespace std;
 void main(int argc, char* argv[])
 {
+
     Management management;
 	string input;
 	if (argc != 4)
