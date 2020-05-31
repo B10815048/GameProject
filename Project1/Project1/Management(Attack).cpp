@@ -17,19 +17,20 @@ void Management::Attack(Creature& creature, std::string command)
 		creature.Range = 1;
 	if (creature.Camp == 0) //主角方
 	{
-		std::cout << "選擇攻擊敵人 : " << std::endl;
+		if(debugMode == 0)
+			std::cout << "選擇攻擊敵人 : " << std::endl;
 		while (getline(std::cin , input))
 		{
 			if (std::regex_match(input, attack) && findCreatureDeckPosition(1, input[0]) != -1) //符合攻擊目標及在攻擊範圍內
 			{
 				position = findCreatureDeckPosition(1, input[0]);
-				if (shootRange(creature.P, enemyDeck[position].P, 0, creature.Range) <= creature.Range && viewableRange(enemyDeck[position].P, creature.P))
+				if (shootRange(creature.P, enemyDeck[position].P) <= creature.Range && viewableRange(enemyDeck[position].P, creature.P))
 				{
 					damage = damage - enemyDeck[position].Shield; //實際傷害
 					positiveValue(damage);
 					enemyDeck[position].HP[enemyDeck[position].Type] -= damage;
 					std::cout << creature.Icon << " attack " << enemyDeck[position].Icon << " " << damage << " damage, " << enemyDeck[position].Icon << " shield " << enemyDeck[position].Shield
-						<< " , " << enemyDeck[position].Icon << " remain " << enemyDeck[position].HP[enemyDeck[position].Type] << " hp" << std::endl;
+						<< ", " << enemyDeck[position].Icon << " remain " << enemyDeck[position].HP[enemyDeck[position].Type] << " hp" << std::endl;
 					return;
 				}
 				else //超出攻擊範圍
@@ -38,11 +39,12 @@ void Management::Attack(Creature& creature, std::string command)
 			}
 			else if (std::regex_match(input, giveUp))
 			{
-				std::cout << "放棄攻擊..." << std::endl;
+				if(debugMode == 0)
+					std::cout << "放棄攻擊..." << std::endl;
 				return;
 			}
 			else  //沒有此敵人
-			std::cout << "error target!!!" << std::endl;
+				std::cout << "error target!!!" << std::endl;
 		}
 	}
 	else if (creature.Camp == 1) //敵人方
@@ -53,9 +55,9 @@ void Management::Attack(Creature& creature, std::string command)
 			userIndex[j] = 0;
 		for (i = 0; i < userDeck.size(); i++)
 		{
-			if (shootRange(creature.P, userDeck[i].P, 1, creature.Range) <= creature.Range && viewableRange(userDeck[i].P, creature.P))
+			if (shootRange(creature.P, userDeck[i].P) <= creature.Range && viewableRange(userDeck[i].P, creature.P))
 			{
-				step = shootRange(creature.P, userDeck[i].P, 1, creature.Range);
+				step = shootRange(creature.P, userDeck[i].P);
 				if (step < minStep)
 				{
 					for (int j = 0; j < 4; j++)
@@ -86,7 +88,7 @@ void Management::Attack(Creature& creature, std::string command)
 					if (damage > userDeck[i].Shield)
 						userDeck[i].HP -= damage - userDeck[i].Shield;
 					std::cout << creature.Icon << " attack " << userDeck[i].Icon << " " << damage << " damage, " << userDeck[i].Icon << " shield " << userDeck[i].Shield
-						<< " , " << userDeck[i].Icon << " remain " << userDeck[i].HP << " hp" << std::endl;
+						<< ", " << userDeck[i].Icon << " remain " << userDeck[i].HP << " hp" << std::endl;
 				}
 			}
 		}
@@ -102,7 +104,7 @@ void Management::Attack(Creature& creature, std::string command)
 						if (damage > userDeck[j].Shield)
 							userDeck[j].HP -= damage - userDeck[j].Shield;
 						std::cout << creature.Icon << " attack " << userDeck[j].Icon << " " << damage << " damage, " << userDeck[j].Icon << " shield " << userDeck[j].Shield
-							<< " , " << userDeck[j].Icon << " remain " << userDeck[j].HP << " hp" << std::endl;
+							<< ", " << userDeck[j].Icon << " remain " << userDeck[j].HP << " hp" << std::endl;
 						return;
 					}
 				}

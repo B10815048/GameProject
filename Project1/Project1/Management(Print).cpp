@@ -84,12 +84,11 @@ void Management::printUserCheck(char icon)
 	std::cout << "hand: ";
 	for (int j = 0; j < userDeck[position].Card.size(); j++)
 	{
-		if (j == userDeck[position].Card.size() - 1)
-			std::cout << userDeck[position].Card[j].Order << "; ";
-		else
-			std::cout << userDeck[position].Card[j].Order << ", ";
+		std::cout << userDeck[position].Card[j].Order;
+		if (j != userDeck[position].Card.size() - 1)
+			std::cout << ", ";
 	}
-	std::cout << "discard: ";
+	std::cout << "; discard: ";
 	for (int j = 0; j < userDeck[position].disCardDeck.size(); j++)
 	{
 		std::cout << userDeck[position].disCardDeck[j].Order;
@@ -103,7 +102,8 @@ void Management::printUserCheck(char icon)
 void Management::printExecutionOrder()
 {
 	int i, position;
-	std::cout << "生物行動執行順序:" << std::endl;
+	if(debugMode == 0)
+		std::cout << "生物行動執行順序:" << std::endl;
 	for (i = 0; i < compairList.size(); i++)
 	{
 		if (compairList[i].Icon >= 'A' && compairList[i].Icon <= 'Z')

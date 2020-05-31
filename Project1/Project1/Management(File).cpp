@@ -66,7 +66,8 @@ void Management::loadMapfile()
 	int count = 0;
 	int enemyCount;
 	std::regex form(".+txt$");
-	std::cout << "選擇地圖 : " << std::endl;
+	if(debugMode == 0)
+		std::cout << "選擇地圖 : " << std::endl;
 	while (getline(std::cin , fileName))
 	{
 		if (std::regex_match(fileName, form))

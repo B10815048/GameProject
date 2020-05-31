@@ -17,7 +17,8 @@ void Management::usingEffect(User& userDeck, int index, int part)
 			{
 				for (j = 0; j < userDeck.Card[i].BelowType.size(); j++)
 				{
-					std::cout << "發動角色" << userDeck.Icon << "技能卡下方效果：" << skill[userDeck.Card[i].BelowType[j]] << std::endl;
+					if(debugMode == 0)
+						std::cout << "發動角色" << userDeck.Icon << "技能卡下方效果：" << skill[userDeck.Card[i].BelowType[j]] << std::endl;
 					if (userDeck.Card[i].BelowType[j] == 0)
 						setMove(userDeck, stoi(userDeck.Card[i].BelowAbilityValue[j]));
 					else if (userDeck.Card[i].BelowType[j] == 1)
@@ -45,7 +46,8 @@ void Management::usingEffect(User& userDeck, int index, int part)
 			{
 				for (j = 0; j < userDeck.Card[i].TopType.size(); j++)
 				{
-					std::cout << "發動角色" << userDeck.Icon << "技能卡上方效果：" << skill[userDeck.Card[i].TopType[j]] << std::endl;
+					if(debugMode == 0)
+						std::cout << "發動角色" << userDeck.Icon << "技能卡上方效果：" << skill[userDeck.Card[i].TopType[j]] << std::endl;
 					if (userDeck.Card[i].TopType[j] == 0)
 						setMove(userDeck, stoi(userDeck.Card[i].TopAbilityValue[j]));
 					else if (userDeck.Card[i].TopType[j] == 1)
@@ -90,7 +92,8 @@ void Management::usingEffect(Enemy& enemyDeck, int index)
 		{
 			for (j = 0; j < enemyDeck.Card[i].Type.size(); j++)
 			{
-				std::cout << "發動敵人" << enemyDeck.Icon << "技能卡效果：" <<  skill[enemyDeck.Card[i].Type[j]] << std::endl;
+				if(debugMode == 0)
+					std::cout << "發動敵人" << enemyDeck.Icon << "技能卡效果：" <<  skill[enemyDeck.Card[i].Type[j]] << std::endl;
 				if (enemyDeck.Card[i].Type[j] == 0)
 					Move(enemyDeck, enemyDeck.Card[i].AbilityValue[j]);
 				else if (enemyDeck.Card[i].Type[j] == 1)

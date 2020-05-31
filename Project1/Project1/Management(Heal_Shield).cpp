@@ -39,7 +39,7 @@ void Management::Shield(Creature& creature, std::string command)
 	ss << command;
 	ss >> value;
 	creature.Shield += value;
-	std::cout << creature.Icon << " shield " << value << ", this turn" << std::endl;
+	std::cout << creature.Icon << " shield " << value << " this turn" << std::endl;
 }
 ////////////////////////////////////////////////////////////
 //使用者長休技能：
@@ -48,7 +48,8 @@ void Management::rest(User& user)
 	std::string input;
 	int index;
 	int i;
-	std::cout << "選擇一張牌刪除：" << std::endl;
+	if(debugMode == 0)
+		std::cout << "選擇一張牌刪除：" << std::endl;
 	while (getline(std::cin,input))
 	{
 		index = stoi(input);
@@ -56,6 +57,8 @@ void Management::rest(User& user)
 		{
 			if (user.disCardDeck[i].Order == index)
 			{
+				Heal(user, "2");
+				std::cout << "remove card: " << index << std::endl;
 				user.disCardDeck.erase(user.disCardDeck.begin() + i);
 
 				user.Card.insert(user.Card.end(), user.disCardDeck.begin(), user.disCardDeck.end());

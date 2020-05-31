@@ -69,7 +69,7 @@ bool Management::viewableRange(Point start, Point end)
 }
 ////////////////////////////////////////////////////////////
 //®gµ{¨B¼Æ¡G
-int Management::shootRange(Point start, Point end, int camp, int maxRange)
+int Management::shootRange(Point start, Point end)
 {
 	return abs(end.x- start.x)+ abs(end.y-start.y);
 }
@@ -87,7 +87,7 @@ void  Management::resetRange()
 	for (i = 0; i < enemyDeck.size(); i++)
 	{
 		position = findCreaturePosition(1, enemyDeck[i].name);
-		enemyDeck[i].Range = enemy[position].Range;
+		enemyDeck[i].Range = enemy[position].RGE[enemy[position].Type];
 	}
 }
 ////////////////////////////////////////////////////////////

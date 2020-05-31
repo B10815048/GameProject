@@ -91,7 +91,7 @@ public:
 	bool viewableRange(Point start, Point end);
 	bool oneGapCheck(int x, float y1, float y2);
 	void Range(Creature& creature, std::string command);
-	int shootRange(Point start, Point end, int camp, int maxRange);
+	int shootRange(Point start, Point end);
 	void resetRange();
 	//////////////////////////////////////////////////////////////////////
 	//Attack:

@@ -30,10 +30,12 @@ void Management::seletUser()
 	int_buffer = stoi(input);
 	userDeck.resize(int_buffer);
 	////////////////////////////////////////////////////////////
+	if (debugMode == 0)
+		cout << "輸入出場角色的卡牌,格式:<名稱> <卡牌代碼1> <卡牌代碼2> <卡牌代碼3>...." << endl;
 	for (i = 0; i < userDeck.size(); i++)
 	{
 		while (getline(cin,string_buffer))
-		{
+		{			
 			if (string_buffer.size() == 0)
 				continue;
 			stringstream ss(string_buffer);
@@ -97,12 +99,8 @@ void Management::seletUser()
 				}
 				break;
 			}
-		}
-
-		
-
+		}	
 	}
-
 }
 ////////////////////////////////////////////////////////////
 //執行一回合：
@@ -111,12 +109,23 @@ void Management::runGAME()
 	Point p;
 	seletUser();
 	loadMapfile();
+	if (debugMode == 0)
+		system("cls");
 	getxy(p);
 	printMap(p);
 	printEnemy(p);
 	seletPoint();
+	resetRange();
 	while (!victoryCheck() && userDeck.size() > 0)
 	{
+		if (debugMode == 0)
+		{
+			system("cls");
+			getxy(p);
+			printMap(p);
+			printEnemy(p);
+			printUser(p);
+		}
 		playCard();
 		resetShield();
 	}
@@ -139,7 +148,8 @@ void Management::seletPoint()
 	std::regex form2("^e$");
 	for (int i = 0; i < this->userDeck.size(); i++)
 	{
-		std::cout << "選擇角色位置：" << std::endl;
+		if(debugMode == 0)
+			std::cout << "選擇角色位置：" << std::endl;
 		while (getline(cin , command))
 		{
 			if (std::regex_match(command, form1) || std::regex_match(command, form2))
@@ -266,6 +276,8 @@ void Management::seletPoint()
 				}
 			}
 		}
+		if(debugMode == 0)
+			system("cls");
 		getxy(p);
 		printMap(p);
 		printEnemy(p);
@@ -285,7 +297,7 @@ void Management::playCard()
 {
 	int position;
 	int p1;
-	int i, j, k, l, index, index1, index2;
+	int i, j;
 	string command;
 	CompairCardDex tmp;
 	std::regex play("^[0-9]{1}[ud]{1}$");
@@ -294,8 +306,9 @@ void Management::playCard()
 	char icon;
 	// 每輪開始
 	round_count += 1;
-	std::cout << "--------------------------------------------" << std::endl <<
-		"round " << round_count << ":" << std::endl;
+	if (debugMode == 0)
+		std::cout << "--------------------------------------------" << std::endl;
+	std::cout << "round " << round_count << ":" << std::endl;
 	compairList.clear();
 	// 玩家出牌
 	userPlayCards();
@@ -315,7 +328,48 @@ void Management::playCard()
 				position = findCreatureDeckPosition(0, compairList[i].Icon);
 				if (compairList[i].Index[0] != -1)
 				{
-					std::cout << "角色"<< userDeck[position].Icon << "選擇卡片效果 " << compairList[i].Index[0] << " " << compairList[i].Index[1]<< std::endl;
+					if (debugMode == 0)
+					{
+						/*int index = 0;
+						char input = ' ';
+						Point p;						
+						std::string menu[3] = {"查看所有角色資料","查看當前角色卡牌","指令輸入       "};
+						std::cout << "角色 " << userDeck[position].Icon << " 的行動回合:" << endl;
+						getxy(p);
+						do{
+							gotoxy(p);
+							if (input == 'w' || input == 'W')
+								index -= 1;
+							else if (input == 's' || input == 'S')
+								index += 1;
+							if (input == 13)
+							{
+								if (index == 0)
+								{
+									printCreatureCheck();
+									continue;
+								}
+								else if (index == 1) break;
+								else if (index == 2)
+								{
+									p.y += 3;
+									gotoxy(p);
+									break;
+								}
+							}
+							if (index < 0) index = 2;
+							if (index > 2) index = 0;
+							for (int j = 0; j < 3; j++)
+							{
+								if (j == index) cout << ">> ";
+								else cout << "   ";
+								cout << menu[j] << endl;
+							}
+						} while (input = _getch());*/
+						//std::cout << "角色 "<< userDeck[position].Icon << " 選擇 " << compairList[i].Index[0] << " 和 " << compairList[i].Index[1] << " 的卡片效果,格式:<卡片代碼><u/d>" << std::endl;
+					}										
+					else
+						std::cout << compairList[i].Icon << "'s turn: card " << compairList[i].Index[0] << " " << compairList[i].Index[1] << std::endl;
 					while (getline(cin, command))
 					{
 						if (std::regex_match(command, creatureCheck)) //顯示所有生物狀態
@@ -326,7 +380,6 @@ void Management::playCard()
 						{
 							p1 = findCardPosition(compairList[i], command[0] - '0');
 							position = findCreatureDeckPosition(0, compairList[i].Icon);
-							std::cout << userDeck[position].Icon << "'s turn: card " << compairList[i].Index[0] << " " << compairList[i].Index[1] << std::endl;
 							if (command[1] == 'd')
 							{
 								usingEffect(userDeck[position], compairList[i].Index[p1], 1);
@@ -349,16 +402,19 @@ void Management::playCard()
 				}
 				else
 				{
-					cout << "英雄" << userDeck[position].Icon << "長休" << endl;
-					Heal(userDeck[position], "2");
-					rest(userDeck[position]);
+					if(debugMode == 0)
+						cout << "英雄" << userDeck[position].Icon << "長休" << endl;
+					if (debugMode == 1)
+						cout << userDeck[position].Icon << "'s turn: card -1" << endl;
+					rest(userDeck[position]);							
 				}
 
 			}
 			else if (compairList[i].Icon >= 'a' && compairList[i].Icon <= 'z') //敵人方
 			{
 				position = findCreatureDeckPosition(1, compairList[i].Icon);
-				cout << "敵人" << enemyDeck[position].Icon << "出牌" << endl;
+				if(debugMode == 0)
+					cout << "敵人" << enemyDeck[position].Icon << "出牌" << endl;
 				usingEffect(enemyDeck[position], compairList[i].Index[0]);
 				if (!debugMode)
 					_getch();

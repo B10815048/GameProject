@@ -6,7 +6,8 @@
 //輸入移動命令：
 void  Management::setMove(User& user, int step)
 {
-	std::cout << "輸入移動：" << std::endl;
+	if(debugMode == 0)
+		std::cout << "輸入移動：" << std::endl;
 	std::string moveCommand;
 	std::regex form1("^[wasd]+$");
 	std::regex form2("^e$"); //輸入只有一個e
