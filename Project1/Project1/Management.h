@@ -76,6 +76,8 @@ class Management
 {
 private:
 	//////////////////////////////////////////////////////////////////////
+	std::string roundStatue = "";
+	std::vector<std::string> battleMsg; 
 	int round_count = 0;
 	int width, height;
 	bool debugMode = false;
@@ -106,6 +108,7 @@ public:
 	void printCreatureCheck();
 	void printUserCheck(char icon);
 	void printExecutionOrder();
+	void printUserCard(User user);
 	//////////////////////////////////////////////////////////////////////
 	//File : 
 	void loadUserfile(std::string fileName);
@@ -162,5 +165,11 @@ public:
 	int findCardPosition(CompairCardDex& compairCardDex, int index);
 	int findCreatureDeckPosition(int camp, char icon);
 	void positiveValue(int& num);
+	//////////////////////////////////////////////////////////////////////
+	//debugmode :
+	void rePrint();
+	void printBattleMsg();
+	void addBattleMsg(std::string msg);
+	void printGUI(int position);
 };
 

@@ -39,9 +39,13 @@ void Management::survivalCheck()
 	{
 		if (userDeck[i-1].HP <= 0)
 		{
-			std::cout << userDeck[i].Icon << " is killed!!" << std::endl;
-			if (!debugMode)
+			std::cout << userDeck[i-1].Icon << " is killed!!" << std::endl;
+			if (debugMode == 0)
+			{
+				addBattleMsg(userDeck[i-1].Icon + std::string(" 陣亡!"));
 				_getch();
+				rePrint();
+			}				
 			check = true;
 			for (j = 0; j < compairList.size(); j++)
 			{
@@ -54,9 +58,13 @@ void Management::survivalCheck()
 	}
 	for (i = enemyDeck.size(); i > 0; i--)
 	{
-		if (enemyDeck[i - 1].HP[enemyDeck[i-1].Type] <= 0)
+		if (enemyDeck[i-1].HP[enemyDeck[i-1].Type] <= 0)
 		{
 			std::cout << enemyDeck[i-1].Icon << " is killed!!" << std::endl;
+			if (debugMode == 0)
+			{
+				addBattleMsg(enemyDeck[i-1].Icon + std::string(" 陣亡!"));
+			}
 			check = true;
 			for (j = 0; j < compairList.size(); j++)
 			{
@@ -69,10 +77,15 @@ void Management::survivalCheck()
 	}
 	if (check) //有生物死亡時則重新打印地圖
 	{
-		getxy(tmp);
-		printMap(tmp);
-		printEnemy(tmp);
-		printUser(tmp);
+		if (debugMode == 0)
+			rePrint();
+		else
+		{
+			getxy(tmp);
+			printMap(tmp);
+			printEnemy(tmp);
+			printUser(tmp);
+		}	
 	}
 }
 ////////////////////////////////////////////////////////////

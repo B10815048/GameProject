@@ -1,4 +1,5 @@
 #include "Management.h"
+#include <sstream>
 #include <string>
 #include <regex>
 ////////////////////////////////////////////////////////////
@@ -7,7 +8,7 @@ void Management::Attack(Creature& creature, std::string command)
 {
 	int i, j;
 	int position;
-	std::string input;
+	std::string input, msg;
 	std::regex attack("^[a-z]{1}$");
 	std::regex giveUp("0");
 	int damage = creature.Attack + stoi(command);
@@ -31,16 +32,22 @@ void Management::Attack(Creature& creature, std::string command)
 					enemyDeck[position].HP[enemyDeck[position].Type] -= damage;
 					std::cout << creature.Icon << " attack " << enemyDeck[position].Icon << " " << damage << " damage, " << enemyDeck[position].Icon << " shield " << enemyDeck[position].Shield
 						<< ", " << enemyDeck[position].Icon << " remain " << enemyDeck[position].HP[enemyDeck[position].Type] << " hp" << std::endl;
+					if (debugMode == 0)
+					{
+						msg = creature.Icon + std::string(" attack ") + enemyDeck[position].Icon + std::string(" ") + std::to_string(damage) + std::string(" damage, ") 
+							+ enemyDeck[position].Icon + std::string(" shield ") + std::to_string(enemyDeck[position].Shield) + std::string(", ") 
+							+ enemyDeck[position].Icon + std::string(" remain ") + std::to_string(enemyDeck[position].HP[enemyDeck[position].Type]) + std::string(" hp");
+						addBattleMsg(msg);
+					}
 					return;
 				}
 				else //超出攻擊範圍
 					std::cout << "error target!!!" << std::endl;
-
 			}
 			else if (std::regex_match(input, giveUp))
 			{
-				if(debugMode == 0)
-					std::cout << "放棄攻擊..." << std::endl;
+				if (debugMode == 0)
+					addBattleMsg(creature.Icon + std::string(" 放棄攻擊..."));
 				return;
 			}
 			else  //沒有此敵人
@@ -76,6 +83,8 @@ void Management::Attack(Creature& creature, std::string command)
 		}
 		if (count == 0) //攻擊範圍內沒有敵人
 		{
+			if (debugMode == 0)
+				addBattleMsg(creature.Icon + std::string("找不到目標"));
 			std::cout << "no one lock" << std::endl;
 		}
 		else if (count == 1)
@@ -83,12 +92,20 @@ void Management::Attack(Creature& creature, std::string command)
 			for (int i = 0; i < userDeck.size(); i++)
 			{
 				if (userIndex[i] == 1)
-				{
+				{					
 					std::cout << creature.Icon << " lock " << userDeck[i].Icon << " in distance " << minStep << std::endl;
 					if (damage > userDeck[i].Shield)
 						userDeck[i].HP -= damage - userDeck[i].Shield;
 					std::cout << creature.Icon << " attack " << userDeck[i].Icon << " " << damage << " damage, " << userDeck[i].Icon << " shield " << userDeck[i].Shield
 						<< ", " << userDeck[i].Icon << " remain " << userDeck[i].HP << " hp" << std::endl;
+					if (debugMode == 0)
+					{
+						msg = creature.Icon + std::string(" lock ") + userDeck[i].Icon + std::string(" in distance ") + std::to_string(minStep);
+						addBattleMsg(msg);
+						msg = creature.Icon + std::string(" attack ") + userDeck[i].Icon + std::string(" ") + std::to_string(damage) + std::string(" damage, ") + userDeck[i].Icon + std::string(" shield ")
+							+ std::to_string(userDeck[i].Shield) + std::string(", ") + userDeck[i].Icon + std::string(" remain ") + std::to_string(userDeck[i].HP) + std::string(" hp");
+						addBattleMsg(msg);
+					}
 				}
 			}
 		}
@@ -105,6 +122,14 @@ void Management::Attack(Creature& creature, std::string command)
 							userDeck[j].HP -= damage - userDeck[j].Shield;
 						std::cout << creature.Icon << " attack " << userDeck[j].Icon << " " << damage << " damage, " << userDeck[j].Icon << " shield " << userDeck[j].Shield
 							<< ", " << userDeck[j].Icon << " remain " << userDeck[j].HP << " hp" << std::endl;
+						if (debugMode == 0)
+						{
+							msg = creature.Icon + std::string(" lock ") + userDeck[i].Icon + std::string(" in distance ") + std::to_string(minStep);
+							addBattleMsg(msg);
+							msg = creature.Icon + std::string(" attack ") + userDeck[i].Icon + std::string(" ") + std::to_string(damage) + std::string(" damage, ") + userDeck[i].Icon + std::string(" shield ")
+								+ std::to_string(userDeck[i].Shield) + std::string(", ") + userDeck[i].Icon + std::string(" remain ") + std::to_string(userDeck[i].HP) + std::string(" hp");
+							addBattleMsg(msg);
+						}
 						return;
 					}
 				}

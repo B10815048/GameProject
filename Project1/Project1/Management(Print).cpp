@@ -47,6 +47,33 @@ void Management::printUser(Point p)
 	gotoxy({ p.x,p.y + height });
 }
 ////////////////////////////////////////////////////////////
+//打印當前角色的卡牌：
+void Management::printUserCard(User user)
+{
+	std::string skill[] = { "move", "heal", "shield", "attack","range" };
+	for (int i = 0; i < userDeck.size(); i++)
+	{
+		if (userDeck[i].Icon == user.Icon)
+		{
+			for (int j = 0; j < user.Card.size(); j++)
+			{
+				std::cout << "編號: " << user.Card[j].Order << " ; 敏捷: ";
+				if (user.Card[j].DEX < 10)
+					std::cout << "0";
+				std::cout << user.Card[j].DEX << " ; ";
+				std::cout << "上技能: ";
+				for (int k = 0; k < user.Card[j].TopType.size(); k++)
+					std::cout << skill[user.Card[j].TopType[k]] << " " << user.Card[j].TopAbilityValue[k] << " ";
+				std::cout << "; 下技能: ";
+				for (int k = 0; k < user.Card[j].BelowType.size(); k++)
+					std::cout << skill[user.Card[j].BelowType[k]] << " " << user.Card[j].BelowAbilityValue[k] << " ";
+				std::cout << std::endl;
+			}		
+			break;
+		}
+	}
+}
+////////////////////////////////////////////////////////////
 //打印怪物：
 void Management::printEnemy(Point p)
 {
@@ -101,13 +128,16 @@ void Management::printUserCheck(char icon)
 //打印生物執行順序：
 void Management::printExecutionOrder()
 {
+	Point p;
 	int i, position;
-	if(debugMode == 0)
-		std::cout << "生物行動執行順序:" << std::endl;
 	for (i = 0; i < compairList.size(); i++)
 	{
+		if (compairList[i].skip)
+			continue;
 		if (compairList[i].Icon >= 'A' && compairList[i].Icon <= 'Z')
+		{
 			std::cout << compairList[i].Icon << " ";
+		}			
 		else
 		{
 			position = findCreatureDeckPosition(1, compairList[i].Icon);
@@ -125,6 +155,8 @@ void Management::printExecutionOrder()
 			int p1, p2;
 			p1 = findCreatureDeckPosition(1, compairList[i].Icon);
 			p2 = findCardPosition(enemyDeck[p1], compairList[i].Index[0]);
+			if (p2 == -1)
+				continue;
 			for (int k = 0; k < enemyDeck[p1].Card[p2].Type.size(); k++)
 			{
 				if (enemyDeck[p1].Card[p2].Type[k] == 0)

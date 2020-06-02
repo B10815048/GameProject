@@ -7,7 +7,7 @@
 void  Management::setMove(User& user, int step)
 {
 	if(debugMode == 0)
-		std::cout << "輸入移動：" << std::endl;
+		std::cout << "輸入移動：" << "(上限 "  << step << " 步)" << std::endl;
 	std::string moveCommand;
 	std::regex form1("^[wasd]+$");
 	std::regex form2("^e$"); //輸入只有一個e
@@ -43,21 +43,21 @@ bool Management::Move(Creature& creature, std::string command)
 		}
 		else if (command[i] == 's')
 		{
-			if ((checkSpace({ tmp.x , tmp.y + 1 }) || (checkDoor({ tmp.x , tmp.y - 1 }) && creature.Camp == 0)) && enemyOnPoint({ tmp.x, tmp.y + 1 }, creature.Camp) == 0)
+			if ((checkSpace({ tmp.x , tmp.y + 1 }) || (checkDoor({ tmp.x , tmp.y + 1 }) && creature.Camp == 0)) && enemyOnPoint({ tmp.x, tmp.y + 1 }, creature.Camp) == 0)
 				tmp.y++;
 			else if (creature.Camp == 0)
 				return false;
 		}	
 		else if (command[i] == 'a')
 		{
-			if((checkSpace({ tmp.x - 1 , tmp.y }) || (checkDoor({ tmp.x , tmp.y - 1 }) && creature.Camp == 0)) && enemyOnPoint({ tmp.x - 1, tmp.y }, creature.Camp) == 0)
+			if((checkSpace({ tmp.x - 1 , tmp.y }) || (checkDoor({ tmp.x-1 , tmp.y }) && creature.Camp == 0)) && enemyOnPoint({ tmp.x - 1, tmp.y }, creature.Camp) == 0)
 				tmp.x--;
 			else if (creature.Camp == 0)
 				return false;
 		}
 		else if (command[i] == 'd')
 		{
-			if ((checkSpace({ tmp.x + 1, tmp.y }) || (checkDoor({ tmp.x , tmp.y - 1 }) && creature.Camp == 0)) && enemyOnPoint({ tmp.x + 1, tmp.y }, creature.Camp) == 0)
+			if ((checkSpace({ tmp.x + 1, tmp.y }) || (checkDoor({ tmp.x +1, tmp.y }) && creature.Camp == 0)) && enemyOnPoint({ tmp.x + 1, tmp.y }, creature.Camp) == 0)
 				tmp.x++;
 			else if (creature.Camp == 0)
 				return false;
@@ -72,6 +72,8 @@ bool Management::Move(Creature& creature, std::string command)
 			break;
 		}
 	}
+	if (debugMode == 0)
+		return true;
 	getxy(tmp);
 	printMap(tmp);
 	printEnemy(tmp);

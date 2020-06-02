@@ -103,14 +103,14 @@ void Management::seletUser()
 	}
 }
 ////////////////////////////////////////////////////////////
-//執行一回合：
+//執行遊戲：
 void Management::runGAME()
 {
 	Point p;
 	seletUser();
 	loadMapfile();
 	if (debugMode == 0)
-		system("cls");
+		system("cls");		
 	getxy(p);
 	printMap(p);
 	printEnemy(p);
@@ -118,14 +118,6 @@ void Management::runGAME()
 	resetRange();
 	while (!victoryCheck() && userDeck.size() > 0)
 	{
-		if (debugMode == 0)
-		{
-			system("cls");
-			getxy(p);
-			printMap(p);
-			printEnemy(p);
-			printUser(p);
-		}
 		playCard();
 		resetShield();
 	}
@@ -134,6 +126,115 @@ void Management::runGAME()
 	else
 		std::cout << "monster win~" << std::endl;
 	resetGame();
+}
+////////////////////////////////////////////////////////////
+//重印介面(debugmode 0 專用)
+void Management::rePrint()
+{
+	Point p;
+	system("cls");
+	std::cout << "============================================" << std::endl;
+	std::cout << "                 GloomHaven                 " << std::endl;
+	std::cout << "--------------------------------------------" << std::endl;	
+	getxy(p);
+	printBattleMsg();
+	gotoxy(p);
+	printMap(p);
+	printEnemy(p);
+	printUser(p);	
+	std::cout << "--------------------------------------------" << std::endl;
+	std::cout << "Round " << round_count << " " << roundStatue << std::endl;
+	if (compairList.size() != 0)
+	{
+		std::cout << "生物行動執行順序:" << endl;
+		printExecutionOrder();
+	}		
+	std::cout << "============================================" << std::endl;
+}
+////////////////////////////////////////////////////////////
+//印出戰鬥訊息(debugmode 0 專用)
+void Management::printBattleMsg()
+{
+	int battleMsg_count = 0;
+	Point p;
+	if (width < 45)
+		p.x = 45;
+	else
+		p.x = width + 2;
+	p.y = 3;
+	gotoxy(p);
+	if (battleMsg.size() != 0)
+		cout << "【戰鬥訊息紀錄 Battle Message Record】";
+	for (int i = 0; i < battleMsg.size(); i++)
+	{
+		gotoxy({ p.x,p.y + 15 - i });
+		if(i == 0)
+			cout << "> " << battleMsg[battleMsg.size() - i - 1];
+		else
+			cout << "| " << battleMsg[battleMsg.size() - i - 1];
+	}		
+}
+////////////////////////////////////////////////////////////
+//新增戰鬥訊息(debugmode 0 專用)
+void Management::addBattleMsg(string msg)
+{
+	battleMsg.push_back(msg);
+	if (battleMsg.size() > 15)
+		battleMsg.erase(battleMsg.begin());
+}
+////////////////////////////////////////////////////////////
+//新增GUI介面(debugmode 0 專用)
+void Management::printGUI(int position)
+{
+	int index = 0;
+	char input = ' ';
+	Point p;
+	std::string menu[3] = { "查看所有角色資料","查看當前角色卡牌","指令輸入模式       " };
+	getxy(p);
+	do {
+		gotoxy(p);
+		std::cout << "角色 " << userDeck[position].Icon << " 的行動回合:" << endl;
+		for (int j = 0; j < 3; j++)
+			cout << "   " << menu[j] << endl;
+		gotoxy({ p.x,p.y + 1 });
+		if (input == 'w' || input == 'W')
+			index -= 1;
+		else if (input == 's' || input == 'S')
+			index += 1;
+		if (input == 13)
+		{
+			if (index == 0)
+			{
+				printCreatureCheck();
+				std::cout << "按下任意鍵以繼續" << std::endl;
+				_getch();
+				rePrint();
+				std::cout << "角色 " << userDeck[position].Icon << " 的行動回合:" << endl;
+			}
+			else if (index == 1)
+			{
+				printUserCard(userDeck[position]);
+				std::cout << "按下任意鍵以繼續" << std::endl;
+				_getch();
+				rePrint();
+				std::cout << "角色 " << userDeck[position].Icon << " 的行動回合:" << endl;
+			}
+			else if (index == 2)
+			{
+				rePrint();
+				break;
+			}
+		}
+		if (index < 0) index = 2;
+		if (index > 2) index = 0;
+		for (int j = 0; j < 3; j++)
+		{
+			if (j == index) cout << ">> ";
+			else cout << "   ";
+			cout << menu[j] << endl;
+		}
+	} while (input = _getch());
+	rePrint();
 }
 ////////////////////////////////////////////////////////////
 //選擇起始點：
@@ -305,11 +406,13 @@ void Management::playCard()
 	std::regex creatureCheck("check");
 	char icon;
 	// 每輪開始
+	roundStatue = "角色出牌階段";
 	round_count += 1;
-	if (debugMode == 0)
-		std::cout << "--------------------------------------------" << std::endl;
-	std::cout << "round " << round_count << ":" << std::endl;
 	compairList.clear();
+	if (debugMode == 0)
+		rePrint();
+	else
+		std::cout << "round " << round_count << ":" << std::endl;
 	// 玩家出牌
 	userPlayCards();
 	//敵人出牌
@@ -318,9 +421,11 @@ void Management::playCard()
 	sort_compairList();
 	//輸出敏捷排序
 	printExecutionOrder();
+	if (debugMode == 0)
+		rePrint();
 	//依序出牌 
 	for (i = 0; i < compairList.size(); i++)
-	{
+	{		
 		if (!compairList[i].skip)
 		{
 			if (compairList[i].Icon >= 'A' && compairList[i].Icon <= 'Z') //主角方
@@ -330,43 +435,8 @@ void Management::playCard()
 				{
 					if (debugMode == 0)
 					{
-						/*int index = 0;
-						char input = ' ';
-						Point p;						
-						std::string menu[3] = {"查看所有角色資料","查看當前角色卡牌","指令輸入       "};
-						std::cout << "角色 " << userDeck[position].Icon << " 的行動回合:" << endl;
-						getxy(p);
-						do{
-							gotoxy(p);
-							if (input == 'w' || input == 'W')
-								index -= 1;
-							else if (input == 's' || input == 'S')
-								index += 1;
-							if (input == 13)
-							{
-								if (index == 0)
-								{
-									printCreatureCheck();
-									continue;
-								}
-								else if (index == 1) break;
-								else if (index == 2)
-								{
-									p.y += 3;
-									gotoxy(p);
-									break;
-								}
-							}
-							if (index < 0) index = 2;
-							if (index > 2) index = 0;
-							for (int j = 0; j < 3; j++)
-							{
-								if (j == index) cout << ">> ";
-								else cout << "   ";
-								cout << menu[j] << endl;
-							}
-						} while (input = _getch());*/
-						//std::cout << "角色 "<< userDeck[position].Icon << " 選擇 " << compairList[i].Index[0] << " 和 " << compairList[i].Index[1] << " 的卡片效果,格式:<卡片代碼><u/d>" << std::endl;
+						printGUI(position);
+						std::cout << "角色 "<< userDeck[position].Icon << " 選擇 " << compairList[i].Index[0] << " 和 " << compairList[i].Index[1] << " 的卡片效果,格式:<卡片代碼><u/d>" << std::endl;
 					}										
 					else
 						std::cout << compairList[i].Icon << "'s turn: card " << compairList[i].Index[0] << " " << compairList[i].Index[1] << std::endl;
@@ -417,7 +487,11 @@ void Management::playCard()
 					cout << "敵人" << enemyDeck[position].Icon << "出牌" << endl;
 				usingEffect(enemyDeck[position], compairList[i].Index[0]);
 				if (!debugMode)
+				{
+					std::cout << "按下任意鍵以繼續" << std::endl;
 					_getch();
+					rePrint();
+				}					
 			}
 		}
 		// 每個物件行動結束計算
@@ -432,6 +506,14 @@ void Management::resetGame()
 {
 	userDeck.clear();
 	enemyDeck.clear();
+	compairList.clear();
 	map.clear();
 	round_count = 0;
+	battleMsg.clear();	
+	if (debugMode == 0)
+	{
+		std::cout << "按下任意鍵以繼續" << std::endl;
+		_getch();
+		system("cls");
+	}		
 }

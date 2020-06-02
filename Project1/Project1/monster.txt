@@ -1,0 +1,29 @@
+4
+guard 3 2 0 6 3 0
+guard 0 30 move sd attack -1 d
+guard 1 55 move wa attack 0 d
+guard 2 15 shield 2 r
+guard 3 35 move wd attack 0 d
+guard 4 50 move sa attack 0 d
+guard 5 15 shield 1 attack 0 d
+archer 2 2 3 4 2 3
+archer 0 68 attack 1 range 1 d
+archer 1 16 move sa attack -1 range 0 d
+archer 2 44 move ww attack 1 range 0 heal 2 r
+archer 3 31 move sd attack 0 range 0 r
+archer 4 29 move aa attack -1 range 1 d
+archer 5 32 move dd attack 1 range -1 d
+knight 15 3 1 20 4 2
+knight 0 24 attack 3 range 1 shield 2 d
+knight 1 35 move sa attack 0 range 0 d
+knight 2 08 move ww attack 1 range 1 heal 3 r
+knight 3 70 move sd attack 0 range 0 shield 10 r
+knight 4 26 move aa attack -1 range 1 heal 4 d
+knight 5 41 move dd attack 1 range -1 shield 5 d
+boss 20 5 0 40 7 0
+knight 0 01 attack 0 range 1 shield 3 d
+knight 1 02 move da attack 3 range 0 d
+knight 2 03 move wd attack -2 range 1 heal 3 r
+knight 3 04 move ad attack 0 range 0  r
+knight 4 05 move ssw attack -2 range 1 heal 2 d
+knight 5 06 move dds attack 1 range -1 shield 5 d

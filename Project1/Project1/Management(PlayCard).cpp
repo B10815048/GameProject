@@ -19,8 +19,10 @@ void Management::userPlayCards()
 	std::regex userCheck("^[A-D]{1} check$");
 	std::regex creatureCheck("check");
 	std::regex rest("^[A-D]{1} \-1$");
-	if(debugMode == 0)
+	if (debugMode == 0)
+	{
 		std::cout << "選擇角色並出牌,格式:<角色代號> <卡片1> <卡片2>" << endl;
+	}	
 	for (int i = 0; i < userDeck.size(); i++) // 檢查角色是否不能選擇長休或出牌
 	{
 		if (userDeck[i].Card.size() < 2 && userDeck[i].disCardDeck.size() < 2)
@@ -54,7 +56,7 @@ void Management::userPlayCards()
 				}
 				if (userDeck[position].Card.size() < 2)
 				{
-					std::cout << "手牌張數小於2,請選擇長休";
+					std::cout << "手牌張數小於2,請選擇長休" << std::endl;
 					continue;
 				}
 				tmp.Index.clear();
@@ -87,7 +89,7 @@ void Management::userPlayCards()
 				position = findCreatureDeckPosition(0, input[0]);
 				if (userDeck[position].disCardDeck.size() < 2)
 				{
-					std::cout << "棄牌堆張數小於2,請選擇出牌";
+					std::cout << "棄牌堆張數小於2,請選擇出牌" << std::endl;
 					continue;
 				}
 				tmp.Index.clear();
