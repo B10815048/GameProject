@@ -157,14 +157,15 @@ void Management::printBattleMsg()
 {
 	int battleMsg_count = 0;
 	Point p;
-	if (width < 45)
-		p.x = 45;
+	Point orginalP;
+	getxy(orginalP);
+	if (width < 47)
+		p.x = 47;
 	else
 		p.x = width + 2;
 	p.y = 3;
 	gotoxy(p);
-	if (battleMsg.size() != 0)
-		cout << "【戰鬥訊息紀錄 Battle Message Record】";
+	cout << "【戰鬥訊息紀錄 Battle Message Record】";
 	for (int i = 0; i < battleMsg.size(); i++)
 	{
 		gotoxy({ p.x,p.y + 15 - i });
@@ -172,15 +173,33 @@ void Management::printBattleMsg()
 			cout << "> " << battleMsg[battleMsg.size() - i - 1];
 		else
 			cout << "| " << battleMsg[battleMsg.size() - i - 1];
-	}		
+	}	
+	gotoxy(orginalP);
 }
 ////////////////////////////////////////////////////////////
 //新增戰鬥訊息(debugmode 0 專用)
 void Management::addBattleMsg(string msg)
 {
+	Point p, orginalP;
+	getxy(orginalP);
+	if (width < 47)
+		p.x = 47;
+	else
+		p.x = width + 2;
+	p.y = 3;
+	gotoxy(p);
+	cout << "【戰鬥訊息紀錄 Battle Message Record】";
+	for (int i = 0; i < battleMsg.size(); i++)
+	{
+		gotoxy({ p.x,p.y + 15 - i });
+		for (int j = 0; j < battleMsg[battleMsg.size() - i - 1].size()+2; j++)
+			cout << " ";
+	}
+	gotoxy(orginalP);
 	battleMsg.push_back(msg);
 	if (battleMsg.size() > 15)
 		battleMsg.erase(battleMsg.begin());
+	printBattleMsg();
 }
 ////////////////////////////////////////////////////////////
 //新增GUI介面(debugmode 0 專用)
@@ -467,8 +486,7 @@ void Management::playCard()
 							if (command.size() != 0)
 								std::cout << "不合規範：" << std::endl;
 						}
-					}
-
+					}					
 				}
 				else
 				{
@@ -476,9 +494,10 @@ void Management::playCard()
 						cout << "英雄" << userDeck[position].Icon << "長休" << endl;
 					if (debugMode == 1)
 						cout << userDeck[position].Icon << "'s turn: card -1" << endl;
-					rest(userDeck[position]);							
+					rest(userDeck[position]);
+					if (!debugMode)
+						rePrint();
 				}
-
 			}
 			else if (compairList[i].Icon >= 'a' && compairList[i].Icon <= 'z') //敵人方
 			{
@@ -486,16 +505,8 @@ void Management::playCard()
 				if(debugMode == 0)
 					cout << "敵人" << enemyDeck[position].Icon << "出牌" << endl;
 				usingEffect(enemyDeck[position], compairList[i].Index[0]);
-				if (!debugMode)
-				{
-					std::cout << "按下任意鍵以繼續" << std::endl;
-					_getch();
-					rePrint();
-				}					
 			}
 		}
-		// 每個物件行動結束計算
-		survivalCheck();
 	}
 	// 每輪結束計算
 	doorOpenCheck();

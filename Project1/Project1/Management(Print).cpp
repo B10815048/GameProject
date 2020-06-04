@@ -156,7 +156,10 @@ void Management::printExecutionOrder()
 			p1 = findCreatureDeckPosition(1, compairList[i].Icon);
 			p2 = findCardPosition(enemyDeck[p1], compairList[i].Index[0]);
 			if (p2 == -1)
+			{
+				std::cout << std::endl;
 				continue;
+			}
 			for (int k = 0; k < enemyDeck[p1].Card[p2].Type.size(); k++)
 			{
 				if (enemyDeck[p1].Card[p2].Type[k] == 0)

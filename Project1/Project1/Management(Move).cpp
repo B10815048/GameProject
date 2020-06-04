@@ -66,7 +66,7 @@ bool Management::Move(Creature& creature, std::string command)
 	}
 	for (i = point.size(); i > 0; i--)
 	{
-		if (creatureOnPoint(point[i - 1]) == 0) //不能與生物重疊
+		if (creatureOnPoint(point[i - 1]) == 0 || (creatureOnPoint(point[i - 1]) == 1 && creature.P == point[i - 1])) //不能與生物重疊
 		{
 			creature.P = point[i - 1];
 			break;
@@ -84,7 +84,7 @@ bool Management::Move(Creature& creature, std::string command)
 //確認該位置是否為門：
 bool Management::checkDoor(Point p)
 {
-	if (p.x < 0 || p.x >= width || p.x < 0 || p.x >= height)
+	if (p.x < 0 || p.x >= width || p.y < 0 || p.y >= height)
 		return false;
 	else if (map[p.y][p.x] == '3')
 		return true;
@@ -95,7 +95,7 @@ bool Management::checkDoor(Point p)
 //確認該位置是否為空地：
 bool Management::checkSpace(Point p)
 {
-	if (p.x < 0 || p.x >= width || p.x < 0 || p.x >= height)
+	if (p.x < 0 || p.x >= width || p.y < 0 || p.y >= height)
 		return false;
 	else if (map[p.y][p.x] == '1')
 		return true;

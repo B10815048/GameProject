@@ -9,140 +9,140 @@
 void Management::usingEffect(User& userDeck, int index, int part)
 {
 	std::string msg;
-	int i, j;
+	int i, p1;
 	std::string skill[] = { "move", "heal", "shield", "attack","range" };
-	for (i = 0; i < userDeck.Card.size(); i++)
+	p1 = findCardPosition(userDeck, index);
+	if (part == 1) //卡牌下半部效果
 	{
-		if (userDeck.Card[i].Order == index)
+		for (i = 0; i < userDeck.Card[p1].BelowType.size(); i++)
 		{
-			if (part == 1) //卡牌下半部效果
+			if (debugMode == 0)
 			{
-				for (j = 0; j < userDeck.Card[i].BelowType.size(); j++)
+				msg = std::string("發動角色 ") + userDeck.Icon + std::string(" 技能卡下方效果：") + std::string(skill[userDeck.Card[p1].BelowType[i]]);
+				addBattleMsg(msg);
+			}
+			if (userDeck.Card[p1].BelowType[i] == 0)
+				setMove(userDeck, stoi(userDeck.Card[p1].BelowAbilityValue[i]));
+			else if (userDeck.Card[p1].BelowType[i] == 1)
+				Heal(userDeck, userDeck.Card[p1].BelowAbilityValue[i]);
+			else if (userDeck.Card[p1].BelowType[i] == 2)
+				Shield(userDeck, userDeck.Card[p1].BelowAbilityValue[i]);
+			else if (userDeck.Card[p1].BelowType[i] == 3)
+			{
+				if (i != userDeck.Card[p1].BelowType.size() - 1)
 				{
-					if (debugMode == 0)
-					{
-						msg = std::string("發動角色 ") + userDeck.Icon + std::string(" 技能卡下方效果：") + std::string(skill[userDeck.Card[i].BelowType[j]]);
-						addBattleMsg(msg);
-					}										
-					if (userDeck.Card[i].BelowType[j] == 0)
-						setMove(userDeck, stoi(userDeck.Card[i].BelowAbilityValue[j]));
-					else if (userDeck.Card[i].BelowType[j] == 1)
-						Heal(userDeck, userDeck.Card[i].BelowAbilityValue[j]);
-					else if (userDeck.Card[i].BelowType[j] == 2)
-						Shield(userDeck, userDeck.Card[i].BelowAbilityValue[j]);
-					else if (userDeck.Card[i].BelowType[j] == 3)
-					{
-						if (j != userDeck.Card[i].BelowType.size() - 1)
-						{
-							if (userDeck.Card[i].BelowType[j + 1] == 4)
-								Range(userDeck, userDeck.Card[i].BelowAbilityValue[j + 1]);
+					if (userDeck.Card[p1].BelowType[i + 1] == 4)
+						Range(userDeck, userDeck.Card[p1].BelowAbilityValue[i + 1]);
 
-						}
-						Attack(userDeck, userDeck.Card[i].BelowAbilityValue[j]);
-						if (j != userDeck.Card[i].BelowType.size() - 1)
-						{
-							if (userDeck.Card[i].BelowType[j + 1] == 4)
-								j++;
-						}
-					}
-					if (debugMode == 0)
-						rePrint();
 				}
-			}
-			else if (part == 0) //卡牌上半部技能
-			{
-				for (j = 0; j < userDeck.Card[i].TopType.size(); j++)
+				Attack(userDeck, userDeck.Card[p1].BelowAbilityValue[i]);
+				if (i != userDeck.Card[p1].BelowType.size() - 1)
 				{
-					if (debugMode == 0)
-					{
-						msg = std::string("發動角色 ") + userDeck.Icon + std::string(" 技能卡上方效果：") + std::string(skill[userDeck.Card[i].TopType[j]]);
-						addBattleMsg(msg);
-					}						
-					if (userDeck.Card[i].TopType[j] == 0)
-						setMove(userDeck, stoi(userDeck.Card[i].TopAbilityValue[j]));
-					else if (userDeck.Card[i].TopType[j] == 1)
-						Heal(userDeck, userDeck.Card[i].TopAbilityValue[j]);
-					else if (userDeck.Card[i].TopType[j] == 2)
-						Shield(userDeck, userDeck.Card[i].TopAbilityValue[j]);
-					else if (userDeck.Card[i].TopType[j] == 3)
-					{
-						if (j != userDeck.Card[i].TopType.size() - 1)
-						{
-							if (userDeck.Card[i].TopType[j + 1] == 4)
-								Range(userDeck, userDeck.Card[i].TopAbilityValue[j + 1]);
-						}
-						Attack(userDeck, userDeck.Card[i].TopAbilityValue[j]);
-						if (j != userDeck.Card[i].TopType.size() - 1)
-						{
-							if (userDeck.Card[i].TopType[j + 1] == 4)
-								j++;
-						}
-					}
-					else if (userDeck.Card[i].TopType[j] == 0)
-						setMove(userDeck, stoi(userDeck.Card[i].TopAbilityValue[j]));
-					if (debugMode == 0)
-						rePrint();
+					if (userDeck.Card[p1].BelowType[i + 1] == 4)
+						i++;
 				}
 			}
-			//棄牌
-			userDeck.disCardDeck.push_back(userDeck.Card[i]);
-			userDeck.Card.erase(userDeck.Card.begin() + i);
+			if (debugMode == 0)
+				rePrint();
+			// 執行一次動作判斷敵人死亡
+			survivalCheck();
 		}
 	}
+	else if (part == 0) //卡牌上半部技能
+	{
+		for (i = 0; i < userDeck.Card[p1].TopType.size(); i++)
+		{
+			if (debugMode == 0)
+			{
+				msg = std::string("發動角色 ") + userDeck.Icon + std::string(" 技能卡上方效果：") + std::string(skill[userDeck.Card[p1].TopType[i]]);
+				addBattleMsg(msg);
+			}
+			if (userDeck.Card[p1].TopType[i] == 0)
+				setMove(userDeck, stoi(userDeck.Card[p1].TopAbilityValue[i]));
+			else if (userDeck.Card[p1].TopType[i] == 1)
+				Heal(userDeck, userDeck.Card[p1].TopAbilityValue[i]);
+			else if (userDeck.Card[p1].TopType[i] == 2)
+				Shield(userDeck, userDeck.Card[p1].TopAbilityValue[i]);
+			else if (userDeck.Card[p1].TopType[i] == 3)
+			{
+				if (i != userDeck.Card[p1].TopType.size() - 1)
+				{
+					if (userDeck.Card[p1].TopType[i + 1] == 4)
+						Range(userDeck, userDeck.Card[p1].TopAbilityValue[i + 1]);
+				}
+				Attack(userDeck, userDeck.Card[p1].TopAbilityValue[i]);
+				if (i != userDeck.Card[p1].TopType.size() - 1)
+				{
+					if (userDeck.Card[p1].TopType[i + 1] == 4)
+						i++;
+				}
+			}
+			else if (userDeck.Card[p1].TopType[i] == 0)
+				setMove(userDeck, stoi(userDeck.Card[p1].TopAbilityValue[i]));
+			if (debugMode == 0)
+				rePrint();
+			// 執行一次動作判斷敵人死亡
+			survivalCheck();
+		}
+	}
+	//棄牌
+	userDeck.disCardDeck.push_back(userDeck.Card[p1]);
+	userDeck.Card.erase(userDeck.Card.begin() + p1);
 }
 ////////////////////////////////////////////////////////////
 //怪物發動卡牌能力：
 void Management::usingEffect(Enemy& enemyDeck, int index)
 {
 	std::string msg;
-	int i, j;
+	int i, p1;
 	std::string skill[] = { "move", "heal", "shield", "attack","range" };
-	for (i = 0; i < enemyDeck.Card.size(); i++)
+	p1 = findCardPosition(enemyDeck, index);
+	for (i = 0; i < enemyDeck.Card[p1].Type.size(); i++)
 	{
-		if (enemyDeck.Card[i].Order == index)
+		if (debugMode == 0)
 		{
-			for (j = 0; j < enemyDeck.Card[i].Type.size(); j++)
-			{
-				if (debugMode == 0)
-				{
-					msg = std::string("發動敵人 ") + enemyDeck.Icon + std::string(" 技能卡效果：") + std::string(skill[enemyDeck.Card[i].Type[j]]);
-					addBattleMsg(msg);
-				}					
-				if (enemyDeck.Card[i].Type[j] == 0)
-					Move(enemyDeck, enemyDeck.Card[i].AbilityValue[j]);
-				else if (enemyDeck.Card[i].Type[j] == 1)
-					Heal(enemyDeck, enemyDeck.Card[i].AbilityValue[j]);
-				else if (enemyDeck.Card[i].Type[j] == 2)
-					Shield(enemyDeck, enemyDeck.Card[i].AbilityValue[j]);
-				else if (enemyDeck.Card[i].Type[j] == 3)
-				{
-					if (j != enemyDeck.Card[i].Type.size() - 1)
-					{
-						if (enemyDeck.Card[i].Type[j + 1] == 4)
-							Range(enemyDeck, enemyDeck.Card[i].AbilityValue[j + 1]);
-					}
-					Attack(enemyDeck, enemyDeck.Card[i].AbilityValue[j]);
-					if (j != enemyDeck.Card[i].Type.size() - 1)
-					{
-						if (enemyDeck.Card[i].Type[j + 1] == 4)
-							j++;
-					}
-				}
-				if (debugMode == 0)
-					rePrint();
-			}
-			if (enemyDeck.Card[i].Shuffle)
-			{
-				enemyDeck.Card.insert(enemyDeck.Card.end(), enemyDeck.disCardDeck.begin(), enemyDeck.disCardDeck.end());
-				enemyDeck.disCardDeck.clear();
-			}
-			else
-			{
-				enemyDeck.disCardDeck.push_back(enemyDeck.Card[i]);
-				enemyDeck.Card.erase(enemyDeck.Card.begin() + i);
-			}			
+			msg = std::string("發動敵人 ") + enemyDeck.Icon + std::string(" 技能卡效果：") + std::string(skill[enemyDeck.Card[p1].Type[i]]);
+			std::cout << msg << std::endl;
+			addBattleMsg(msg);
 		}
-	}		
+		if (enemyDeck.Card[p1].Type[i] == 0)
+			Move(enemyDeck, enemyDeck.Card[p1].AbilityValue[i]);
+		else if (enemyDeck.Card[p1].Type[i] == 1)
+			Heal(enemyDeck, enemyDeck.Card[p1].AbilityValue[i]);
+		else if (enemyDeck.Card[p1].Type[i] == 2)
+			Shield(enemyDeck, enemyDeck.Card[p1].AbilityValue[i]);
+		else if (enemyDeck.Card[p1].Type[i] == 3)
+		{
+			if (i != enemyDeck.Card[p1].Type.size() - 1)
+			{
+				if (enemyDeck.Card[p1].Type[i + 1] == 4)
+					Range(enemyDeck, enemyDeck.Card[p1].AbilityValue[i + 1]);
+			}
+			Attack(enemyDeck, enemyDeck.Card[p1].AbilityValue[i]);
+			if (i != enemyDeck.Card[p1].Type.size() - 1)
+			{
+				if (enemyDeck.Card[p1].Type[i + 1] == 4)
+					i++;
+			}
+		}
+		if (!debugMode)
+		{
+			std::cout << "按下任意鍵以繼續" << std::endl;
+			_getch();
+			rePrint();
+		}
+	}
+
+	if (enemyDeck.Card[p1].Shuffle)
+	{
+		enemyDeck.Card.insert(enemyDeck.Card.end(), enemyDeck.disCardDeck.begin(), enemyDeck.disCardDeck.end());
+		enemyDeck.disCardDeck.clear();
+	}
+	else
+	{
+		enemyDeck.disCardDeck.push_back(enemyDeck.Card[p1]);
+		enemyDeck.Card.erase(enemyDeck.Card.begin() + p1);
+	}
 }
 ////////////////////////////////////////////////////////////
 

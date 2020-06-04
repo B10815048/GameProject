@@ -18,24 +18,23 @@ void Management::Attack(Creature& creature, std::string command)
 		creature.Range = 1;
 	if (creature.Camp == 0) //主角方
 	{
-		if(debugMode == 0)
+		if (debugMode == 0)
 			std::cout << "選擇攻擊敵人 : " << std::endl;
-		while (getline(std::cin , input))
+		while (getline(std::cin, input))
 		{
 			if (std::regex_match(input, attack) && findCreatureDeckPosition(1, input[0]) != -1) //符合攻擊目標及在攻擊範圍內
 			{
 				position = findCreatureDeckPosition(1, input[0]);
 				if (shootRange(creature.P, enemyDeck[position].P) <= creature.Range && viewableRange(enemyDeck[position].P, creature.P))
 				{
-					damage = damage - enemyDeck[position].Shield; //實際傷害
-					positiveValue(damage);
-					enemyDeck[position].HP[enemyDeck[position].Type] -= damage;
+					if (damage > enemyDeck[position].Shield)
+						enemyDeck[position].HP[enemyDeck[position].Type] -= damage - enemyDeck[position].Shield;
 					std::cout << creature.Icon << " attack " << enemyDeck[position].Icon << " " << damage << " damage, " << enemyDeck[position].Icon << " shield " << enemyDeck[position].Shield
 						<< ", " << enemyDeck[position].Icon << " remain " << enemyDeck[position].HP[enemyDeck[position].Type] << " hp" << std::endl;
 					if (debugMode == 0)
 					{
-						msg = creature.Icon + std::string(" attack ") + enemyDeck[position].Icon + std::string(" ") + std::to_string(damage) + std::string(" damage, ") 
-							+ enemyDeck[position].Icon + std::string(" shield ") + std::to_string(enemyDeck[position].Shield) + std::string(", ") 
+						msg = creature.Icon + std::string(" attack ") + enemyDeck[position].Icon + std::string(" ") + std::to_string(damage) + std::string(" damage, ")
+							+ enemyDeck[position].Icon + std::string(" shield ") + std::to_string(enemyDeck[position].Shield) + std::string(", ")
 							+ enemyDeck[position].Icon + std::string(" remain ") + std::to_string(enemyDeck[position].HP[enemyDeck[position].Type]) + std::string(" hp");
 						addBattleMsg(msg);
 					}
@@ -56,10 +55,10 @@ void Management::Attack(Creature& creature, std::string command)
 	}
 	else if (creature.Camp == 1) //敵人方
 	{
-		int step = 0, minStep = 99, count = 0;
-		int userIndex[4] = { 0,0,0,0 };
-		for (int j = 0; j < 4; j++)
-			userIndex[j] = 0;
+		int step = 0, minStep = 99;
+		int comP;
+		std::vector <CompairCardDex > attackChoice;
+		CompairCardDex aTmp;
 		for (i = 0; i < userDeck.size(); i++)
 		{
 			if (shootRange(creature.P, userDeck[i].P) <= creature.Range && viewableRange(userDeck[i].P, creature.P))
@@ -67,61 +66,42 @@ void Management::Attack(Creature& creature, std::string command)
 				step = shootRange(creature.P, userDeck[i].P);
 				if (step < minStep)
 				{
-					for (int j = 0; j < 4; j++)
-						userIndex[j] = 0;
-
+					attackChoice.clear();
+					comP = findCompairCardDexPosition(userDeck[i].Icon);
+					aTmp = compairList[comP];
+					attackChoice.push_back(aTmp);
 					minStep = step;
-					userIndex[i] = 1;
-					count = 1;
 				}
 				else if (step == minStep)
 				{
-					userIndex[i] = 1;
-					count += 1;
+					comP = findCompairCardDexPosition(userDeck[i].Icon);
+					aTmp = compairList[comP];
+					attackChoice.push_back(aTmp);
 				}
-			}	
+			}
 		}
-		if (count == 0) //攻擊範圍內沒有敵人
+		if (attackChoice.size() == 0) //攻擊範圍內沒有敵人
 		{
 			if (debugMode == 0)
 				addBattleMsg(creature.Icon + std::string("找不到目標"));
 			std::cout << "no one lock" << std::endl;
-		}
-		else if (count == 1)
-		{
-			for (int i = 0; i < userDeck.size(); i++)
-			{
-				if (userIndex[i] == 1)
-				{					
-					std::cout << creature.Icon << " lock " << userDeck[i].Icon << " in distance " << minStep << std::endl;
-					if (damage > userDeck[i].Shield)
-						userDeck[i].HP -= damage - userDeck[i].Shield;
-					std::cout << creature.Icon << " attack " << userDeck[i].Icon << " " << damage << " damage, " << userDeck[i].Icon << " shield " << userDeck[i].Shield
-						<< ", " << userDeck[i].Icon << " remain " << userDeck[i].HP << " hp" << std::endl;
-					if (debugMode == 0)
-					{
-						msg = creature.Icon + std::string(" lock ") + userDeck[i].Icon + std::string(" in distance ") + std::to_string(minStep);
-						addBattleMsg(msg);
-						msg = creature.Icon + std::string(" attack ") + userDeck[i].Icon + std::string(" ") + std::to_string(damage) + std::string(" damage, ") + userDeck[i].Icon + std::string(" shield ")
-							+ std::to_string(userDeck[i].Shield) + std::string(", ") + userDeck[i].Icon + std::string(" remain ") + std::to_string(userDeck[i].HP) + std::string(" hp");
-						addBattleMsg(msg);
-					}
-				}
-			}
+			resetRange();
+			return;
 		}
 		else
 		{
-			for (int i = 0; i < compairList.size(); i++)
+			for (i = 0; i < compairList.size(); i++)
 			{
-				for (int j = 0; j < userDeck.size(); j++)
+				for (j = 0; j < attackChoice.size(); j++)
 				{
-					if (compairList[i].Icon == userDeck[j].Icon && userIndex[j] == 1)
+					if (compairList[i].Icon == attackChoice[j].Icon)
 					{
+						i = findCreatureDeckPosition(0, compairList[i].Icon);
 						std::cout << creature.Icon << " lock " << userDeck[i].Icon << " in distance " << minStep << std::endl;
-						if (damage > userDeck[j].Shield)
-							userDeck[j].HP -= damage - userDeck[j].Shield;
-						std::cout << creature.Icon << " attack " << userDeck[j].Icon << " " << damage << " damage, " << userDeck[j].Icon << " shield " << userDeck[j].Shield
-							<< ", " << userDeck[j].Icon << " remain " << userDeck[j].HP << " hp" << std::endl;
+						if (damage > userDeck[i].Shield)
+							userDeck[i].HP -= damage - userDeck[i].Shield;
+						std::cout << creature.Icon << " attack " << userDeck[i].Icon << " " << damage << " damage, " << userDeck[i].Icon << " shield " << userDeck[i].Shield
+							<< ", " << userDeck[i].Icon << " remain " << userDeck[i].HP << " hp" << std::endl;
 						if (debugMode == 0)
 						{
 							msg = creature.Icon + std::string(" lock ") + userDeck[i].Icon + std::string(" in distance ") + std::to_string(minStep);
@@ -130,12 +110,13 @@ void Management::Attack(Creature& creature, std::string command)
 								+ std::to_string(userDeck[i].Shield) + std::string(", ") + userDeck[i].Icon + std::string(" remain ") + std::to_string(userDeck[i].HP) + std::string(" hp");
 							addBattleMsg(msg);
 						}
+						resetRange();
 						return;
 					}
 				}
+
 			}
 		}
 	}
-	resetRange();
 }
 ////////////////////////////////////////////////////////////

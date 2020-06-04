@@ -212,3 +212,13 @@ int  Management::enemyOnPoint(Point p, int Camp)
 	return count;
 }
 ////////////////////////////////////////////////////////////
+int Management::findCompairCardDexPosition(char icon)
+{
+	int i;
+	for (i = 0; i < compairList.size(); i++)
+	{
+		if (compairList[i].Icon == icon)
+			return i;
+	}
+	return -1;
+}

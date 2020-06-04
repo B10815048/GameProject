@@ -22,6 +22,7 @@ void Management::userPlayCards()
 	if (debugMode == 0)
 	{
 		std::cout << "選擇角色並出牌,格式:<角色代號> <卡片1> <卡片2>" << endl;
+		printGUI();
 	}	
 	for (int i = 0; i < userDeck.size(); i++) // 檢查角色是否不能選擇長休或出牌
 	{

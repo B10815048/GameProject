@@ -123,11 +123,16 @@ void Management::doorOpenCheck()
 	}
 	if (haveOpen)
 	{
-		Point p;
-		getxy(p);
-		printMap(p);
-		printEnemy(p);
-		printUser(p);
+		if (debugMode)
+		{
+			Point p;
+			getxy(p);
+			printMap(p);
+			printEnemy(p);
+			printUser(p);
+		}
+		else
+			rePrint();
 	}
 }
 ////////////////////////////////////////////////////////////
