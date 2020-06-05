@@ -128,134 +128,6 @@ void Management::runGAME()
 	resetGame();
 }
 ////////////////////////////////////////////////////////////
-//重印介面(debugmode 0 專用)
-void Management::rePrint()
-{
-	Point p;
-	system("cls");
-	std::cout << "============================================" << std::endl;
-	std::cout << "                 GloomHaven                 " << std::endl;
-	std::cout << "--------------------------------------------" << std::endl;	
-	getxy(p);
-	printBattleMsg();
-	gotoxy(p);
-	printMap(p);
-	printEnemy(p);
-	printUser(p);	
-	std::cout << "--------------------------------------------" << std::endl;
-	std::cout << "Round " << round_count << " " << roundStatue << std::endl;
-	if (compairList.size() != 0)
-	{
-		std::cout << "生物行動執行順序:" << endl;
-		printExecutionOrder();
-	}		
-	std::cout << "============================================" << std::endl;
-}
-////////////////////////////////////////////////////////////
-//印出戰鬥訊息(debugmode 0 專用)
-void Management::printBattleMsg()
-{
-	int battleMsg_count = 0;
-	Point p;
-	Point orginalP;
-	getxy(orginalP);
-	if (width < 47)
-		p.x = 47;
-	else
-		p.x = width + 2;
-	p.y = 3;
-	gotoxy(p);
-	cout << "【戰鬥訊息紀錄 Battle Message Record】";
-	for (int i = 0; i < battleMsg.size(); i++)
-	{
-		gotoxy({ p.x,p.y + 15 - i });
-		if(i == 0)
-			cout << "> " << battleMsg[battleMsg.size() - i - 1];
-		else
-			cout << "| " << battleMsg[battleMsg.size() - i - 1];
-	}	
-	gotoxy(orginalP);
-}
-////////////////////////////////////////////////////////////
-//新增戰鬥訊息(debugmode 0 專用)
-void Management::addBattleMsg(string msg)
-{
-	Point p, orginalP;
-	getxy(orginalP);
-	if (width < 47)
-		p.x = 47;
-	else
-		p.x = width + 2;
-	p.y = 3;
-	gotoxy(p);
-	cout << "【戰鬥訊息紀錄 Battle Message Record】";
-	for (int i = 0; i < battleMsg.size(); i++)
-	{
-		gotoxy({ p.x,p.y + 15 - i });
-		for (int j = 0; j < battleMsg[battleMsg.size() - i - 1].size()+2; j++)
-			cout << " ";
-	}
-	gotoxy(orginalP);
-	battleMsg.push_back(msg);
-	if (battleMsg.size() > 15)
-		battleMsg.erase(battleMsg.begin());
-	printBattleMsg();
-}
-////////////////////////////////////////////////////////////
-//新增GUI介面(debugmode 0 專用)
-void Management::printGUI(int position)
-{
-	int index = 0;
-	char input = ' ';
-	Point p;
-	std::string menu[3] = { "查看所有角色資料","查看當前角色卡牌","指令輸入模式       " };
-	getxy(p);
-	do {
-		gotoxy(p);
-		std::cout << "角色 " << userDeck[position].Icon << " 的行動回合:" << endl;
-		for (int j = 0; j < 3; j++)
-			cout << "   " << menu[j] << endl;
-		gotoxy({ p.x,p.y + 1 });
-		if (input == 'w' || input == 'W')
-			index -= 1;
-		else if (input == 's' || input == 'S')
-			index += 1;
-		if (input == 13)
-		{
-			if (index == 0)
-			{
-				printCreatureCheck();
-				std::cout << "按下任意鍵以繼續" << std::endl;
-				_getch();
-				rePrint();
-				std::cout << "角色 " << userDeck[position].Icon << " 的行動回合:" << endl;
-			}
-			else if (index == 1)
-			{
-				printUserCard(userDeck[position]);
-				std::cout << "按下任意鍵以繼續" << std::endl;
-				_getch();
-				rePrint();
-				std::cout << "角色 " << userDeck[position].Icon << " 的行動回合:" << endl;
-			}
-			else if (index == 2)
-			{
-				rePrint();
-				break;
-			}
-		}
-		if (index < 0) index = 2;
-		if (index > 2) index = 0;
-		for (int j = 0; j < 3; j++)
-		{
-			if (j == index) cout << ">> ";
-			else cout << "   ";
-			cout << menu[j] << endl;
-		}
-	} while (input = _getch());
-	rePrint();
-}
-////////////////////////////////////////////////////////////
 //選擇起始點：
 void Management::seletPoint()
 {
@@ -455,7 +327,7 @@ void Management::playCard()
 					if (debugMode == 0)
 					{
 						printGUI(position);
-						std::cout << "角色 "<< userDeck[position].Icon << " 選擇 " << compairList[i].Index[0] << " 和 " << compairList[i].Index[1] << " 的卡片效果,格式:<卡片代碼><u/d>" << std::endl;
+						continue;
 					}										
 					else
 						std::cout << compairList[i].Icon << "'s turn: card " << compairList[i].Index[0] << " " << compairList[i].Index[1] << std::endl;

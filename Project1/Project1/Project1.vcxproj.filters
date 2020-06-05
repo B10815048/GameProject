@@ -51,6 +51,9 @@
     <ClCompile Include="Management%28Math%29.cpp">
       <Filter>資源檔</Filter>
     </ClCompile>
+    <ClCompile Include="Management(DebugMode0).cpp">
+      <Filter>資源檔</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Management.h">

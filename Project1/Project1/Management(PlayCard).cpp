@@ -19,11 +19,6 @@ void Management::userPlayCards()
 	std::regex userCheck("^[A-D]{1} check$");
 	std::regex creatureCheck("check");
 	std::regex rest("^[A-D]{1} \-1$");
-	if (debugMode == 0)
-	{
-		std::cout << "選擇角色並出牌,格式:<角色代號> <卡片1> <卡片2>" << endl;
-		printGUI();
-	}	
 	for (int i = 0; i < userDeck.size(); i++) // 檢查角色是否不能選擇長休或出牌
 	{
 		if (userDeck[i].Card.size() < 2 && userDeck[i].disCardDeck.size() < 2)
@@ -38,9 +33,14 @@ void Management::userPlayCards()
 			i--;
 			continue;
 		}
-	}
+	}	
 	for (int i = 0; i < userDeck.size(); i++)
 	{
+		if (debugMode == 0)
+		{
+			printGUI();
+			continue;
+		}
 		while (getline(cin,input))
 		{
 			if (std::regex_match(input, creatureCheck)) //顯示所有生物狀態

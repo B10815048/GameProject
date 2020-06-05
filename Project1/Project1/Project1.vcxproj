@@ -150,6 +150,7 @@
     <ClCompile Include="Management%28turnCheck%29.cpp" />
     <ClCompile Include="Management%28playCard%29.cpp" />
     <ClCompile Include="Management%28Range%29.cpp" />
+    <ClCompile Include="Management(DebugMode0).cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Management.h" />
