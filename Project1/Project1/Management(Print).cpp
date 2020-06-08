@@ -130,6 +130,8 @@ void Management::printExecutionOrder()
 {
 	Point p;
 	int i, position;
+	bool haveSameName = false;
+	std::vector<std::string> enemyNameList;
 	for (i = 0; i < compairList.size(); i++)
 	{
 		if (compairList[i].skip)
@@ -137,9 +139,24 @@ void Management::printExecutionOrder()
 		if (compairList[i].Icon >= 'A' && compairList[i].Icon <= 'Z')
 		{
 			std::cout << compairList[i].Icon << " ";
+			position = findCreatureDeckPosition(0, compairList[i].Icon);
+			sort_Usercard(position);
+			sort_discard(position);
 		}			
 		else
-		{
+		{			
+			haveSameName = false;
+			position = findCreatureDeckPosition(1, compairList[i].Icon);
+			for (int j = 0; j < enemyNameList.size(); j++)
+			{
+				if (enemyNameList[j] == enemyDeck[position].name)
+					haveSameName = true;
+			}
+			if (!haveSameName)
+				enemyNameList.push_back(enemyDeck[position].name);
+			else
+				continue;
+			//sort_Enemycard();
 			position = findCreatureDeckPosition(1, compairList[i].Icon);
 			std::cout << enemyDeck[position].name << " ";
 		}

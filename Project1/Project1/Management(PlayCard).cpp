@@ -4,6 +4,7 @@
 #include "Management.h"
 #include <sstream>
 #include <regex>
+#include <conio.h>
 using namespace std;
 ////////////////////////////////////////////////////////////
 //使用者出牌：
@@ -23,8 +24,17 @@ void Management::userPlayCards()
 	{
 		if (userDeck[i].Card.size() < 2 && userDeck[i].disCardDeck.size() < 2)
 		{
-			std::cout << userDeck[i].Icon << " is killed!!" << std::endl;
-			userDeck.erase(userDeck.begin() + i);
+			std::cout << userDeck[i].Icon << " is killed!!" << std::endl;		
+			if (debugMode == 0)
+			{
+				addBattleMsg(std::string("角色 ") + userDeck[i].Icon + std::string(" 死亡"));
+				userDeck.erase(userDeck.begin() + i);
+				std::cout << "按下任意鍵以繼續" << std::endl;
+				_getch();
+				rePrint();
+				i--;
+				continue;
+			}			
 			Point p;
 			getxy(p);
 			printMap(p);
@@ -38,7 +48,7 @@ void Management::userPlayCards()
 	{
 		if (debugMode == 0)
 		{
-			printGUI();
+			printRoundGUI();
 			continue;
 		}
 		while (getline(cin,input))

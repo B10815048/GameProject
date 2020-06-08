@@ -35,9 +35,10 @@ void Management::Attack(Creature& creature, std::string command)
 					{
 						msg = creature.Icon + std::string(" attack ") + enemyDeck[position].Icon + std::string(" ") + std::to_string(damage) + std::string(" damage, ")
 							+ enemyDeck[position].Icon + std::string(" shield ") + std::to_string(enemyDeck[position].Shield) + std::string(", ")
-							+ enemyDeck[position].Icon + std::string(" remain ") + std::to_string(enemyDeck[position].HP[enemyDeck[position].Type]) + std::string(" hp");
+							+ enemyDeck[position].Icon + std::string(" remain ") + std::to_string(enemyDeck[position].HP[enemyDeck[position].Type]) + std::string(" hp");						
 						addBattleMsg(msg);
 					}
+					resetRange();
 					return;
 				}
 				else //超出攻擊範圍
@@ -47,6 +48,7 @@ void Management::Attack(Creature& creature, std::string command)
 			{
 				if (debugMode == 0)
 					addBattleMsg(creature.Icon + std::string(" 放棄攻擊..."));
+				resetRange();
 				return;
 			}
 			else  //沒有此敵人

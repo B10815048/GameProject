@@ -9,7 +9,7 @@ void SetColor(int color = 7)
 	SetConsoleTextAttribute(hConsole, color);
 }
 ////////////////////////////////////////////////////////////
-//重印介面(debugmode 0 專用)
+//顯示主介面(debugmode 0 專用)
 void Management::rePrint()
 {
 	Point p;
@@ -21,8 +21,11 @@ void Management::rePrint()
 	printBattleMsg();
 	gotoxy(p);
 	printMap(p);
+	SetColor(12);
 	printEnemy(p);
+	SetColor(11);
 	printUser(p);
+	SetColor();
 	std::cout << "--------------------------------------------" << std::endl;
 	std::cout << "Round " << round_count << " " << roundStatue << std::endl;
 	if (compairList.size() != 0)
@@ -36,20 +39,28 @@ void Management::rePrint()
 //印出戰鬥訊息(debugmode 0 專用)
 void Management::printBattleMsg()
 {
-	int battleMsg_count = 0;
-	Point p;
-	Point orginalP;
+	Point p, orginalP; // orgionalP = (0,0)
 	getxy(orginalP);
 	if (width < 47)
 		p.x = 47;
 	else
 		p.x = width + 2;
-	p.y = 3;
+	p.y = 3;	
 	gotoxy(p);
 	std::cout << "【戰鬥訊息紀錄 Battle Message Record】";
+	// 清除舊的BattleMsg
 	for (int i = 0; i < battleMsg.size(); i++)
 	{
-		gotoxy({ p.x,p.y + 15 - i });
+		gotoxy({ p.x,p.y + height - i + 1});
+		for (int j = 0; j < battleMsg[battleMsg.size() - i - 1].size() + 2; j++)
+			std::cout << " ";
+	}
+	gotoxy(p);
+	std::cout << "【戰鬥訊息紀錄 Battle Message Record】";
+	// 重印新的BattleMsg
+	for (int i = 0; i < battleMsg.size(); i++)
+	{
+		gotoxy({ p.x,p.y + height - i });
 		if (i == 0)
 			std::cout << "> " << battleMsg[battleMsg.size() - i - 1];
 		else
@@ -61,38 +72,18 @@ void Management::printBattleMsg()
 //新增戰鬥訊息(debugmode 0 專用)
 void Management::addBattleMsg(string msg)
 {
-	Point p, orginalP;
-	getxy(orginalP);
-	if (width < 47)
-		p.x = 47;
-	else
-		p.x = width + 2;
-	p.y = 3;
-	gotoxy(p);
-	std::cout << "【戰鬥訊息紀錄 Battle Message Record】";
-	for (int i = 0; i < battleMsg.size(); i++)
-	{
-		gotoxy({ p.x,p.y + 15 - i });
-		for (int j = 0; j < battleMsg[battleMsg.size() - i - 1].size() + 2; j++)
-			std::cout << " ";
-	}
-	gotoxy(orginalP);
 	battleMsg.push_back(msg);
-	if (battleMsg.size() > 15)
+	if (battleMsg.size() > height)
 		battleMsg.erase(battleMsg.begin());
 	printBattleMsg();
 }
 ////////////////////////////////////////////////////////////
-//新增GUI介面(debugmode 0 專用)
-void Management::printGUI(int position)
+//選擇卡牌上下技能的GUI介面(debugmode 0 專用)
+void Management::printUseCardGUI(int position)
 {
-	std::string skill[] = { "move", "heal", "shield", "attack","range" };
 	int index = 0;
-	int colorIndex = -1;
-	int cardIndex = 0;
 	char input = ' ';
-	bool match = false;
-	Point p, p2;
+	Point p;
 	getxy(p);
 	do {
 		gotoxy(p);
@@ -104,7 +95,7 @@ void Management::printGUI(int position)
 			index += 1;
 		if (input == 13)
 		{
-			if (index == 0 || index == 3)
+			if (index == 0)
 			{
 				int i = findCompairCardDexPosition(userDeck[position].Icon);
 				int p1 = findCardPosition(compairList[i], compairList[i].Index[0]);
@@ -113,7 +104,25 @@ void Management::printGUI(int position)
 				usingEffect(userDeck[position], compairList[i].Index[1 - p1], 1);
 				break;
 			}
-			else if (index == 1 || index == 2)
+			else if (index == 1)
+			{
+				int i = findCompairCardDexPosition(userDeck[position].Icon);
+				int p1 = findCardPosition(compairList[i], compairList[i].Index[0]);
+				rePrint();
+				usingEffect(userDeck[position], compairList[i].Index[p1], 1);
+				usingEffect(userDeck[position], compairList[i].Index[1 - p1], 0);
+				break;
+			}
+			else if (index == 2)
+			{
+				int i = findCompairCardDexPosition(userDeck[position].Icon);
+				int p1 = findCardPosition(compairList[i], compairList[i].Index[1]);
+				rePrint();
+				usingEffect(userDeck[position], compairList[i].Index[p1], 0);
+				usingEffect(userDeck[position], compairList[i].Index[1 - p1], 1);
+				break;
+			}
+			else if (index == 3)
 			{
 				int i = findCompairCardDexPosition(userDeck[position].Icon);
 				int p1 = findCardPosition(compairList[i], compairList[i].Index[1]);
@@ -122,9 +131,28 @@ void Management::printGUI(int position)
 				usingEffect(userDeck[position], compairList[i].Index[1 - p1], 0);
 				break;
 			}
+			else if (index == 4)
+			{
+				rePrint();
+				printCreatureCheck();
+				std::cout << "按下任意鍵以繼續" << std::endl;
+				_getch();
+				rePrint();
+				std::cout << "角色 " << userDeck[position].Icon << " 的行動回合:" << endl;
+			}
+			else if (index == 5)
+			{
+				rePrint();
+				User target = chooseUser(0);				
+				printUserCard(target);
+				std::cout << "按下任意鍵以繼續" << std::endl;
+				_getch();
+				rePrint();
+				std::cout << "角色 " << userDeck[position].Icon << " 的行動回合:" << endl;
+			}
 		}
-		if (index < 0) index = 3;
-		if (index > 3) index = 0;
+		if (index < 0) index = 5;
+		if (index > 5) index = 0;
 		int j = findCompairCardDexPosition(userDeck[position].Icon);
 		std::cout << (index == 0 ? ">> " : "   ");
 		std::cout << "編號 " << compairList[j].Index[0] << " 上技能" << endl;
@@ -134,13 +162,16 @@ void Management::printGUI(int position)
 		std::cout << "編號 " << compairList[j].Index[1] << " 上技能" << endl;
 		std::cout << (index == 3 ? ">> " : "   ");
 		std::cout << "編號 " << compairList[j].Index[1] << " 下技能" << endl;
-
+		std::cout << (index == 4 ? ">> " : "   ");
+		std::cout << "查看所有生物狀態" << endl;
+		std::cout << (index == 5 ? ">> " : "   ");
+		std::cout << "搜尋指定角色卡片" << endl;
 	} while (input = _getch());
 	rePrint();
 }
 ////////////////////////////////////////////////////////////
-//新增GUI介面(debugmode 0 專用)
-void Management::printGUI()
+//每回合開始時的GUI介面(debugmode 0 專用)
+void Management::printRoundGUI()
 {
 	int index = 0;
 	char input = ' ';
@@ -171,7 +202,7 @@ void Management::printGUI()
 			}
 			else if (index == 1)
 			{
-				target = chooseUser();
+				target = chooseUser(0);
 				printUserCard(target);
 				std::cout << "按下任意鍵以繼續" << std::endl;
 				_getch();
@@ -180,7 +211,7 @@ void Management::printGUI()
 			}
 			else if (index == 2)
 			{
-				target = chooseUser();
+				target = chooseUser(1);
 				break;
 			}
 		}
@@ -197,7 +228,7 @@ void Management::printGUI()
 	printCardGUI(target);
 }
 ////////////////////////////////////////////////////////////
-//選擇卡片(debugmode 0 專用)
+//選擇兩張卡片的GUI介面(debugmode 0 專用)
 void Management::printCardGUI(User &user)
 {
 	int position = findCreatureDeckPosition(0, user.Icon);	
@@ -205,7 +236,6 @@ void Management::printCardGUI(User &user)
 	int index = 0;
 	int colorIndex = -1;
 	char input = ' ';
-	bool match = false;
 	Point p, p2;
 	getxy(p);
 	do {
@@ -240,7 +270,17 @@ void Management::printCardGUI(User &user)
 			if (colorIndex == index)
 				colorIndex = -1;
 			else if (colorIndex == -1)
+			{
+				if (userDeck[position].Card.size() < 2)
+				{
+					gotoxy(p2);
+					std::cout << setw(160) << " " << endl;
+					gotoxy(p2);
+					std::cout << "手牌張數小於2,請選擇長休" << std::endl;
+					continue;
+				}
 				colorIndex = index;
+			}				
 			else
 			{
 				CompairCardDex tmp;
@@ -259,7 +299,7 @@ void Management::printCardGUI(User &user)
 		for (int i = 0; i < userDeck[position].Card.size() + 1; i++)
 		{
 			if (i == colorIndex)
-				SetColor(4);
+				SetColor(10);
 			else
 				SetColor();
 			std::cout << "■■■  ";
@@ -268,7 +308,7 @@ void Management::printCardGUI(User &user)
 		for (int i = 0; i < userDeck[position].Card.size() + 1; i++)
 		{
 			if (i == colorIndex)
-				SetColor(4);
+				SetColor(10);
 			else
 				SetColor();
 			std::cout << (i < userDeck[position].Card.size() ? "■卡■  " : "■長■  ");
@@ -277,7 +317,7 @@ void Management::printCardGUI(User &user)
 		for (int i = 0; i < userDeck[position].Card.size() + 1; i++)
 		{
 			if (i == colorIndex)
-				SetColor(4);
+				SetColor(10);
 			else
 				SetColor();
 			std::cout << (i < userDeck[position].Card.size() ? "■牌■  " : "■休■  ");
@@ -286,7 +326,7 @@ void Management::printCardGUI(User &user)
 		for (int i = 0; i < userDeck[position].Card.size() + 1; i++)
 		{
 			if (i == colorIndex)
-				SetColor(4);
+				SetColor(10);
 			else
 				SetColor();
 			std::cout << "■■■  ";
@@ -326,75 +366,10 @@ void Management::printCardGUI(User &user)
 	rePrint();
 }
 ////////////////////////////////////////////////////////////
-// 備案
-/*void Management::printCardGUI(User& user)
-{
-	int position = findCreatureDeckPosition(0, user.Icon);
-	for (int i = 0; i < userDeck[position].Card.size() + 1; i++)
-		std::cout << "■■■  ";
-	std::cout << endl;
-	for (int i = 0; i < userDeck[position].Card.size() + 1; i++)
-		std::cout << (i < userDeck[position].Card.size() ? "■卡■  " : "■長■  ");
-	std::cout << endl;
-	for (int i = 0; i < userDeck[position].Card.size() + 1; i++)
-		std::cout << (i < userDeck[position].Card.size() ? "■牌■  " : "■休■  ");
-	std::cout << endl;
-	for (int i = 0; i < userDeck[position].Card.size() + 1; i++)
-		std::cout << "■■■  ";
-	std::cout << endl;
-	std::string skill[] = { "move", "heal", "shield", "attack","range" };
-	int index = 0;
-	char input = ' ';
-	bool match = false;
-	Point p, p2;
-	getxy(p);
-	do {
-		gotoxy(p);
-		if (input == 'a' || input == 'A')
-			index -= 1;
-		else if (input == 'd' || input == 'D')
-			index += 1;
-		if (input == 13)
-		{
-
-		}
-		if (index < 0) index = userDeck[position].Card.size();
-		if (index > userDeck[position].Card.size()) index = 0;
-		for (int i = 0; i < userDeck[position].Card.size() + 1; i++)
-		{
-			if (i == index)
-			{
-				std::cout << "------" << endl;
-				getxy(p2);
-				std::cout << setw(160) << " " << endl;
-				gotoxy(p2);
-				if (i == userDeck[position].Card.size())
-					std::cout << "長休";
-				else
-				{
-					std::cout << "編號: " << userDeck[position].Card[index].Order << " 敏捷: " << userDeck[position].Card[index].DEX << " 效果: " << "上技能: ";
-					for (int k = 0; k < user.Card[index].TopType.size(); k++)
-						std::cout << skill[user.Card[index].TopType[k]] << " " << user.Card[index].TopAbilityValue[k] << " ";
-					std::cout << "; 下技能: ";
-					for (int k = 0; k < user.Card[index].BelowType.size(); k++)
-						std::cout << skill[user.Card[index].BelowType[k]] << " " << user.Card[index].BelowAbilityValue[k] << " ";
-				}
-				std::cout << endl;
-			}
-			else
-			{
-				gotoxy({ p2.x + (i * 8),p2.y - 1 });
-				std::cout << "      ";
-			}
-			std::cout << "  ";
-		}
-	} while (input = _getch());
-	rePrint();
-}*/
-////////////////////////////////////////////////////////////
 //選擇角色(debugmode 0 專用)
-User Management::chooseUser()
+User Management::chooseUser(int mode)
 {
+	// mode 0 = 檢查卡片, mode 1 = 出牌
 	rePrint();
 	int index = 0;
 	char input = ' ';	
@@ -409,15 +384,19 @@ User Management::chooseUser()
 		else if (input == 'd' || input == 'D')
 			index += 1;
 		if (input == 13)
-		{
+		{		
 			bool match = false;
 			for (int j = 0; j < compairList.size(); j++)
 			{
 				if (compairList[j].Icon == userDeck[index].Icon)
 					match = true;
 			}
-			if (match)
+			if (match && mode == 1)
+			{
+				gotoxy({ p.x,p.y + 2 });
+				std::cout << "此角色已經選完卡牌,請換別隻角色行動!";
 				continue;
+			}				
 			return userDeck[index];
 		}				
 		if (index < 0) index = userDeck.size() - 1;
@@ -428,6 +407,8 @@ User Management::chooseUser()
 			else std::cout << "   ";
 			std::cout << userDeck[i].Icon << " ";						
 		}
+		gotoxy({ p.x,p.y + 2 });
+		std::cout << "                                    ";
 	} while (input = _getch());
 	rePrint();
 }

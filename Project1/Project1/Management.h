@@ -171,9 +171,9 @@ public:
 	void rePrint();
 	void printBattleMsg();
 	void addBattleMsg(std::string msg);
-	void printGUI(int position);
-	void printGUI();
+	void printUseCardGUI(int position);
+	void printRoundGUI();
 	void printCardGUI(User& user);
-	User chooseUser();
+	User chooseUser(int mode);
 };
 

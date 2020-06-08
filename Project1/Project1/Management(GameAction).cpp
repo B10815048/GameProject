@@ -326,7 +326,7 @@ void Management::playCard()
 				{
 					if (debugMode == 0)
 					{
-						printGUI(position);
+						printUseCardGUI(position);
 						continue;
 					}										
 					else
