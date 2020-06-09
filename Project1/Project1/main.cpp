@@ -6,17 +6,17 @@ void main(int argc, char* argv[])
 {
     Management management;
 	string input;
-	//if (argc != 4)
-	//{
-	//	cout << "Testing" << endl;
-	//	return;
-	//}
+	/*if (argc != 4)
+	{
+		cout << "Testing" << endl;
+		return;
+	}*/
 	/*management.loadUserfile(argv[1]);
 	management.loadEnemyfile(argv[2]);
 	management.setDebugMode(stoi(argv[3]));*/
-	management.loadUserfile("C:\\Users\\black\\Desktop\\GameProject\\Project1\\Project1\\character.txt");
-	management.loadEnemyfile("C:\\Users\\black\\Desktop\\GameProject\\Project1\\Project1\\monster.txt");
-	management.setDebugMode(0);
+	management.loadUserfile("C:\\Users\\black\\Downloads\\character3.txt");
+	management.loadEnemyfile("C:\\Users\\black\\Downloads\\monster3.txt");
+	management.setDebugMode(1);
     //////////////////////////////////////////////////////
 	//if (management.getMode() == 0)
 	//	management.setDebugMode(1);

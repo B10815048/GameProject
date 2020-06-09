@@ -125,6 +125,7 @@ void Management::usingEffect(Enemy& enemyDeck, int index)
 					i++;
 			}
 		}
+		survivalCheck();
 		if (!debugMode)
 		{
 			std::cout << "按下任意鍵以繼續" << std::endl;

@@ -64,6 +64,12 @@ bool Management::Move(Creature& creature, std::string command)
 		}
 		point.push_back(tmp);
 	}
+	if (point.size() > 0)
+	{
+		if (creature.Camp == 0 && creatureOnPoint(point[point.size() - 1]) == 1 && !(creature.P == point[point.size() - 1]))
+			return false;
+	}
+
 	for (i = point.size(); i > 0; i--)
 	{
 		if (creatureOnPoint(point[i - 1]) == 0 || (creatureOnPoint(point[i - 1]) == 1 && creature.P == point[i - 1])) //不能與生物重疊
