@@ -22,9 +22,14 @@ void Management::Attack(Creature& creature, std::string command)
 			std::cout << "選擇攻擊敵人 : (範圍 "  << creature.Range << " 步,傷害 " << stoi(command) << " 點)" << std::endl;
 		while (getline(std::cin, input))
 		{
-			if (std::regex_match(input, attack) && findCreatureDeckPosition(1, input[0]) != -1) //符合攻擊目標及在攻擊範圍內
+			if (std::regex_match(input, attack) && findCreatureDeckPosition(1, input[0]) != -1 ) //符合攻擊目標及在攻擊範圍內
 			{
 				position = findCreatureDeckPosition(1, input[0]);
+				if (!checkSpace(enemyDeck[position].P))
+				{
+					std::cout << "error target!!!" << std::endl;
+					continue;
+				}
 				if (shootRange(creature.P, enemyDeck[position].P, creature.Range) <= creature.Range && viewableRange(enemyDeck[position].P, creature.P))
 				{
 					if (damage > enemyDeck[position].Shield)
