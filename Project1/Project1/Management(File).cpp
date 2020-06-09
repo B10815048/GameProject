@@ -149,7 +149,6 @@ void Management::loadMapfile()
 		}
 		for (j = userDeck.size(); j < 4; j++)
 			file >> int_buffer;
-
 	}
 
 	Search(map, CharaterPos[0].x, CharaterPos[0].y);
@@ -204,7 +203,9 @@ void Management::loadEnemyfile(std::string fileName) //載入怪物資料
 			file >> enemy[i].Card[j].DEX;
 			getline(file, string_buffer);
 			if (string_buffer.substr(string_buffer.size() - 1, 1) == "r")
+			{
 				enemy[i].Card[j].Shuffle = true;
+			}
 			else if (string_buffer.substr(string_buffer.size() - 1, 1) == "d")
 				enemy[i].Card[j].Shuffle = false;
 			string_buffer = string_buffer.substr(0, string_buffer.size() - 1);

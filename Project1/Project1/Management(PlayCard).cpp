@@ -207,7 +207,7 @@ void Management::enemyPlayCards()
 				tmp.Dex[1] = 99;
 				for (j = i; j < enemyDeck.size(); j++)
 				{
-					if (enemyDeck[j].name == enemyDeck[i].name && checkSpace(enemyDeck[j].P))
+					if (enemyDeck[j].name == enemyDeck[i].name /*&& checkSpace(enemyDeck[j].P)*/)
 					{
 						tmp.Icon = enemyDeck[j].Icon;
 						compairList.push_back(tmp);
