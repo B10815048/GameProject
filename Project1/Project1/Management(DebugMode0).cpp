@@ -1,6 +1,7 @@
 #include "Management.h"
 #include <conio.h>
 #include <iomanip>
+#include <algorithm>
 using namespace std;
 void SetColor(int color = 7)
 {
@@ -143,7 +144,7 @@ void Management::printUseCardGUI(int position)
 			else if (index == 5)
 			{
 				rePrint();
-				User target = chooseUser(0);				
+				int target = chooseUser(0);				
 				printUserCard(target);
 				std::cout << "按下任意鍵以繼續" << std::endl;
 				_getch();
@@ -176,7 +177,7 @@ void Management::printRoundGUI()
 	int index = 0;
 	char input = ' ';
 	bool match = false;
-	User target;
+	int target;
 	Point p;
 	std::string menu[3] = { "查看所有生物狀態","搜尋指定角色卡片","選擇角色和卡牌" };
 	getxy(p);
@@ -228,11 +229,16 @@ void Management::printRoundGUI()
 	printCardGUI(target);
 }
 ////////////////////////////////////////////////////////////
-//選擇兩張卡片的GUI介面(debugmode 0 專用)
-void Management::printCardGUI(User &user)
+bool SortByIndex(CardTable& a, CardTable& b)
 {
-	int position = findCreatureDeckPosition(0, user.Icon);	
+	return a.Order < b.Order;
+}
+////////////////////////////////////////////////////////////
+//選擇兩張卡片的GUI介面(debugmode 0 專用)
+void Management::printCardGUI(int position)
+{
 	std::string skill[] = { "move", "heal", "shield", "attack","range" };
+	std::sort(userDeck[position].Card.begin(), userDeck[position].Card.end(), SortByIndex);
 	int index = 0;
 	int colorIndex = -1;
 	char input = ' ';
@@ -347,11 +353,11 @@ void Management::printCardGUI(User &user)
 				else
 				{
 					std::cout << "編號: " << userDeck[position].Card[index].Order << " 敏捷: " << userDeck[position].Card[index].DEX << " 效果: " << "上技能: ";
-					for (int k = 0; k < user.Card[index].TopType.size(); k++)
-						std::cout << skill[user.Card[index].TopType[k]] << " " << user.Card[index].TopAbilityValue[k] << " ";
+					for (int k = 0; k < userDeck[position].Card[index].TopType.size(); k++)
+						std::cout << skill[userDeck[position].Card[index].TopType[k]] << " " << userDeck[position].Card[index].TopAbilityValue[k] << " ";
 					std::cout << "; 下技能: ";
-					for (int k = 0; k < user.Card[index].BelowType.size(); k++)
-						std::cout << skill[user.Card[index].BelowType[k]] << " " << user.Card[index].BelowAbilityValue[k] << " ";
+					for (int k = 0; k < userDeck[position].Card[index].BelowType.size(); k++)
+						std::cout << skill[userDeck[position].Card[index].BelowType[k]] << " " << userDeck[position].Card[index].BelowAbilityValue[k] << " ";
 				}
 				std::cout << endl;
 			}
@@ -367,7 +373,7 @@ void Management::printCardGUI(User &user)
 }
 ////////////////////////////////////////////////////////////
 //選擇角色(debugmode 0 專用)
-User Management::chooseUser(int mode)
+int Management::chooseUser(int mode)
 {
 	// mode 0 = 檢查卡片, mode 1 = 出牌
 	rePrint();
@@ -397,7 +403,7 @@ User Management::chooseUser(int mode)
 				std::cout << "此角色已經選完卡牌,請換別隻角色行動!";
 				continue;
 			}				
-			return userDeck[index];
+			return index;
 		}				
 		if (index < 0) index = userDeck.size() - 1;
 		if (index >= userDeck.size()) index = 0;
@@ -547,3 +553,47 @@ string Management::getTypeName(int input)
 		return "range";
 }
 ////////////////////////////////////////////////////////////
+//選擇開始遊戲
+void Management::startGame()
+{
+	system("cls");
+	int index = 0;
+	char input;
+	int i, j;
+	input = ' ';
+	do
+	{
+		if (input == 'w' || input == 'W')
+			index -= 1;
+		else if (input == 's' || input == 'S')
+			index += 1;
+		if (index < 0) index = 1;
+		if (index > 1) index = 0;
+		gotoxy({0 ,0});
+		cout << "****************" << endl;
+		cout << "*   開始遊戲   *" << endl;
+		cout << "*   離開遊戲   *" << endl;
+		cout << "****************" << endl;
+		for (i = 0; i < 2; i++)
+		{
+			gotoxy({ 1 ,i+1 });
+			if (i == index) std::cout << ">> " << endl;
+			else std::cout << "   " << endl;
+		}
+		cout << endl;
+		if (input == 13 && index==0)
+		{
+			runGAME();
+		}
+		else if (input == 13 && index == 1)
+		{
+			return;
+		}
+	} while (input = _getch());
+}
+////////////////////////////////////////////////////////////
+//回傳遊戲模式
+bool Management::getMode()
+{
+	return debugMode;
+}
