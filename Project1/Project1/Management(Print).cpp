@@ -1,4 +1,5 @@
 #include "Management.h"
+#include <algorithm>
 ////////////////////////////////////////////////////////////
 //得到輸出游標位置：
 void Management::getxy(Point& p)
@@ -47,30 +48,26 @@ void Management::printUser(Point p)
 	gotoxy({ p.x,p.y + height });
 }
 ////////////////////////////////////////////////////////////
+bool SortByIndex(CardTable& a, CardTable& b);
+////////////////////////////////////////////////////////////
 //打印當前角色的卡牌：
-void Management::printUserCard(User user)
+void Management::printUserCard(int position)
 {
 	std::string skill[] = { "move", "heal", "shield", "attack","range" };
-	for (int i = 0; i < userDeck.size(); i++)
+	std::sort(userDeck[position].Card.begin(), userDeck[position].Card.end(), SortByIndex);
+	for (int j = 0; j < userDeck[position].Card.size(); j++)
 	{
-		if (userDeck[i].Icon == user.Icon)
-		{
-			for (int j = 0; j < user.Card.size(); j++)
-			{
-				std::cout << "編號: " << user.Card[j].Order << " ; 敏捷: ";
-				if (user.Card[j].DEX < 10)
-					std::cout << "0";
-				std::cout << user.Card[j].DEX << " ; ";
-				std::cout << "上技能: ";
-				for (int k = 0; k < user.Card[j].TopType.size(); k++)
-					std::cout << skill[user.Card[j].TopType[k]] << " " << user.Card[j].TopAbilityValue[k] << " ";
-				std::cout << "; 下技能: ";
-				for (int k = 0; k < user.Card[j].BelowType.size(); k++)
-					std::cout << skill[user.Card[j].BelowType[k]] << " " << user.Card[j].BelowAbilityValue[k] << " ";
-				std::cout << std::endl;
-			}		
-			break;
-		}
+		std::cout << "編號: " << userDeck[position].Card[j].Order << " ; 敏捷: ";
+		if (userDeck[position].Card[j].DEX < 10)
+			std::cout << "0";
+		std::cout << userDeck[position].Card[j].DEX << " ; ";
+		std::cout << "上技能: ";
+		for (int k = 0; k < userDeck[position].Card[j].TopType.size(); k++)
+			std::cout << skill[userDeck[position].Card[j].TopType[k]] << " " << userDeck[position].Card[j].TopAbilityValue[k] << " ";
+		std::cout << "; 下技能: ";
+		for (int k = 0; k < userDeck[position].Card[j].BelowType.size(); k++)
+			std::cout << skill[userDeck[position].Card[j].BelowType[k]] << " " << userDeck[position].Card[j].BelowAbilityValue[k] << " ";
+		std::cout << std::endl;
 	}
 }
 ////////////////////////////////////////////////////////////

@@ -108,7 +108,7 @@ public:
 	void printCreatureCheck();
 	void printUserCheck(char icon);
 	void printExecutionOrder();
-	void printUserCard(User user);
+	void printUserCard(int position);
 	//////////////////////////////////////////////////////////////////////
 	//File : 
 	void loadUserfile(std::string fileName);
@@ -168,13 +168,18 @@ public:
 	void positiveValue(int& num);
 	//////////////////////////////////////////////////////////////////////
 	//debugmode :
-	void printChooseCharacterGUI();
+	void startGame();
 	void rePrint();
 	void printBattleMsg();
 	void addBattleMsg(std::string msg);
 	void printUseCardGUI(int position);
+	void printCardInfo(int position);
 	void printRoundGUI();
-	void printCardGUI(User& user);
-	User chooseUser(int mode);
+	void printCardGUI(int position);
+	int chooseUser(int mode);
+	void selectUserGUI(int n);
+	std::string getTypeName(int input);
+	bool getMode();
+	friend bool SortByIndex(CardTable& a, CardTable& b);
 };
 
