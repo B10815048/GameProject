@@ -1,4 +1,5 @@
 #include "Management.h"
+#include <algorithm>
 ////////////////////////////////////////////////////////////
 //得到輸出游標位置：
 void Management::getxy(Point& p)
@@ -47,10 +48,16 @@ void Management::printUser(Point p)
 	gotoxy({ p.x,p.y + height });
 }
 ////////////////////////////////////////////////////////////
+bool SortByIndex(CardTable& a, CardTable& b)
+{
+	return a.Order < b.Order;
+}
+////////////////////////////////////////////////////////////
 //打印當前角色的卡牌：
 void Management::printUserCard(User user)
 {
 	std::string skill[] = { "move", "heal", "shield", "attack","range" };
+	std::sort(user.Card.begin(), user.Card.end(), SortByIndex);
 	for (int i = 0; i < userDeck.size(); i++)
 	{
 		if (userDeck[i].Icon == user.Icon)

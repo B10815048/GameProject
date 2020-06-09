@@ -412,3 +412,138 @@ User Management::chooseUser(int mode)
 	} while (input = _getch());
 	rePrint();
 }
+////////////////////////////////////////////////////////////
+//起始角色(debugmode 0 專用)
+void Management::selectUserGUI(int n)
+{
+	system("cls");
+	int index = 0, position;
+	char input;
+	int i, j, k;
+	Point p;
+	getxy(p);
+	for (i = 0; i < n; i++)
+	{
+		input = ' ';
+		do 
+		{
+			gotoxy(p);
+			if (input == 'a' || input == 'A')
+				index -= 1;
+			else if (input == 'd' || input == 'D')
+				index += 1;
+			if (index < 0) index = user.size() - 1;
+			if (index >= user.size()) index = 0;
+			for (j = 0; j < user.size(); j++)
+			{
+				if (j == index) std::cout << ">> ";
+				else std::cout << "   ";
+				std::cout << user[j].name << " ";
+			}
+			cout << endl;
+			if (input == 13)
+			{
+				cout << "選擇" << user[index].name << endl;
+				position = index;
+				index = 0;
+				break;
+			}
+		} while (input = _getch());
+		system("cls");
+		printCardInfo(position);
+	}
+}
+////////////////////////////////////////////////////////////
+//顯示可選手牌(debugmode 0 專用)
+void Management::printCardInfo(int position)
+{
+	system("cls");
+	int index = 0;
+	char input;
+	int i, j, k;
+	Point p;
+	getxy(p);
+	User tmp = user[position];
+	User putIn = user[position];
+	putIn.Card.clear();
+	putIn.Camp = 0;
+	putIn.Icon = 65 + userDeck.size();
+	for (i = 0; i < tmp.CardOnHand; i++)
+	{
+		input = ' ';
+		index = 0;
+		do
+		{
+			gotoxy(p);
+			if (input == 'w' || input == 'W')
+				index -= 1;
+			else if (input == 's' || input == 'S')
+				index += 1;
+			if (index < 0) index = tmp.Card.size() - 1;
+			if (index >= tmp.Card.size()) index = 0;
+			gotoxy(p);
+			cout << "可選擇卡牌：" << endl;
+			for (j = 0; j < tmp.Card.size(); j++)
+			{
+				std::cout << "   " << "Index：" << tmp.Card[j].Order;
+				for (k = 0; k < tmp.Card[j].TopType.size(); k++)
+				{
+					std::cout << " " << getTypeName(tmp.Card[j].TopType[k]) << " " << tmp.Card[j].TopAbilityValue[k];
+				}
+				cout << " -";
+				for (k = 0; k < tmp.Card[j].BelowType.size(); k++)
+				{
+					std::cout << " " << getTypeName(tmp.Card[j].BelowType[k]) << " " << tmp.Card[j].BelowAbilityValue[k];
+				}
+				cout << endl;
+			}
+			cout << "以選擇卡牌：" << endl;
+			for (j = 0; j < tmp.disCardDeck.size(); j++)
+			{
+				std::cout << "   " << "Index：" << tmp.disCardDeck[j].Order;
+				for (k = 0; k < tmp.disCardDeck[j].TopType.size(); k++)
+				{
+					std::cout << " " << getTypeName(tmp.disCardDeck[j].TopType[k]) << " " << tmp.disCardDeck[j].TopAbilityValue[k];
+				}
+				cout << "-";
+				for (k = 0; k < tmp.disCardDeck[j].BelowType.size(); k++)
+				{
+					std::cout << " " << getTypeName(tmp.disCardDeck[j].BelowType[k]) << " " << tmp.disCardDeck[j].BelowAbilityValue[k];
+				}
+				cout << endl;
+			}
+			gotoxy({ p.x, p.y + 1 });
+			for (k = 0; k < tmp.Card.size(); k++)
+			{
+				if (k == index) std::cout << ">> " << endl;
+				else std::cout << "   " << endl;
+			}
+			cout << endl;
+			if (input == 13)
+			{
+				system("cls");
+				putIn.Card.push_back(tmp.Card[index]);
+				tmp.disCardDeck.push_back(tmp.Card[index]);
+				tmp.Card.erase(tmp.Card.begin() + index);
+				break;
+			}
+		} while (input = _getch());
+	}
+	userDeck.push_back(putIn);
+}
+////////////////////////////////////////////////////////////
+//回傳技能名稱
+string Management::getTypeName(int input)
+{
+	if (input == 0)
+		return "move";
+	else if (input == 1)
+		return "heal";
+	else if (input == 2)
+		return "shield";
+	else if (input == 3)
+		return "attack";
+	else if (input == 4)
+		return "range";
+}
+////////////////////////////////////////////////////////////

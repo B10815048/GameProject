@@ -31,7 +31,12 @@ void Management::seletUser()
 	userDeck.resize(int_buffer);
 	////////////////////////////////////////////////////////////
 	if (debugMode == 0)
+	{
+		userDeck.clear();
 		cout << "輸入出場角色的卡牌,格式:<名稱> <卡牌代碼1> <卡牌代碼2> <卡牌代碼3>...." << endl;
+		selectUserGUI(int_buffer);
+		return;
+	}
 	for (i = 0; i < userDeck.size(); i++)
 	{
 		while (getline(cin,string_buffer))
@@ -235,7 +240,7 @@ void Management::seletPoint()
 		if (userDeck[i].P == tmp)
 		{
 			haveFind = false;
-			map[tmp.y][tmp.x] = '1';
+			map[userDeck[i].P.y][userDeck[i].P.x] = '1';
 			for (int j = 0; j < this->height; j++)
 			{
 				for (int k = 0; k < this->width; k++)
@@ -256,6 +261,7 @@ void Management::seletPoint()
 		else
 		{
 			userDeck[i].P = tmp;
+			map[userDeck[i].P.y][userDeck[i].P.x] = '1';
 		}
 		if (i == userDeck.size() - 1)
 		{

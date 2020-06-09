@@ -172,8 +172,11 @@ public:
 	void printBattleMsg();
 	void addBattleMsg(std::string msg);
 	void printUseCardGUI(int position);
+	void printCardInfo(int position);
 	void printRoundGUI();
 	void printCardGUI(User& user);
 	User chooseUser(int mode);
+	void selectUserGUI(int n);
+	std::string getTypeName(int input);
 };
 
