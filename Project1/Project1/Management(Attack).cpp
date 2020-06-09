@@ -25,7 +25,7 @@ void Management::Attack(Creature& creature, std::string command)
 			if (std::regex_match(input, attack) && findCreatureDeckPosition(1, input[0]) != -1) //符合攻擊目標及在攻擊範圍內
 			{
 				position = findCreatureDeckPosition(1, input[0]);
-				if (shootRange(creature.P, enemyDeck[position].P) <= creature.Range && viewableRange(enemyDeck[position].P, creature.P))
+				if (shootRange(creature.P, enemyDeck[position].P, creature.Range) <= creature.Range && viewableRange(enemyDeck[position].P, creature.P))
 				{
 					if (damage > enemyDeck[position].Shield)
 						enemyDeck[position].HP[enemyDeck[position].Type] -= damage - enemyDeck[position].Shield;
@@ -63,9 +63,9 @@ void Management::Attack(Creature& creature, std::string command)
 		CompairCardDex aTmp;
 		for (i = 0; i < userDeck.size(); i++)
 		{
-			if (shootRange(creature.P, userDeck[i].P) <= creature.Range && viewableRange(userDeck[i].P, creature.P))
+			if (shootRange(creature.P, userDeck[i].P, creature.Range) <= creature.Range && viewableRange(userDeck[i].P, creature.P))
 			{
-				step = shootRange(creature.P, userDeck[i].P);
+				step = shootRange(creature.P, userDeck[i].P, creature.Range);
 				if (step < minStep)
 				{
 					attackChoice.clear();

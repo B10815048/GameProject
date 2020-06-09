@@ -37,30 +37,6 @@ void Management::rePrint()
 	std::cout << "============================================" << std::endl;
 }
 ////////////////////////////////////////////////////////////
-//印出選擇角色(debugmode 0 專用)
-void Management::printChooseCharacterGUI()
-{
-	std::string skill[] = { "move", "heal", "shield", "attack","range" };
-	cout << "【以下為檔案內的角色和卡牌】" << endl;
-	for (int i = 0; i < user.size(); i++)
-	{
-		cout << "角色名稱: " << user[i].name << " | 生命值: " << user[i].HP << " | 可選手排張數: " << user[i].CardOnHand << endl;
-		cout << "[卡牌列表]" << endl;
-		for (int j = 0; j < user[i].Card.size(); j++)
-		{
-			cout << "編號: " << user[i].Card[j].Order << ", 敏捷: " << user[i].Card[j].DEX << ", 上技能: ";
-			for (int k = 0; k < user[i].Card[j].TopType.size(); k++)
-				cout << skill[user[i].Card[j].TopType[k]] << " " << user[i].Card[j].TopAbilityValue[k] << " ";
-			cout << ", 下技能: ";
-			for (int k = 0; k < user[i].Card[j].BelowType.size(); k++)
-				cout << skill[user[i].Card[j].BelowType[k]] << " " << user[i].Card[j].BelowAbilityValue[k] << " ";
-			cout << endl;
-		}
-		cout << "---------------------------------------------------------------------------------------------------" << endl;
-	}
-	cout << "輸入出場角色的卡牌,格式:<名稱> <卡牌代碼1> <卡牌代碼2> <卡牌代碼3>...." << endl;
-}
-////////////////////////////////////////////////////////////
 //印出戰鬥訊息(debugmode 0 專用)
 void Management::printBattleMsg()
 {

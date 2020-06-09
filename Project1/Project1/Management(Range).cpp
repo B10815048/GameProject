@@ -69,9 +69,52 @@ bool Management::viewableRange(Point start, Point end)
 }
 ////////////////////////////////////////////////////////////
 //射程步數：
-int Management::shootRange(Point start, Point end)
+int Management::shootRange(Point start, Point end, int maxRange)
 {
-	return abs(end.x- start.x)+ abs(end.y-start.y);
+	/*return abs(end.x- start.x)+ abs(end.y-start.y);*/
+	int i, j;
+	checkMap.resize(height);
+	for (i = 0; i < checkMap.size(); i++)
+		checkMap[i].resize(width);
+
+	for (i = 0; i < height; i++)
+	{
+		for (j = 0; j < width; j++)
+		{
+			if (map[i][j] == '0')
+			{
+				checkMap[i][j] = -1;
+			}
+			else
+				checkMap[i][j] = -2;
+		}
+	}
+	checkMap[start.y][start.x] = 0;
+	viewR(start, 0);
+	viewU(start, 0);
+	viewD(start, 0);
+	viewL(start, 0);
+	int n = 0;
+	while (checkMap[end.y][end.x] <= 0 && n <= maxRange)
+	{
+		n++;
+		for (i = 0; i < height; i++)
+		{
+			for (j = 0; j < width; j++)
+			{
+				if (checkMap[i][j] == n)
+				{
+					viewR({ j, i }, n);
+					viewU({ j, i }, n);
+					viewD({ j, i }, n);
+					viewL({ j, i }, n);
+				}
+			}
+		}
+	}
+	if (n > maxRange)
+		return maxRange + 1;
+	return checkMap[end.y][end.x];
 }
 ////////////////////////////////////////////////////////////
 //還原所有人的射程
@@ -91,3 +134,50 @@ void  Management::resetRange()
 	}
 }
 ////////////////////////////////////////////////////////////
+//拜訪右側 : 
+int Management::viewR(Point start, int n)
+{
+	if (checkMap[start.y][start.x + 1] == -2)
+	{
+		checkMap[start.y][start.x + 1] = n + 1;
+		return viewR({ start.x + 1,start.y }, n + 1);
+	}
+	else
+		return 0;
+}
+//////////////////////////////////////////////////////////////
+//拜訪上方 : 
+int Management::viewU(Point start, int n)
+{
+	if (checkMap[start.y - 1][start.x] == -2)
+	{
+		checkMap[start.y - 1][start.x] = n + 1;
+		return viewU({ start.x,start.y - 1 }, n + 1);
+	}
+	else
+		return 0;
+}
+//////////////////////////////////////////////////////////////
+//拜訪下方 : 
+int Management::viewD(Point start, int n)
+{
+	if (checkMap[start.y + 1][start.x] == -2)
+	{
+		checkMap[start.y + 1][start.x] = n + 1;
+		return viewD({ start.x,start.y + 1 }, n + 1);
+	}
+	else
+		return 0;
+}
+//////////////////////////////////////////////////////////////
+//拜訪左側 : 
+int Management::viewL(Point start, int n)
+{
+	if (checkMap[start.y][start.x - 1] == -2)
+	{
+		checkMap[start.y][start.x - 1] = n + 1;
+		return viewL({ start.x - 1,start.y }, n + 1);
+	}
+	else
+		return 0;
+}
