@@ -33,7 +33,6 @@ void Management::seletUser()
 	if (debugMode == 0)
 	{
 		userDeck.clear();
-		cout << "輸入出場角色的卡牌,格式:<名稱> <卡牌代碼1> <卡牌代碼2> <卡牌代碼3>...." << endl;
 		selectUserGUI(int_buffer);
 		return;
 	}
@@ -368,8 +367,6 @@ void Management::playCard()
 				}
 				else
 				{
-					if(debugMode == 0)
-						cout << "英雄" << userDeck[position].Icon << "長休" << endl;
 					if (debugMode == 1)
 						cout << userDeck[position].Icon << "'s turn: card -1" << endl;
 					rest(userDeck[position]);
