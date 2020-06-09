@@ -34,7 +34,8 @@ void Management::userPlayCards()
 				rePrint();
 				i--;
 				continue;
-			}			
+			}	
+			userDeck.erase(userDeck.begin() + i);
 			Point p;
 			getxy(p);
 			printMap(p);
