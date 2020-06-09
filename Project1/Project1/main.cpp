@@ -14,8 +14,8 @@ void main(int argc, char* argv[])
 	management.loadUserfile(argv[1]);
 	management.loadEnemyfile(argv[2]);
 	management.setDebugMode(stoi(argv[3]));*/
-	management.loadUserfile("C:\\Users\\black\\Desktop\\GameProject\\Project1\\Project1\\character.txt");
-	management.loadEnemyfile("C:\\Users\\black\\Desktop\\GameProject\\Project1\\Project1\\monster.txt");
+	management.loadUserfile("E:\\GameProject\\Project1\\x64\\Release\\character.txt");
+	management.loadEnemyfile("E:\\GameProject\\Project1\\x64\\Release\\monster.txt");
 	management.setDebugMode(0);
     //////////////////////////////////////////////////////
 	while (getline(cin, input))

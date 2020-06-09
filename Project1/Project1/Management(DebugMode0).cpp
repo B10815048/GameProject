@@ -36,6 +36,30 @@ void Management::rePrint()
 	std::cout << "============================================" << std::endl;
 }
 ////////////////////////////////////////////////////////////
+//印出選擇角色(debugmode 0 專用)
+void Management::printChooseCharacterGUI()
+{
+	std::string skill[] = { "move", "heal", "shield", "attack","range" };
+	cout << "【以下為檔案內的角色和卡牌】" << endl;
+	for (int i = 0; i < user.size(); i++)
+	{
+		cout << "角色名稱: " << user[i].name << " | 生命值: " << user[i].HP << " | 可選手排張數: " << user[i].CardOnHand << endl;
+		cout << "[卡牌列表]" << endl;
+		for (int j = 0; j < user[i].Card.size(); j++)
+		{
+			cout << "編號: " << user[i].Card[j].Order << ", 敏捷: " << user[i].Card[j].DEX << ", 上技能: ";
+			for (int k = 0; k < user[i].Card[j].TopType.size(); k++)
+				cout << skill[user[i].Card[j].TopType[k]] << " " << user[i].Card[j].TopAbilityValue[k] << " ";
+			cout << ", 下技能: ";
+			for (int k = 0; k < user[i].Card[j].BelowType.size(); k++)
+				cout << skill[user[i].Card[j].BelowType[k]] << " " << user[i].Card[j].BelowAbilityValue[k] << " ";
+			cout << endl;
+		}
+		cout << "---------------------------------------------------------------------------------------------------" << endl;
+	}
+	cout << "輸入出場角色的卡牌,格式:<名稱> <卡牌代碼1> <卡牌代碼2> <卡牌代碼3>...." << endl;
+}
+////////////////////////////////////////////////////////////
 //印出戰鬥訊息(debugmode 0 專用)
 void Management::printBattleMsg()
 {
@@ -46,15 +70,6 @@ void Management::printBattleMsg()
 	else
 		p.x = width + 2;
 	p.y = 3;	
-	gotoxy(p);
-	std::cout << "【戰鬥訊息紀錄 Battle Message Record】";
-	// 清除舊的BattleMsg
-	for (int i = 0; i < battleMsg.size(); i++)
-	{
-		gotoxy({ p.x,p.y + height - i + 1});
-		for (int j = 0; j < battleMsg[battleMsg.size() - i - 1].size() + 2; j++)
-			std::cout << " ";
-	}
 	gotoxy(p);
 	std::cout << "【戰鬥訊息紀錄 Battle Message Record】";
 	// 重印新的BattleMsg
@@ -72,10 +87,27 @@ void Management::printBattleMsg()
 //新增戰鬥訊息(debugmode 0 專用)
 void Management::addBattleMsg(string msg)
 {
+	Point p, orginalP; // orgionalP = (0,0)
+	getxy(orginalP);
+	if (width < 47)
+		p.x = 47;
+	else
+		p.x = width + 2;
+	p.y = 3;
+	gotoxy(p);
+	std::cout << "【戰鬥訊息紀錄 Battle Message Record】";
+	// 清除舊的BattleMsg
+	for (int i = 0; i < battleMsg.size(); i++)
+	{
+		gotoxy({ p.x, p.y + height - i });
+		for (int j = 0; j < battleMsg[battleMsg.size() - i - 1].size() + 2; j++)
+			std::cout << " ";
+	}
 	battleMsg.push_back(msg);
 	if (battleMsg.size() > height)
 		battleMsg.erase(battleMsg.begin());
 	printBattleMsg();
+	gotoxy(orginalP);
 }
 ////////////////////////////////////////////////////////////
 //選擇卡牌上下技能的GUI介面(debugmode 0 專用)
@@ -155,13 +187,13 @@ void Management::printUseCardGUI(int position)
 		if (index > 5) index = 0;
 		int j = findCompairCardDexPosition(userDeck[position].Icon);
 		std::cout << (index == 0 ? ">> " : "   ");
-		std::cout << "編號 " << compairList[j].Index[0] << " 上技能" << endl;
+		std::cout << "使用編號 " << compairList[j].Index[0] << " 的上技能" << endl;
 		std::cout << (index == 1 ? ">> " : "   ");
-		std::cout << "編號 " << compairList[j].Index[0] << " 下技能" << endl;
+		std::cout << "使用編號 " << compairList[j].Index[0] << " 的下技能" << endl;
 		std::cout << (index == 2 ? ">> " : "   ");
-		std::cout << "編號 " << compairList[j].Index[1] << " 上技能" << endl;
+		std::cout << "使用編號 " << compairList[j].Index[1] << " 的上技能" << endl;
 		std::cout << (index == 3 ? ">> " : "   ");
-		std::cout << "編號 " << compairList[j].Index[1] << " 下技能" << endl;
+		std::cout << "使用編號 " << compairList[j].Index[1] << " 的下技能" << endl;
 		std::cout << (index == 4 ? ">> " : "   ");
 		std::cout << "查看所有生物狀態" << endl;
 		std::cout << (index == 5 ? ">> " : "   ");

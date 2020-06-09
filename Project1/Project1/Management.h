@@ -168,6 +168,7 @@ public:
 	void positiveValue(int& num);
 	//////////////////////////////////////////////////////////////////////
 	//debugmode :
+	void printChooseCharacterGUI();
 	void rePrint();
 	void printBattleMsg();
 	void addBattleMsg(std::string msg);

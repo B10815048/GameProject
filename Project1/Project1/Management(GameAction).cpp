@@ -31,7 +31,7 @@ void Management::seletUser()
 	userDeck.resize(int_buffer);
 	////////////////////////////////////////////////////////////
 	if (debugMode == 0)
-		cout << "輸入出場角色的卡牌,格式:<名稱> <卡牌代碼1> <卡牌代碼2> <卡牌代碼3>...." << endl;
+		printChooseCharacterGUI();
 	for (i = 0; i < userDeck.size(); i++)
 	{
 		while (getline(cin,string_buffer))
