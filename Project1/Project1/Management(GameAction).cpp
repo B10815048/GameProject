@@ -297,7 +297,7 @@ void Management::playCard()
 	int i, j;
 	string command;
 	CompairCardDex tmp;
-	std::regex play("^[0-9]{1}[ud]{1}$");
+	std::regex play("^[0-9]+[ud]{1}$");
 	std::regex userCheck("^[A-D]{1} check$");
 	std::regex creatureCheck("check");
 	char icon;
@@ -317,15 +317,18 @@ void Management::playCard()
 	sort_compairList();
 	//輸出敏捷排序
 	printExecutionOrder();
-	if (debugMode == 0)
-		rePrint();
 	//依序出牌 
 	for (i = 0; i < compairList.size(); i++)
 	{		
 		if (!compairList[i].skip)
 		{
-			if (compairList[i].Icon >= 'A' && compairList[i].Icon <= 'Z') //主角方
+			if (debugMode == 0)
 			{
+				roundStatue = std::string("生物 ") + compairList[i].Icon + std::string(" 使用技能階段");
+				rePrint();
+			}			
+			if (compairList[i].Icon >= 'A' && compairList[i].Icon <= 'Z') //主角方
+			{				
 				position = findCreatureDeckPosition(0, compairList[i].Icon);
 				if (compairList[i].Index[0] != -1)
 				{

@@ -433,7 +433,7 @@ void Management::selectUserGUI(int n)
 	system("cls");
 	int index = 0, position;
 	char input;
-	int i, j, k;
+	int i, j, k;	
 	Point p;
 	getxy(p);
 	for (i = 0; i < n; i++)
@@ -442,6 +442,7 @@ void Management::selectUserGUI(int n)
 		do 
 		{
 			gotoxy(p);
+			std::cout << "請選擇你要登場的角色! (目前可選數量: " << n - i << "個)" << endl;
 			if (input == 'a' || input == 'A')
 				index -= 1;
 			else if (input == 'd' || input == 'D')
@@ -475,8 +476,7 @@ void Management::printCardInfo(int position)
 	int index = 0;
 	char input;
 	int i, j, k;
-	Point p;
-	getxy(p);
+	Point p;	
 	User tmp = user[position];
 	User putIn = user[position];
 	putIn.Card.clear();
@@ -484,6 +484,10 @@ void Management::printCardInfo(int position)
 	putIn.Icon = 65 + userDeck.size();
 	for (i = 0; i < tmp.CardOnHand; i++)
 	{
+		gotoxy({0,0});
+		std::cout << "請選擇你要攜帶的卡片! (目前可選數量: " << tmp.CardOnHand - i << "個)" << endl;
+		std::cout << "-----------------------------------------" << endl;
+		getxy(p);
 		input = ' ';
 		index = 0;
 		do
@@ -511,7 +515,7 @@ void Management::printCardInfo(int position)
 				}
 				cout << endl;
 			}
-			cout << "以選擇卡牌：" << endl;
+			cout << "已選擇卡牌：" << endl;
 			for (j = 0; j < tmp.disCardDeck.size(); j++)
 			{
 				std::cout << "   " << "Index：" << tmp.disCardDeck[j].Order;
@@ -526,7 +530,7 @@ void Management::printCardInfo(int position)
 				}
 				cout << endl;
 			}
-			gotoxy({ p.x, p.y + 1 });
+			gotoxy({ p.x,p.y + 1 });
 			for (k = 0; k < tmp.Card.size(); k++)
 			{
 				if (k == index) std::cout << ">> " << endl;
