@@ -297,7 +297,7 @@ void Management::playCard()
 	int i, j;
 	string command;
 	CompairCardDex tmp;
-	std::regex play("^[0-9]{1}[ud]{1}$");
+	std::regex play("^[0-9]+[ud]{1}$");
 	std::regex userCheck("^[A-D]{1} check$");
 	std::regex creatureCheck("check");
 	char icon;
